@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:zikir_app/screens/home_page.dart';
-import 'package:zikir_app/theme/colors/light_colors.dart';
-import 'package:zikir_app/widgets/back_button.dart';
-import 'package:zikir_app/widgets/my_text_field.dart';
-import 'package:zikir_app/widgets/top_container.dart';
+import 'package:the_zikir_app/screens/home_page.dart';
+import 'package:the_zikir_app/theme/colors/light_colors.dart';
+import 'package:the_zikir_app/widgets/back_button.dart';
+import 'package:the_zikir_app/widgets/my_text_field.dart';
+import 'package:the_zikir_app/widgets/top_container.dart';
 
 class ViewZikirCounter extends StatelessWidget {
   @override

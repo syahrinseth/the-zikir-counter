@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:zikir_app/screens/home_page.dart';
-import 'package:zikir_app/theme/colors/light_colors.dart';
+import 'package:the_zikir_app/screens/home_page.dart';
+import 'package:the_zikir_app/theme/colors/light_colors.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(

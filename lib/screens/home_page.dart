@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:zikir_app/screens/create_new_zikir_page.dart';
-import 'package:zikir_app/screens/view_zikir_counter.dart';
-import 'package:zikir_app/theme/colors/light_colors.dart';
-import 'package:zikir_app/widgets/active_project_card.dart';
-import 'package:zikir_app/widgets/task_column.dart';
-import 'package:zikir_app/widgets/top_container.dart';
+import 'package:the_zikir_app/screens/create_new_zikir_page.dart';
+import 'package:the_zikir_app/screens/view_zikir_counter.dart';
+import 'package:the_zikir_app/theme/colors/light_colors.dart';
+import 'package:the_zikir_app/widgets/active_project_card.dart';
+import 'package:the_zikir_app/widgets/task_column.dart';
+import 'package:the_zikir_app/widgets/top_container.dart';
 
 class HomePage extends StatelessWidget {
   Text subheading(String title) {

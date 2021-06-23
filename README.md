@@ -1,6 +1,6 @@
-# zikir_app
+# The Zikir App
 
-A new Flutter project.
+A Flutter Zikir Counter App.
 
 ## Getting Started
 
