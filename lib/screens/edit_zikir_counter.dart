@@ -1,11 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:the_zikir_app/data/models/counter.dart';
 import 'package:the_zikir_app/screens/home_page.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/back_button.dart';
 import 'package:the_zikir_app/widgets/my_text_field.dart';
 import 'package:the_zikir_app/widgets/top_container.dart';
 
-class CreateNewZikirPage extends StatelessWidget {
+class EditZikirPage extends StatefulWidget {
+  final Counter counter;
+  EditZikirPage({required this.counter});
+
+  @override
+  _EditZikirPage createState() => _EditZikirPage();
+}
+
+class _EditZikirPage extends State<EditZikirPage> {
+  static CircleAvatar plusIcon() {
+    return CircleAvatar(
+      radius: 25.0,
+      backgroundColor: Color(0xff43c59e),
+      child: Icon(
+        Icons.add,
+        size: 20.0,
+        color: Colors.white,
+      ),
+    );
+  }
+
   static CircleAvatar calendarIcon() {
     return CircleAvatar(
       radius: 25.0,

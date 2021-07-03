@@ -32,16 +32,20 @@ dependencies:
   connectivity: ^3.0.3
   flutter_offline: ^2.0.0
   flutter_bloc: ^7.0.0
+  equatable: ^2.0.3
   hive_flutter: ^1.0.0
-  path_provider: any
+  path_provider: ^2.0.0
   percent_indicator: ^3.0.1
   line_icons: ^2.0.1
+  soundpool: ^2.1.0
+  flutter_vibrate: ^1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   hive_generator: ^1.1.0
-  build_runner: ^2.0.3
+  build_runner:
+  build_resolvers: ^2.0.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -86,6 +90,7 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
     - assets/images/
+    - assets/sounds/
   fonts:
     - family: Poppins
       fonts:

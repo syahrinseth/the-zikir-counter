@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:the_zikir_app/data/models/counter.dart';
 import 'package:the_zikir_app/screens/create_new_zikir_page.dart';
 import 'package:the_zikir_app/screens/view_zikir_counter.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
@@ -7,7 +9,11 @@ import 'package:the_zikir_app/widgets/active_project_card.dart';
 import 'package:the_zikir_app/widgets/task_column.dart';
 import 'package:the_zikir_app/widgets/top_container.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  _HomePage createState() => _HomePage();
+}
+
+class _HomePage extends State<HomePage> {
   Text subheading(String title) {
     return Text(
       title,
@@ -41,6 +47,12 @@ class HomePage extends StatelessWidget {
         color: Colors.white,
       ),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -163,7 +175,7 @@ class HomePage extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              ViewZikirCounter()),
+                                              ViewZikirCounter(index: 0)),
                                     );
                                   }),
                               SizedBox(width: 20.0),

@@ -20,18 +20,20 @@ class CounterAdapter extends TypeAdapter<Counter> {
       id: fields[0] as int?,
       name: fields[1] as String?,
       description: fields[2] as String?,
-      counter: fields[3] as String?,
+      counter: fields[3] as int?,
       histories: (fields[4] as List?)?.cast<Counter>(),
       createdAt: fields[5] as DateTime?,
       updatedAt: fields[6] as DateTime?,
       limiter: fields[7] as int?,
+      isVibrationOn: fields[8] as bool,
+      isSoundOn: fields[9] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, Counter obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,7 +49,11 @@ class CounterAdapter extends TypeAdapter<Counter> {
       ..writeByte(6)
       ..write(obj.updatedAt)
       ..writeByte(7)
-      ..write(obj.limiter);
+      ..write(obj.limiter)
+      ..writeByte(8)
+      ..write(obj.isVibrationOn)
+      ..writeByte(9)
+      ..write(obj.isSoundOn);
   }
 
   @override
