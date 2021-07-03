@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
@@ -30,6 +31,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
           event.counter.counter = (event.counter.counter ?? 0) + 1;
           playSound(event.counter);
           lightVibrate(event.counter);
+          saveCounter(event.index, counter: event.counter);
         }
         yield CounterLoaded(counter: event.counter);
       } catch (err) {
@@ -41,6 +43,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         yield CounterLoading();
         if ((event.counter.counter ?? 0) > 0) {
           event.counter.counter = (event.counter.counter ?? 0) - 1;
+          saveCounter(event.index, counter: event.counter);
         }
         yield CounterLoaded(counter: event.counter);
       } catch (err) {
@@ -51,6 +54,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       try {
         yield CounterLoading();
         event.counter.counter = 0;
+        saveCounter(event.index, counter: event.counter);
         yield CounterLoaded(counter: event.counter);
       } catch (err) {
         yield CounterError(message: err.toString());
@@ -62,6 +66,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         event.counter.isVibrationOn =
             event.counter.isVibrationOn ? false : true;
         lightVibrate(event.counter);
+        saveCounter(event.index, counter: event.counter);
         yield CounterLoaded(counter: event.counter);
       } catch (err) {
         yield CounterError(message: err.toString());
@@ -72,6 +77,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         yield CounterLoading();
         event.counter.isSoundOn = event.counter.isSoundOn ? false : true;
         playSound(event.counter);
+        saveCounter(event.index, counter: event.counter);
         yield CounterLoaded(counter: event.counter);
       } catch (err) {
         yield CounterError(message: err.toString());
@@ -101,4 +107,16 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       Vibrate.feedback(_type);
     }
   }
+
+  void saveCounter(int index, {required Counter counter}) {
+    Box<Counter> countersBox = Hive.box<Counter>('myZikirCountersBox');
+    countersBox.putAt(index, counter);
+  }
+
+  void showDialog(
+    BuildContext context, {
+    required String title,
+    required String content,
+    required Function onOk,
+  }) {}
 }

@@ -28,7 +28,7 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
   }
 
   @override
-  void dispose() {
+  void dispose() async {
     super.dispose();
   }
 
@@ -133,6 +133,7 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
                       child: GestureDetector(
                         onTap: () {
                           counterBloc.add(CounterIncrement(
+                              index: widget.index,
                               counter: state.counter ?? Counter()));
                         },
                         child: Container(
@@ -165,6 +166,7 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
                           GestureDetector(
                             onTap: () {
                               counterBloc.add(CounterToggleSound(
+                                  index: widget.index,
                                   counter: state.counter ?? Counter()));
                             },
                             child: Container(
@@ -180,6 +182,7 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
                           GestureDetector(
                             onTap: () {
                               counterBloc.add(CounterToggleVibration(
+                                  index: widget.index,
                                   counter: state.counter ?? Counter()));
                             },
                             child: Container(
@@ -195,6 +198,7 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
                           GestureDetector(
                             onTap: () {
                               counterBloc.add(CounterDecrement(
+                                  index: widget.index,
                                   counter: state.counter ?? Counter()));
                             },
                             child: Container(
@@ -206,13 +210,33 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {
-                              counterBloc.add(CounterReset(
-                                  counter: state.counter ?? Counter()));
-                            },
+                            onTap: () => showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text('Reset Alert'),
+                                content: const Text(
+                                    'Are you sure to reset this counter?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Cancel'),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      counterBloc.add(CounterReset(context,
+                                          index: widget.index,
+                                          counter: state.counter ?? Counter()));
+                                      Navigator.pop(context, 'OK');
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            ),
                             child: Container(
                               child: Icon(
-                                LineIcons.alternateTrash,
+                                Icons.restore,
                                 size: 40.0,
                                 color: Color(0xff3d7068),
                               ),
