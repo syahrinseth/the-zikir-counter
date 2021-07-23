@@ -279,7 +279,7 @@ class _HomePage extends State<HomePage> {
         image: null,
         packageImage: PackageImage.Image_2,
         title: 'No Active Zikir',
-        subTitle: 'You have no active zikir yet',
+        subTitle: 'You have no active zikir yet. Care to create one?',
         titleTextStyle: TextStyle(
           fontSize: 22,
           color: Color(0xff9da9c7),
