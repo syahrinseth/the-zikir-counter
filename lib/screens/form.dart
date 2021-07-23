@@ -5,7 +5,7 @@ import 'package:the_zikir_app/widgets/back_button.dart';
 import 'package:the_zikir_app/widgets/my_text_field.dart';
 import 'package:the_zikir_app/widgets/top_container.dart';
 
-class CreateNewZikirPage extends StatelessWidget {
+class Form extends StatelessWidget {
   static CircleAvatar calendarIcon() {
     return CircleAvatar(
       radius: 25.0,

@@ -21,9 +21,8 @@ void main() async {
   Hive.init(document.path);
   Hive.registerAdapter(CounterAdapter());
   await Hive.openBox<Counter>('myZikirCountersBox');
-  var box = Hive.box<Counter>('myZikirCountersBox');
-  box.put(0,
-      Counter.fromJson({'name': 'The Selawat', 'counter': 36, 'limiter': 100}));
+  // Box<Counter> countersBox = Hive.box<Counter>('myZikirCountersBox');
+  // countersBox.clear();
   return runApp(MyApp());
 }
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
-import 'package:the_zikir_app/screens/home_page.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/back_button.dart';
 import 'package:the_zikir_app/widgets/my_text_field.dart';

@@ -1,11 +1,12 @@
 import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
 
 part 'counter.g.dart';
 
 @HiveType(typeId: 1)
 class Counter {
   @HiveField(0)
-  int? id;
+  String id;
   @HiveField(1)
   String? name;
   @HiveField(2)
@@ -24,32 +25,55 @@ class Counter {
   bool isVibrationOn;
   @HiveField(9)
   bool isSoundOn;
+  @HiveField(10)
+  String? counterTheme;
 
-  Counter({
-    this.id,
-    this.name,
-    this.description,
-    this.counter,
-    this.histories,
-    this.createdAt,
-    this.updatedAt,
-    this.limiter,
-    this.isVibrationOn = true,
-    this.isSoundOn = true,
-  });
+  Counter(
+      {required this.id,
+      this.name = 'Zikir Counter',
+      this.description,
+      this.counter = 0,
+      this.histories,
+      this.createdAt,
+      this.updatedAt,
+      this.limiter,
+      this.isVibrationOn = true,
+      this.isSoundOn = true,
+      this.counterTheme = 'green'});
 
   static Counter fromJson(Map json) {
-    return Counter(
-      id: json['id'],
-      name: json['name'],
-      description: json['description'],
-      counter: json['counter'],
-      histories: json['histories'],
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
-      limiter: json['limiter'],
-      isVibrationOn: json['isVibrationOn'] ?? true,
-      isSoundOn: json['isSoundOn'] ?? true,
-    );
+    var uuid = Uuid().v1();
+    Counter counter = Counter(
+        id: json['id'] ?? uuid,
+        name: json['name'] ?? 'Zikir Counter',
+        description: json['description'],
+        counter: json['counter'] ?? 0,
+        histories: json['histories'],
+        createdAt: json['createdAt'] ?? DateTime.now(),
+        updatedAt: json['updatedAt'] ?? DateTime.now(),
+        limiter: json['limiter'] ?? 100,
+        isVibrationOn: json['isVibrationOn'] ?? true,
+        isSoundOn: json['isSoundOn'] ?? true,
+        counterTheme: json['counterTheme'] ?? 'green');
+    return counter;
+  }
+
+  static Counter createFromJson(Map json) {
+    var box = Hive.box<Counter>('myZikirCountersBox');
+    var uuid = Uuid().v1();
+    Counter counter = Counter(
+        id: json['id'] ?? uuid,
+        name: json['name'] ?? 'Zikir Counter',
+        description: json['description'],
+        counter: json['counter'] ?? 0,
+        histories: json['histories'] ?? [],
+        createdAt: json['createdAt'] ?? DateTime.now(),
+        updatedAt: json['updatedAt'] ?? DateTime.now(),
+        limiter: json['limiter'] ?? 100,
+        isVibrationOn: json['isVibrationOn'] ?? true,
+        isSoundOn: json['isSoundOn'] ?? true,
+        counterTheme: json['counterTheme'] ?? 'green');
+    box.put(counter.id, counter);
+    return counter;
   }
 }

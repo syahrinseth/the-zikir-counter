@@ -17,8 +17,9 @@ class CounterLoading extends CounterState {
 
 class CounterLoaded extends CounterState {
   final Counter? counter;
+  final List<Counter>? counters;
   final List props = [];
-  CounterLoaded({this.counter});
+  CounterLoaded({this.counter, this.counters});
 }
 
 class CounterError extends CounterState {

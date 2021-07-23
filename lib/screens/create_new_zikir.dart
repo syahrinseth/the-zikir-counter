@@ -9,21 +9,20 @@ import 'package:the_zikir_app/state/counter_state.dart';
 import 'package:the_zikir_app/widgets/back_button.dart';
 import 'package:the_zikir_app/widgets/top_container.dart';
 
-class ViewZikirCounter extends StatefulWidget {
-  ViewZikirCounter({required this.id});
-  final String id;
+class CreateNewZikirCounter extends StatefulWidget {
+  CreateNewZikirCounter();
 
   @override
-  _ViewZikirCounter createState() => _ViewZikirCounter();
+  _CreateNewZikirCounter createState() => _CreateNewZikirCounter();
 }
 
-class _ViewZikirCounter extends State<ViewZikirCounter> {
+class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
   CounterBloc counterBloc = CounterBloc();
 
   @override
   void initState() {
     // TODO: implement initState
-    counterBloc.add(CounterGetById(widget.id));
+    counterBloc.add(CounterCreate());
     super.initState();
   }
 

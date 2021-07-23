@@ -16,43 +16,58 @@ class CounterGetByIndex extends CounterEvent {
   List<Object> get props => [index];
 }
 
+class CounterGetAll extends CounterEvent {
+  CounterGetAll();
+  @override
+  List<Object> get props => [];
+}
+
+class CounterCreate extends CounterEvent {
+  CounterCreate();
+  @override
+  List<Object> get props => [];
+}
+
 class CounterIncrement extends CounterEvent {
   final Counter counter;
-  final int index;
-  CounterIncrement({required this.counter, required this.index});
+  CounterIncrement({required this.counter});
   @override
-  List<Object> get props => [counter, index];
+  List<Object> get props => [counter];
 }
 
 class CounterDecrement extends CounterEvent {
   final Counter counter;
-  final int index;
-  CounterDecrement({required this.counter, required this.index});
+  CounterDecrement({required this.counter});
   @override
-  List<Object> get props => [counter, index];
+  List<Object> get props => [counter];
 }
 
 class CounterReset extends CounterEvent {
   final Counter counter;
   final BuildContext context;
-  final int index;
-  CounterReset(this.context, {required this.counter, required this.index});
+  CounterReset(this.context, {required this.counter});
   @override
-  List<Object> get props => [context, counter, index];
+  List<Object> get props => [context, counter];
+}
+
+class CounterGetById extends CounterEvent {
+  final String id;
+  CounterGetById(this.id);
+
+  @override
+  List<Object> get props => [id];
 }
 
 class CounterToggleVibration extends CounterEvent {
   final Counter counter;
-  final int index;
-  CounterToggleVibration({required this.counter, required this.index});
+  CounterToggleVibration({required this.counter});
   @override
-  List<Object> get props => [counter, index];
+  List<Object> get props => [counter];
 }
 
 class CounterToggleSound extends CounterEvent {
   final Counter counter;
-  final int index;
-  CounterToggleSound({required this.counter, required this.index});
+  CounterToggleSound({required this.counter});
   @override
-  List<Object> get props => [counter, index];
+  List<Object> get props => [counter];
 }
