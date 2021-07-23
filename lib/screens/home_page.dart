@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:the_zikir_app/bloc/counter_bloc.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
@@ -149,6 +150,7 @@ class _HomePage extends State<HomePage> {
                 ),
                 Expanded(
                   child: SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: <Widget>[
                         Container(
@@ -177,7 +179,6 @@ class _HomePage extends State<HomePage> {
                                         ).then((value) {
                                           counterBloc.add(CounterGetAll());
                                         });
-                                        ;
                                       },
                                       child: plusIcon(),
                                     ),
@@ -294,7 +295,7 @@ class _HomePage extends State<HomePage> {
       width: double.infinity,
       height: 200,
       child: GridView.count(
-        physics: ScrollPhysics(),
+        physics: AlwaysScrollableScrollPhysics(),
         childAspectRatio: 1.0, //1.0
         mainAxisSpacing: 0.1, //1.0
         crossAxisSpacing: 4.0,
@@ -380,7 +381,7 @@ class _HomePage extends State<HomePage> {
                     });
                   },
                   child: TaskColumn(
-                    icon: Icons.alarm,
+                    icon: LineIcons.check,
                     iconBackgroundColor: LightColors.kGreen,
                     title: counter.name ?? 'Counter',
                     subtitle: counter.counter.toString() + ' Total Zikir Count',
