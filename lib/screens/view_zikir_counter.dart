@@ -124,7 +124,7 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
                                       ((state.counter!.limiter ?? 1) -
                                                   (state.counter!.counter ?? 0))
                                               .toString() +
-                                          ' To Go',
+                                          ' zikir to go',
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
                                         fontSize: 16.0,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:the_zikir_app/bloc/counter_bloc.dart';
@@ -104,7 +103,11 @@ class _HomePage extends State<HomePage> {
                                 radius: 90.0,
                                 lineWidth: 5.0,
                                 animation: true,
-                                percent: 0.75,
+                                percent:
+                                    Counter.getTotalCountPercentageFromCounters(
+                                        counters: (state is CounterLoaded
+                                            ? state.counters ?? []
+                                            : [])),
                                 circularStrokeCap: CircularStrokeCap.round,
                                 progressColor: Color(0xff3d7068),
                                 backgroundColor: Color(0xff43c59e),
@@ -132,7 +135,15 @@ class _HomePage extends State<HomePage> {
                                   ),
                                   Container(
                                     child: Text(
-                                      'Total Zikir 389',
+                                      'Total Zikir Count: ' +
+                                          (state is CounterLoaded
+                                              ? Counter
+                                                      .getTotalCountFromCounters(
+                                                          counters:
+                                                              state.counters ??
+                                                                  [])
+                                                  .toString()
+                                              : ''),
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
                                         fontSize: 16.0,
@@ -201,7 +212,7 @@ class _HomePage extends State<HomePage> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  subheading('My Completed Zikir'),
+                                  subheading('Completed Zikir'),
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.push(
@@ -258,7 +269,7 @@ class _HomePage extends State<HomePage> {
                     title: counter.name ?? ('Counter ' + index.toString()),
                     subtitle: ((counter.limiter ?? 1) - (counter.counter ?? 0))
                             .toString() +
-                        ' To Go',
+                        ' to go',
                     onTap: () {
                       Navigator.push(
                         context,
@@ -397,7 +408,8 @@ class _HomePage extends State<HomePage> {
         image: null,
         packageImage: PackageImage.Image_3,
         title: 'No Completed Zikir',
-        subTitle: 'You have no completed zikir yet. Care to create one?',
+        subTitle:
+            'You have no completed zikir yet. Do complete your current active zikir to update this list.',
         titleTextStyle: TextStyle(
           fontSize: 22,
           color: Color(0xff9da9c7),

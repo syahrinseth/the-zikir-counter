@@ -5,6 +5,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:the_zikir_app/bloc/counter_bloc.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
 import 'package:the_zikir_app/event/counter_event.dart';
+import 'package:the_zikir_app/screens/edit_zikir_counter.dart';
 import 'package:the_zikir_app/state/counter_state.dart';
 import 'package:the_zikir_app/widgets/back_button.dart';
 import 'package:the_zikir_app/widgets/top_container.dart';
@@ -60,8 +61,24 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             MyBackButton(),
-                            Icon(Icons.edit,
-                                color: Color(0xff3d7068), size: 25.0),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EditZikirCounter(
+                                          counter: state.counter ??
+                                              Counter.fromJson({}))),
+                                ).then((value) {
+                                  counterBloc.add(CounterGetById(
+                                      state is CounterLoaded
+                                          ? state.counter?.id ?? ''
+                                          : ''));
+                                });
+                              },
+                              child: Icon(Icons.edit,
+                                  color: Color(0xff3d7068), size: 25.0),
+                            ),
                           ],
                         ),
                         SizedBox(
@@ -109,7 +126,7 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                                       ((state.counter!.limiter ?? 1) -
                                                   (state.counter!.counter ?? 0))
                                               .toString() +
-                                          ' To Go',
+                                          ' to go',
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
                                         fontSize: 16.0,

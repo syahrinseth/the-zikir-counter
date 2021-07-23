@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 
@@ -75,5 +76,25 @@ class Counter {
         counterTheme: json['counterTheme'] ?? 'green');
     box.put(counter.id, counter);
     return counter;
+  }
+
+  static int getTotalCountFromCounters({required List<Counter> counters}) {
+    List<int> listOfCounter = counters.map((e) => e.counter ?? 0).toList();
+    int totalCount = 0;
+    listOfCounter.forEach((e) {
+      totalCount += e;
+    });
+    return totalCount;
+  }
+
+  static double getTotalCountPercentageFromCounters(
+      {required List<Counter> counters}) {
+    double totalPercentage = 1;
+    double percentageCount = 0;
+    counters.forEach((e) {
+      totalPercentage += (e.limiter ?? 0).toDouble();
+      percentageCount += (e.counter ?? 0).toDouble();
+    });
+    return percentageCount / totalPercentage;
   }
 }
