@@ -120,6 +120,57 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         yield CounterError(message: err.toString());
       }
     }
+    if (event is CounterUpdate) {
+      try {
+        yield CounterLoading();
+        Box<Counter> countersBox = Hive.box<Counter>('myZikirCountersBox');
+        Counter? counter = countersBox.get(event.id);
+        if (counter != null) {
+          CounterState? counterValidateState = validateInput(
+              counter,
+              event.title ?? '',
+              event.description ?? '',
+              event.limiter,
+              event.counterTheme);
+          if (counterValidateState is CounterError) {
+            yield counterValidateState;
+          } else {
+            counter.name = event.title;
+            counter.description = event.description;
+            counter.limiter = event.limiter;
+            counter.counterTheme = event.counterTheme;
+            saveCounter(counter: counter);
+            yield CounterSaved();
+          }
+        } else {
+          yield CounterError(message: 'Counter Not Found.');
+        }
+        yield CounterLoaded(counter: counter);
+      } catch (err) {
+        yield CounterError(message: err.toString());
+      }
+    }
+    if (event is CounterDelete) {
+      try {
+        yield CounterLoading();
+        Box<Counter> countersBox = Hive.box<Counter>('myZikirCountersBox');
+        countersBox.delete(event.id);
+        yield CounterDeleted();
+        yield CounterLoaded();
+      } catch (err) {
+        yield CounterError(message: err.toString());
+      }
+    }
+  }
+
+  CounterState? validateInput(Counter counter, String title, String description,
+      int limiter, String counterTheme) {
+    String message = '';
+    if (limiter < (counter.counter ?? 0)) {
+      return CounterError(
+          message: 'Please put the limiter higher than the actual count.');
+    }
+    return null;
   }
 
   void playSound(Counter counter) async {

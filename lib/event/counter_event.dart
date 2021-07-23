@@ -71,3 +71,28 @@ class CounterToggleSound extends CounterEvent {
   @override
   List<Object> get props => [counter];
 }
+
+class CounterDelete extends CounterEvent {
+  final String id;
+  CounterDelete(this.id);
+  @override
+  List<Object> get props => [id];
+}
+
+class CounterUpdate extends CounterEvent {
+  final String id;
+  final String? title;
+  final String? description;
+  final int limiter;
+  final String counterTheme;
+
+  CounterUpdate(this.id,
+      {this.title,
+      this.description,
+      required this.limiter,
+      required this.counterTheme});
+
+  @override
+  List<Object> get props =>
+      [id, title ?? '', description ?? '', limiter, counterTheme];
+}

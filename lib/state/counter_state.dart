@@ -27,3 +27,13 @@ class CounterError extends CounterState {
   final String? message;
   CounterError({this.message});
 }
+
+class CounterSaved extends CounterState {
+  final List props = [];
+  CounterSaved();
+}
+
+class CounterDeleted extends CounterState {
+  final List props = [];
+  CounterDeleted();
+}

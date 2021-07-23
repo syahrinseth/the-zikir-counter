@@ -1,19 +1,49 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:the_zikir_app/bloc/counter_bloc.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
+import 'package:the_zikir_app/event/counter_event.dart';
+import 'package:the_zikir_app/screens/home_page.dart';
+import 'package:the_zikir_app/state/counter_state.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/back_button.dart';
 import 'package:the_zikir_app/widgets/my_text_field.dart';
 import 'package:the_zikir_app/widgets/top_container.dart';
 
-class EditZikirPage extends StatefulWidget {
+class EditZikirCounter extends StatefulWidget {
   final Counter counter;
-  EditZikirPage({required this.counter});
+  EditZikirCounter({required this.counter});
 
   @override
-  _EditZikirPage createState() => _EditZikirPage();
+  _EditZikirCounter createState() => _EditZikirCounter();
 }
 
-class _EditZikirPage extends State<EditZikirPage> {
+class _EditZikirCounter extends State<EditZikirCounter> {
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+  TextEditingController _counterLimitController = TextEditingController();
+  TextEditingController _themeController = TextEditingController();
+  CounterBloc _counterBloc = CounterBloc();
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController.value =
+        TextEditingValue(text: widget.counter.name ?? 'Counter');
+    _descriptionController.value =
+        TextEditingValue(text: widget.counter.description ?? '');
+    _counterLimitController.value =
+        TextEditingValue(text: widget.counter.limiter.toString());
+    _themeController.value =
+        TextEditingValue(text: widget.counter.counterTheme ?? 'green');
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+  }
+
   static CircleAvatar plusIcon() {
     return CircleAvatar(
       radius: 25.0,
@@ -47,152 +77,232 @@ class _EditZikirPage extends State<EditZikirPage> {
     );
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            TopContainer(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 40),
-              width: width,
-              child: Column(
-                children: <Widget>[
-                  MyBackButton(),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        'Create new task',
-                        style: TextStyle(
-                            fontSize: 30.0, fontWeight: FontWeight.w700),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      MyTextField(label: 'Title'),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Expanded(
-                            child: MyTextField(
-                              label: 'Date',
-                              icon: downwardIcon,
+        child: BlocListener<CounterBloc, CounterState>(
+          bloc: _counterBloc,
+          listener: (context, state) {
+            // TODO: implement listener
+            if (state is CounterError) {
+              print('Counter Error...');
+              final snackBar = SnackBar(
+                backgroundColor: Colors.red,
+                content: Text(state.message ?? 'Counter Error.'),
+                // action: SnackBarAction(
+                //   label: 'Undo',
+                //   onPressed: () {
+                //     // Some code to undo the change.
+                //   },
+                // ),
+              );
+
+              // Find the ScaffoldMessenger in the widget tree
+              // and use it to show a SnackBar.
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+            if (state is CounterSaved) {
+              print('Counter Saved...');
+              final snackBar = SnackBar(
+                backgroundColor: Colors.green,
+                content: Text('Counter Saved.'),
+                // action: SnackBarAction(
+                //   label: 'Undo',
+                //   onPressed: () {
+                //     // Some code to undo the change.
+                //   },
+                // ),
+              );
+
+              // Find the ScaffoldMessenger in the widget tree
+              // and use it to show a SnackBar.
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+          },
+          child: Column(
+            children: <Widget>[
+              TopContainer(
+                padding: EdgeInsets.fromLTRB(20, 20, 20, 40),
+                width: width,
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        MyBackButton(),
+                        GestureDetector(
+                          onTap: () => showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('Delete Alert'),
+                              content: const Text(
+                                  'Are you sure to delete this counter?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, 'Cancel'),
+                                  child: const Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    _counterBloc
+                                        .add(CounterDelete(widget.counter.id));
+                                    // Navigator.pop(context, 'OK');
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => HomePage()),
+                                        (route) => false);
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
                             ),
                           ),
-                          calendarIcon(),
-                        ],
-                      )
-                    ],
-                  ))
-                ],
-              ),
-            ),
-            Expanded(
-                child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                          child: MyTextField(
-                        label: 'Start Time',
-                        icon: downwardIcon,
-                      )),
-                      SizedBox(width: 40),
-                      Expanded(
-                        child: MyTextField(
-                          label: 'End Time',
-                          icon: downwardIcon,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  MyTextField(
-                    label: 'Description',
-                    minLines: 3,
-                    maxLines: 3,
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Category',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black54,
-                          ),
-                        ),
-                        Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.start,
-                          //direction: Axis.vertical,
-                          alignment: WrapAlignment.start,
-                          verticalDirection: VerticalDirection.down,
-                          runSpacing: 0,
-                          //textDirection: TextDirection.rtl,
-                          spacing: 10.0,
-                          children: <Widget>[
-                            Chip(
-                              label: Text("SPORT APP"),
-                              backgroundColor: LightColors.kRed,
-                              labelStyle: TextStyle(color: Colors.white),
-                            ),
-                            Chip(
-                              label: Text("MEDICAL APP"),
-                            ),
-                            Chip(
-                              label: Text("RENT APP"),
-                            ),
-                            Chip(
-                              label: Text("NOTES"),
-                            ),
-                            Chip(
-                              label: Text("GAMING PLATFORM APP"),
-                            ),
-                          ],
+                          child: Icon(CupertinoIcons.trash_fill,
+                              color: LightColors.kRed, size: 25.0),
                         ),
                       ],
                     ),
-                  )
-                ],
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          _titleController.text,
+                          style: TextStyle(
+                              fontSize: 30.0, fontWeight: FontWeight.w700),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            )),
-            Container(
-              height: 80,
-              width: width,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Container(
-                    child: Text(
-                      'Create Task',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18),
-                    ),
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
-                    width: width - 40,
-                    decoration: BoxDecoration(
-                      color: LightColors.kBlue,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
+              Expanded(
+                  child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: 20),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: <Widget>[
+                    //     Expanded(
+                    //         child: MyTextField(
+                    //       label: 'Start Time',
+                    //       icon: downwardIcon,
+                    //     )),
+                    //     SizedBox(width: 40),
+                    //     Expanded(
+                    //       child: MyTextField(
+                    //         label: 'End Time',
+                    //         icon: downwardIcon,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+
+                    MyTextField(label: 'Title', controller: _titleController),
+                    MyTextField(
+                        label: 'Description',
+                        minLines: 3,
+                        maxLines: 3,
+                        controller: _descriptionController),
+                    SizedBox(height: 20),
+                    MyTextField(
+                        keyboardType: TextInputType.number,
+                        label: 'Counter Limit',
+                        controller: _counterLimitController),
+                    SizedBox(height: 20),
+                    MyTextField(
+                        label: 'Theme',
+                        icon: downwardIcon,
+                        controller: _themeController),
+                    SizedBox(height: 20),
+                    // Container(
+                    //   alignment: Alignment.topLeft,
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: <Widget>[
+                    //       Text(
+                    //         'Category',
+                    //         style: TextStyle(
+                    //           fontSize: 18,
+                    //           color: Colors.black54,
+                    //         ),
+                    //       ),
+                    //       Wrap(
+                    //         crossAxisAlignment: WrapCrossAlignment.start,
+                    //         //direction: Axis.vertical,
+                    //         alignment: WrapAlignment.start,
+                    //         verticalDirection: VerticalDirection.down,
+                    //         runSpacing: 0,
+                    //         //textDirection: TextDirection.rtl,
+                    //         spacing: 10.0,
+                    //         children: <Widget>[
+                    //           Chip(
+                    //             label: Text("SPORT APP"),
+                    //             backgroundColor: LightColors.kRed,
+                    //             labelStyle: TextStyle(color: Colors.white),
+                    //           ),
+                    //           Chip(
+                    //             label: Text("MEDICAL APP"),
+                    //           ),
+                    //           Chip(
+                    //             label: Text("RENT APP"),
+                    //           ),
+                    //           Chip(
+                    //             label: Text("NOTES"),
+                    //           ),
+                    //           Chip(
+                    //             label: Text("GAMING PLATFORM APP"),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ],
+                    //   ),
+                    // )
+                  ],
+                ),
+              )),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    _counterBloc.add(CounterUpdate(widget.counter.id,
+                        title: _titleController.text,
+                        description: _descriptionController.text,
+                        limiter: int.parse(_counterLimitController.text),
+                        counterTheme: _themeController.text));
+                  });
+                },
+                child: Container(
+                  height: 80,
+                  width: width,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          'Save',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18),
+                        ),
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
+                        width: width - 40,
+                        decoration: BoxDecoration(
+                          color: LightColors.kGreen,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

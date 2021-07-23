@@ -5,15 +5,24 @@ class MyTextField extends StatelessWidget {
   final int maxLines;
   final int minLines;
   final Icon? icon;
+  final TextEditingController? controller;
+  final TextInputType? keyboardType;
   MyTextField(
-      {required this.label, this.maxLines = 1, this.minLines = 1, this.icon});
+      {required this.label,
+      this.maxLines = 1,
+      this.minLines = 1,
+      this.icon,
+      this.controller,
+      this.keyboardType});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      keyboardType: keyboardType,
       style: TextStyle(color: Colors.black87),
       minLines: minLines,
       maxLines: maxLines,
+      controller: controller,
       decoration: InputDecoration(
           suffixIcon: icon == null ? null : icon,
           labelText: label,
