@@ -9,7 +9,7 @@ import 'package:soundpool/soundpool.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 
 class CounterBloc extends Bloc<CounterEvent, CounterState> {
-  CounterBloc() : super(CounterInit());
+  CounterBloc() : super(CounterInitialize());
 
   @override
   Stream<CounterState> mapEventToState(CounterEvent event) async* {
@@ -64,12 +64,16 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
     if (event is CounterIncrement) {
       try {
         yield CounterLoading();
-        if ((event.counter.counter ?? 0) < (event.counter.limiter ?? 1)) {
-          event.counter.counter = (event.counter.counter ?? 0) + 1;
-          playSound(event.counter);
-          lightVibrate(event.counter);
-          saveCounter(counter: event.counter);
+        event.counter.counter = (event.counter.counter ?? 0) + 1;
+        if ((event.counter.counter ?? 0) > (event.counter.limiter ?? 1)) {
+          event.counter.limiter = event.counter.counter;
         }
+        event.counter.updatedAt = DateTime.now();
+        event.counter.histories
+            ?.add(CounterHistory(counter: 1, dateTime: DateTime.now()));
+        playSound(event.counter);
+        lightVibrate(event.counter);
+        Counter.saveCounter(counter: event.counter);
         yield CounterLoaded(counter: event.counter);
       } catch (err) {
         yield CounterError(message: err.toString());
@@ -80,7 +84,9 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         yield CounterLoading();
         if ((event.counter.counter ?? 0) > 0) {
           event.counter.counter = (event.counter.counter ?? 0) - 1;
-          saveCounter(counter: event.counter);
+          event.counter.updatedAt = DateTime.now();
+          event.counter.histories?.removeLast();
+          Counter.saveCounter(counter: event.counter);
         }
         yield CounterLoaded(counter: event.counter);
       } catch (err) {
@@ -91,7 +97,9 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       try {
         yield CounterLoading();
         event.counter.counter = 0;
-        saveCounter(counter: event.counter);
+        event.counter.updatedAt = DateTime.now();
+        event.counter.histories?.clear();
+        Counter.saveCounter(counter: event.counter);
         yield CounterLoaded(counter: event.counter);
       } catch (err) {
         yield CounterError(message: err.toString());
@@ -102,8 +110,9 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         yield CounterLoading();
         event.counter.isVibrationOn =
             event.counter.isVibrationOn ? false : true;
+        event.counter.updatedAt = DateTime.now();
         lightVibrate(event.counter);
-        saveCounter(counter: event.counter);
+        Counter.saveCounter(counter: event.counter);
         yield CounterLoaded(counter: event.counter);
       } catch (err) {
         yield CounterError(message: err.toString());
@@ -113,8 +122,9 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       try {
         yield CounterLoading();
         event.counter.isSoundOn = event.counter.isSoundOn ? false : true;
+        event.counter.updatedAt = DateTime.now();
         playSound(event.counter);
-        saveCounter(counter: event.counter);
+        Counter.saveCounter(counter: event.counter);
         yield CounterLoaded(counter: event.counter);
       } catch (err) {
         yield CounterError(message: err.toString());
@@ -127,9 +137,9 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         Counter? counter = countersBox.get(event.id);
         if (counter != null) {
           CounterState? counterValidateState = validateInput(
-              counter,
               event.title ?? '',
               event.description ?? '',
+              event.counter,
               event.limiter,
               event.counterTheme);
           if (counterValidateState is CounterError) {
@@ -137,9 +147,11 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
           } else {
             counter.name = event.title;
             counter.description = event.description;
-            counter.limiter = event.limiter;
+            counter.counter = event.counter;
+            counter.limiter =
+                (event.counter > event.limiter ? event.counter : event.limiter);
             counter.counterTheme = event.counterTheme;
-            saveCounter(counter: counter);
+            Counter.saveCounter(counter: counter);
             yield CounterSaved();
           }
         } else {
@@ -161,15 +173,89 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         yield CounterError(message: err.toString());
       }
     }
+    // if (event is CounterGetWeekReport) {
+    //   try {
+    //     yield CounterLoading();
+    //     Box<Counter> countersBox = Hive.box<Counter>('myZikirCountersBox');
+    //     List<Counter> counters = [];
+    //     for (var i = 0; i < countersBox.length; i++) {
+    //       Counter? tempCounter = countersBox.getAt(i);
+    //       if (tempCounter != null) {
+    //         counters.add(tempCounter);
+    //       }
+    //     }
+    //     yield CounterLoaded(
+    //         barChartData: Counter.getWeekReport(
+    //             counters: counters, dateTime: event.dateTime));
+    //   } catch (e) {
+    //     yield CounterError(message: e.toString());
+    //   }
+    // }
+    if (event is CounterGetDayReport) {
+      try {
+        yield CounterLoading();
+        Box<Counter> countersBox = Hive.box<Counter>('myZikirCountersBox');
+        List<Counter> counters = [];
+        for (var i = 0; i < countersBox.length; i++) {
+          Counter? tempCounter = countersBox.getAt(i);
+          if (tempCounter != null) {
+            counters.add(tempCounter);
+          }
+        }
+        yield CounterLoaded(
+            dayBarChartData: Counter.getDayReport(
+                counters: counters, dateTime: event.dateTime));
+      } catch (e) {
+        yield CounterError(message: e.toString());
+      }
+    }
+    if (event is CounterDayReportPrev) {
+      try {
+        yield CounterLoading();
+        Box<Counter> countersBox = Hive.box<Counter>('myZikirCountersBox');
+        DateTime prevDateTime =
+            event.currentDateTime.subtract(Duration(days: 1));
+        List<Counter> counters = [];
+        for (var i = 0; i < countersBox.length; i++) {
+          Counter? tempCounter = countersBox.getAt(i);
+          if (tempCounter != null) {
+            counters.add(tempCounter);
+          }
+        }
+        yield CounterLoaded(
+            dayBarChartData: Counter.getDayReport(
+                counters: counters, dateTime: prevDateTime));
+      } catch (e) {
+        yield (CounterError(message: e.toString()));
+      }
+    }
+    if (event is CounterDayReportNext) {
+      try {
+        yield CounterLoading();
+        Box<Counter> countersBox = Hive.box<Counter>('myZikirCountersBox');
+        DateTime nextDateTime = event.currentDateTime.add(Duration(days: 1));
+        List<Counter> counters = [];
+        for (var i = 0; i < countersBox.length; i++) {
+          Counter? tempCounter = countersBox.getAt(i);
+          if (tempCounter != null) {
+            counters.add(tempCounter);
+          }
+        }
+        yield CounterLoaded(
+            dayBarChartData: Counter.getDayReport(
+                counters: counters, dateTime: nextDateTime));
+      } catch (e) {
+        yield (CounterError(message: e.toString()));
+      }
+    }
   }
 
-  CounterState? validateInput(Counter counter, String title, String description,
+  CounterState? validateInput(String title, String description, int zikirCount,
       int limiter, String counterTheme) {
-    String message = '';
-    if (limiter < (counter.counter ?? 0)) {
-      return CounterError(
-          message: 'Please put the limiter higher than the actual count.');
-    }
+    // if (limiter < (zikirCount)) {
+    //   return CounterError(
+    //       message: 'Please put the limiter higher than the actual count.');
+    // }
     return null;
   }
 
@@ -194,11 +280,6 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       var _type = FeedbackType.heavy;
       Vibrate.feedback(_type);
     }
-  }
-
-  void saveCounter({required Counter counter}) {
-    Box<Counter> countersBox = Hive.box<Counter>('myZikirCountersBox');
-    countersBox.put(counter.id, counter);
   }
 
   void showDialog(

@@ -16,6 +16,11 @@ class CounterGetByIndex extends CounterEvent {
   List<Object> get props => [index];
 }
 
+class CounterInit extends CounterEvent {
+  @override
+  List<Object> get props => [];
+}
+
 class CounterGetAll extends CounterEvent {
   CounterGetAll();
   @override
@@ -79,20 +84,70 @@ class CounterDelete extends CounterEvent {
   List<Object> get props => [id];
 }
 
+class CounterGetDayReport extends CounterEvent {
+  final DateTime dateTime;
+  CounterGetDayReport({required this.dateTime});
+
+  @override
+  List<Object> get props => [dateTime];
+}
+
+class CounterGetWeekReport extends CounterEvent {
+  final DateTime dateTime;
+  CounterGetWeekReport({required this.dateTime});
+
+  @override
+  List<Object> get props => [dateTime];
+}
+
+class CounterGetMonthReport extends CounterEvent {
+  final DateTime dateTime;
+  CounterGetMonthReport({required this.dateTime});
+
+  @override
+  List<Object> get props => [dateTime];
+}
+
+class CounterGetYearReport extends CounterEvent {
+  final DateTime dateTime;
+  CounterGetYearReport({required this.dateTime});
+
+  @override
+  List<Object> get props => [dateTime];
+}
+
+class CounterDayReportPrev extends CounterEvent {
+  final DateTime currentDateTime;
+  CounterDayReportPrev({required this.currentDateTime});
+
+  @override
+  List<Object> get props => [currentDateTime];
+}
+
+class CounterDayReportNext extends CounterEvent {
+  final DateTime currentDateTime;
+  CounterDayReportNext({required this.currentDateTime});
+
+  @override
+  List<Object> get props => [currentDateTime];
+}
+
 class CounterUpdate extends CounterEvent {
   final String id;
   final String? title;
   final String? description;
   final int limiter;
   final String counterTheme;
+  final int counter;
 
   CounterUpdate(this.id,
       {this.title,
       this.description,
       required this.limiter,
-      required this.counterTheme});
+      required this.counterTheme,
+      required this.counter});
 
   @override
   List<Object> get props =>
-      [id, title ?? '', description ?? '', limiter, counterTheme];
+      [id, title ?? '', description ?? '', limiter, counterTheme, counter];
 }

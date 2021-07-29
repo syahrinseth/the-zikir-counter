@@ -6,6 +6,7 @@ import 'package:the_zikir_app/bloc/counter_bloc.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
 import 'package:the_zikir_app/event/counter_event.dart';
 import 'package:the_zikir_app/screens/create_new_zikir.dart';
+import 'package:the_zikir_app/screens/view_report.dart';
 import 'package:the_zikir_app/screens/view_zikir_counter.dart';
 import 'package:the_zikir_app/state/counter_state.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
@@ -19,7 +20,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
-  CounterBloc counterBloc = CounterBloc();
+  CounterBloc counterBloc = CounterBloc()..add(CounterInit());
   Text subheading(String title) {
     return Text(
       title,
@@ -88,8 +89,19 @@ class _HomePage extends State<HomePage> {
                           children: <Widget>[
                             Icon(Icons.menu,
                                 color: Color(0xff3d7068), size: 30.0),
-                            Icon(Icons.bar_chart,
-                                color: Color(0xff3d7068), size: 25.0),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ViewReport()),
+                                ).then((value) {
+                                  counterBloc.add(CounterGetAll());
+                                });
+                              },
+                              child: Icon(Icons.bar_chart,
+                                  color: Color(0xff3d7068), size: 25.0),
+                            ),
                           ],
                         ),
                         Padding(

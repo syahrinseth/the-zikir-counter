@@ -20,6 +20,7 @@ void main() async {
   final document = await getApplicationDocumentsDirectory();
   Hive.init(document.path);
   Hive.registerAdapter(CounterAdapter());
+  Hive.registerAdapter(CounterHistoryAdapter());
   await Hive.openBox<Counter>('myZikirCountersBox');
   // Box<Counter> countersBox = Hive.box<Counter>('myZikirCountersBox');
   // countersBox.clear();

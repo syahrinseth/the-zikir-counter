@@ -19,7 +19,7 @@ class ViewZikirCounter extends StatefulWidget {
 }
 
 class _ViewZikirCounter extends State<ViewZikirCounter> {
-  CounterBloc counterBloc = CounterBloc();
+  CounterBloc counterBloc = CounterBloc()..add(CounterInit());
 
   @override
   void initState() {

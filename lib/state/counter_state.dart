@@ -1,12 +1,10 @@
+import 'package:charts_flutter/flutter.dart';
 import 'package:equatable/equatable.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
+import 'package:the_zikir_app/widgets/day_bar_graph_card.dart';
 
 abstract class CounterState extends Equatable {
   CounterState([List props = const []]) : super();
-}
-
-class CounterInit extends CounterState {
-  final List props = [];
 }
 
 class CounterLoading extends CounterState {
@@ -15,11 +13,19 @@ class CounterLoading extends CounterState {
   CounterLoading({this.counter});
 }
 
+class CounterInitialize extends CounterState {
+  final List props = [];
+  CounterInitialize();
+}
+
 class CounterLoaded extends CounterState {
   final Counter? counter;
   final List<Counter>? counters;
+  final List<Series<CounterDayBarChartData, DateTime>>? dayBarChartData;
   final List props = [];
-  CounterLoaded({this.counter, this.counters});
+  final DateTime? targetDateTime;
+  CounterLoaded(
+      {this.counter, this.counters, this.dayBarChartData, this.targetDateTime});
 }
 
 class CounterError extends CounterState {
@@ -30,7 +36,8 @@ class CounterError extends CounterState {
 
 class CounterSaved extends CounterState {
   final List props = [];
-  CounterSaved();
+  final Counter? counter;
+  CounterSaved({this.counter});
 }
 
 class CounterDeleted extends CounterState {
