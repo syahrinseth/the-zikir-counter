@@ -152,7 +152,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
                 (event.counter > event.limiter ? event.counter : event.limiter);
             counter.counterTheme = event.counterTheme;
             Counter.saveCounter(counter: counter);
-            yield CounterSaved();
+            yield CounterSaved(counter: counter);
           }
         } else {
           yield CounterError(message: 'Counter Not Found.');

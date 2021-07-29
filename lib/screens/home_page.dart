@@ -275,7 +275,8 @@ class _HomePage extends State<HomePage> {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: ActiveProjectsCard(
-                    cardColor: LightColors.kGreen,
+                    cardColor: LightColors.getThemeColor(
+                        colorName: counter.counterTheme, contrast: 'dark'),
                     loadingPercent:
                         ((counter.counter ?? 0) / (counter.limiter ?? 1)),
                     title: counter.name ?? ('Counter ' + index.toString()),
@@ -405,7 +406,8 @@ class _HomePage extends State<HomePage> {
                   },
                   child: TaskColumn(
                     icon: LineIcons.check,
-                    iconBackgroundColor: LightColors.kGreen,
+                    iconBackgroundColor: LightColors.getThemeColor(
+                        colorName: counter.counterTheme, contrast: 'dark'),
                     title: counter.name ?? 'Counter',
                     subtitle: counter.counter.toString() + ' Total Zikir Count',
                   ),

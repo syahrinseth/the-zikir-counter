@@ -30,6 +30,7 @@ class _EditZikirCounter extends State<EditZikirCounter> {
   @override
   void initState() {
     super.initState();
+    _counterBloc.add(CounterGetById(widget.counter.id));
     _titleController.value =
         TextEditingValue(text: widget.counter.name ?? 'Counter');
     _descriptionController.value =
@@ -109,7 +110,7 @@ class _EditZikirCounter extends State<EditZikirCounter> {
             if (state is CounterSaved) {
               print('Counter Saved...');
               final snackBar = SnackBar(
-                backgroundColor: Colors.green,
+                backgroundColor: LightColors.kGreen,
                 content: Text('Counter Saved.'),
                 // action: SnackBarAction(
                 //   label: 'Undo',
@@ -125,7 +126,7 @@ class _EditZikirCounter extends State<EditZikirCounter> {
             }
           },
           builder: (context, state) {
-            if (state is CounterLoaded) {
+            if (state is CounterSaved) {
               _titleController.value =
                   TextEditingValue(text: state.counter!.name ?? 'Counter');
               _descriptionController.value =
@@ -140,6 +141,9 @@ class _EditZikirCounter extends State<EditZikirCounter> {
             return Column(
               children: <Widget>[
                 TopContainer(
+                  color: LightColors.getThemeColor(
+                      colorName: widget.counter.counterTheme,
+                      contrast: 'light'),
                   padding: EdgeInsets.fromLTRB(20, 20, 20, 40),
                   width: width,
                   child: Column(
@@ -147,7 +151,11 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          MyBackButton(),
+                          MyBackButton(
+                            color: LightColors.getThemeColor(
+                                colorName: widget.counter.counterTheme,
+                                contrast: 'dark'),
+                          ),
                           GestureDetector(
                             onTap: () => showDialog<String>(
                               context: context,
@@ -191,7 +199,13 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                           Text(
                             _titleController.text,
                             style: TextStyle(
-                                fontSize: 30.0, fontWeight: FontWeight.w700),
+                                color: LightColors.getThemeColor(
+                                    colorName: state is CounterLoaded
+                                        ? state.counter!.counterTheme
+                                        : null,
+                                    contrast: 'dark'),
+                                fontSize: 30.0,
+                                fontWeight: FontWeight.w700),
                           ),
                         ],
                       ),
@@ -240,11 +254,30 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                           label: 'Target Zikir Count',
                           controller: _counterLimitController),
                       SizedBox(height: 20),
-                      MyTextField(
-                          label: 'Theme',
-                          icon: downwardIcon,
-                          controller: _themeController),
-                      SizedBox(height: 20),
+                      // MyTextField(
+                      //     label: 'Theme',
+                      //     icon: downwardIcon,
+                      //     controller: _themeController),
+                      // SizedBox(height: 20),
+                      DropdownButton<String>(
+                        style: TextStyle(color: Colors.black),
+                        hint: Text('Theme'),
+                        isExpanded: true,
+                        value: _themeController.text,
+                        items: <String>['green', 'red', 'blue']
+                            .map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: new Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (_) {
+                          setState(() {
+                            _themeController.value =
+                                TextEditingValue(text: _ ?? 'green');
+                          });
+                        },
+                      ),
                       // Container(
                       //   alignment: Alignment.topLeft,
                       //   child: Column(
@@ -320,7 +353,9 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                           margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
                           width: width - 40,
                           decoration: BoxDecoration(
-                            color: LightColors.kGreen,
+                            color: LightColors.getThemeColor(
+                                colorName: widget.counter.counterTheme,
+                                contrast: 'dark'),
                             borderRadius: BorderRadius.circular(30),
                           ),
                         ),

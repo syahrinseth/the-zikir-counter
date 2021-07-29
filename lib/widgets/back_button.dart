@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
 
 class MyBackButton extends StatelessWidget {
+  final Color? color;
+  MyBackButton({this.color});
   @override
   Widget build(BuildContext context) {
     return Hero(
@@ -15,7 +17,7 @@ class MyBackButton extends StatelessWidget {
           child: Icon(
             Icons.arrow_back_ios,
             size: 25,
-            color: Color(0xff3d7068),
+            color: color ?? Color(0xff3d7068),
           ),
         ),
       ),

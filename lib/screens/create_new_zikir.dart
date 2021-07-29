@@ -7,6 +7,7 @@ import 'package:the_zikir_app/data/models/counter.dart';
 import 'package:the_zikir_app/event/counter_event.dart';
 import 'package:the_zikir_app/screens/edit_zikir_counter.dart';
 import 'package:the_zikir_app/state/counter_state.dart';
+import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/back_button.dart';
 import 'package:the_zikir_app/widgets/top_container.dart';
 
@@ -53,6 +54,9 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
               return Column(
                 children: <Widget>[
                   TopContainer(
+                    color: LightColors.getThemeColor(
+                        colorName: state.counter?.counterTheme,
+                        contrast: 'light'),
                     padding: EdgeInsets.fromLTRB(20, 20, 20, 40),
                     width: width,
                     child: Column(
@@ -60,7 +64,10 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            MyBackButton(),
+                            MyBackButton(
+                                color: LightColors.getThemeColor(
+                                    colorName: state.counter?.counterTheme,
+                                    contrast: 'dark')),
                             GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -70,14 +77,15 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                                           counter: state.counter ??
                                               Counter.fromJson({}))),
                                 ).then((value) {
-                                  counterBloc.add(CounterGetById(
-                                      state is CounterLoaded
-                                          ? state.counter?.id ?? ''
-                                          : ''));
+                                  counterBloc.add(
+                                      CounterGetById(state.counter?.id ?? ''));
                                 });
                               },
                               child: Icon(Icons.edit,
-                                  color: Color(0xff3d7068), size: 25.0),
+                                  color: LightColors.getThemeColor(
+                                      colorName: state.counter?.counterTheme,
+                                      contrast: 'dark'),
+                                  size: 25.0),
                             ),
                           ],
                         ),
@@ -98,7 +106,9 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                                     (state.counter!.limiter ?? 1)),
                                 lineWidth: 5.0,
                                 circularStrokeCap: CircularStrokeCap.round,
-                                backgroundColor: Color(0xff3d7068),
+                                backgroundColor: LightColors.getThemeColor(
+                                    colorName: state.counter?.counterTheme,
+                                    contrast: 'dark'),
                                 progressColor: Color(0xffffffff),
                                 center: Text(
                                   '${(((state.counter!.counter ?? 0) / (state.counter!.limiter ?? 1)) * 100).round()}%',
@@ -116,7 +126,10 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
                                         fontSize: 22.0,
-                                        color: Color(0xff3d7068),
+                                        color: LightColors.getThemeColor(
+                                            colorName:
+                                                state.counter?.counterTheme,
+                                            contrast: 'dark'),
                                         fontWeight: FontWeight.w800,
                                       ),
                                     ),
@@ -130,7 +143,10 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
                                         fontSize: 16.0,
-                                        color: Color(0xff3d7068),
+                                        color: LightColors.getThemeColor(
+                                            colorName:
+                                                state.counter?.counterTheme,
+                                            contrast: 'dark'),
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
@@ -155,7 +171,9 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                           margin: EdgeInsets.symmetric(vertical: 10.0),
                           padding: EdgeInsets.all(15.0),
                           decoration: BoxDecoration(
-                            color: Color(0xff3d7068),
+                            color: LightColors.getThemeColor(
+                                colorName: state.counter?.counterTheme,
+                                contrast: 'dark'),
                             borderRadius: BorderRadius.circular(40.0),
                           ),
                           child: Center(
@@ -190,7 +208,9 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                                     ? LineIcons.volumeUp
                                     : LineIcons.volumeMute,
                                 size: 40.0,
-                                color: Color(0xff3d7068),
+                                color: LightColors.getThemeColor(
+                                    colorName: state.counter?.counterTheme,
+                                    contrast: 'dark'),
                               ),
                             ),
                           ),
@@ -206,7 +226,9 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                                     ? Icons.vibration
                                     : LineIcons.mobilePhone,
                                 size: 40.0,
-                                color: Color(0xff3d7068),
+                                color: LightColors.getThemeColor(
+                                    colorName: state.counter?.counterTheme,
+                                    contrast: 'dark'),
                               ),
                             ),
                           ),
@@ -220,7 +242,9 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                               child: Icon(
                                 LineIcons.minus,
                                 size: 40.0,
-                                color: Color(0xff3d7068),
+                                color: LightColors.getThemeColor(
+                                    colorName: state.counter?.counterTheme,
+                                    contrast: 'dark'),
                               ),
                             ),
                           ),
@@ -253,7 +277,9 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                               child: Icon(
                                 Icons.restore,
                                 size: 40.0,
-                                color: Color(0xff3d7068),
+                                color: LightColors.getThemeColor(
+                                    colorName: state.counter?.counterTheme,
+                                    contrast: 'dark'),
                               ),
                             ),
                           ),
