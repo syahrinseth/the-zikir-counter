@@ -128,56 +128,57 @@ class _ViewReport extends State<ViewReport>
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    // state is CounterLoaded
-                                    //     ? GestureDetector(
-                                    //         onTap: () {
-                                    //           _counterBloc.add(
-                                    //               CounterDayReportPrev(
-                                    //                   currentDateTime: state
-                                    //                           .targetDateTime ??
-                                    //                       DateTime.now()));
-                                    //         },
-                                    //         child: Icon(
-                                    //           Icons.arrow_back_ios,
-                                    //           size: 25,
-                                    //           color: Colors.white,
-                                    //         ),
-                                    //       )
-                                    //     : SizedBox(),
-                                    // Text(
-                                    //   state is CounterLoaded
-                                    //       ? state.targetDateTime!.day
-                                    //               .toString() +
-                                    //           '/' +
-                                    //           state.targetDateTime!.month
-                                    //               .toString() +
-                                    //           '/' +
-                                    //           state.targetDateTime!.year
-                                    //               .toString()
-                                    //       : '',
-                                    //   style: TextStyle(color: Colors.white),
-                                    // ),
-                                    // state is CounterLoaded
-                                    //     ? _isDateAMSameAsDateB(
-                                    //             dateA: state.targetDateTime ??
-                                    //                 DateTime.now(),
-                                    //             dateB: DateTime.now())
-                                    //         ? SizedBox()
-                                    //         : GestureDetector(
-                                    //             onTap: () {
-                                    //               _counterBloc.add(
-                                    //                   CounterDayReportNext(
-                                    //                       currentDateTime: state
-                                    //                               .targetDateTime ??
-                                    //                           DateTime.now()));
-                                    //             },
-                                    //             child: Icon(
-                                    //               Icons.arrow_forward_ios,
-                                    //               size: 25,
-                                    //               color: Colors.white,
-                                    //             ),
-                                    //           )
-                                    //     : SizedBox()
+                                    state is CounterLoaded
+                                        ? GestureDetector(
+                                            onTap: () {
+                                              _counterBloc.add(
+                                                  CounterDayReportPrev(
+                                                      currentDateTime: state
+                                                              .targetDateTime ??
+                                                          DateTime.now()));
+                                            },
+                                            child: Icon(
+                                              Icons.arrow_back_ios,
+                                              size: 25,
+                                              color: Colors.white,
+                                            ),
+                                          )
+                                        : SizedBox(),
+                                    Text(
+                                      state is CounterLoaded
+                                          ? (state.targetDateTime!.day
+                                                  .toString() +
+                                              ' / ' +
+                                              state.targetDateTime!.month
+                                                  .toString() +
+                                              ' / ' +
+                                              state.targetDateTime!.year
+                                                  .toString())
+                                          : '',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    state is CounterLoaded
+                                        ? GestureDetector(
+                                            onTap: () {
+                                              _counterBloc.add(
+                                                  CounterDayReportNext(
+                                                      currentDateTime: state
+                                                              .targetDateTime ??
+                                                          DateTime.now()));
+                                            },
+                                            child: Icon(
+                                              Icons.arrow_forward_ios,
+                                              size: 25,
+                                              color: _isDateAMSameAsDateB(
+                                                      dateA: state
+                                                              .targetDateTime ??
+                                                          DateTime.now(),
+                                                      dateB: DateTime.now())
+                                                  ? Color(0xff3d7068)
+                                                  : Colors.white,
+                                            ),
+                                          )
+                                        : SizedBox()
                                   ],
                                 ),
                               ),

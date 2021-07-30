@@ -203,6 +203,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
           }
         }
         yield CounterLoaded(
+            targetDateTime: event.dateTime,
             dayBarChartData: Counter.getDayReport(
                 counters: counters, dateTime: event.dateTime));
       } catch (e) {
