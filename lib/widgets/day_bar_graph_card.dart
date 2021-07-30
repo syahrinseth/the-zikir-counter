@@ -67,14 +67,37 @@ class DayBarGraphCard extends StatelessWidget {
               ],
             ),
             Expanded(
-                child: charts.TimeSeriesChart(seriesList,
-                    animate: animate,
-                    defaultInteractions: false,
-                    defaultRenderer: new charts.BarRendererConfig<DateTime>(),
-                    behaviors: [
-                  // new charts.SelectNearest(),
-                  // new charts.DomainHighlighter()
-                ])
+                child: charts.TimeSeriesChart(
+              seriesList,
+              animate: animate,
+              defaultInteractions: false,
+              defaultRenderer: new charts.BarRendererConfig<DateTime>(),
+              dateTimeFactory: const charts.LocalDateTimeFactory(),
+              domainAxis: charts.DateTimeAxisSpec(
+                tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
+                  day: charts.TimeFormatterSpec(
+                    format: 'dd',
+                    transitionFormat: 'dd',
+                  ),
+                ),
+              ),
+              behaviors: [
+                new charts.SelectNearest(),
+                new charts.DomainHighlighter(),
+                new charts.DomainA11yExploreBehavior(),
+                // charts.LinePointHighlighter(
+
+                //     symbolRenderer: charts.SymbolRenderer())
+              ],
+              selectionModels: [
+                charts.SelectionModelConfig(
+                    changedListener: (charts.SelectionModel model) {
+                  // if (model.hasDatumSelection)
+                  //   print(model.selectedSeries[0]
+                  //       .measureFn(model.selectedDatum[0].index));
+                })
+              ],
+            )
                 // child: charts.BarChart(
                 //   seriesList,
                 //   animate: animate,

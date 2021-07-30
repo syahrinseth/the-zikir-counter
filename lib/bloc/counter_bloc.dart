@@ -185,6 +185,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
     //       }
     //     }
     //     yield CounterLoaded(
+    //         targetDateTime: event.dateTime,
     //         barChartData: Counter.getWeekReport(
     //             counters: counters, dateTime: event.dateTime));
     //   } catch (e) {
