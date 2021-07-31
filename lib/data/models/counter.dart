@@ -1,8 +1,10 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:the_zikir_app/widgets/day_bar_graph_card.dart';
+import 'package:the_zikir_app/widgets/week_bar_graph_card.dart';
 import 'package:uuid/uuid.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -41,7 +43,7 @@ class Counter {
       this.histories,
       this.createdAt,
       this.updatedAt,
-      this.limiter,
+      this.limiter = 100,
       this.isVibrationOn = true,
       this.isSoundOn = true,
       this.counterTheme = 'green'});
@@ -154,73 +156,140 @@ class Counter {
     ];
   }
 
-  // static List<charts.Series<CounterDayBarChartData, String>> getWeekReport(
-  //     {required DateTime dateTime, required List<Counter> counters}) {
-  //   // get counter histories from counters
-  //   List<CounterHistory> targetCounterHistories = [];
-  //   counters.forEach((element) {
-  //     element.histories?.forEach((element) {
-  //       // filter counter history for target date week
-  //       int weekday = dateTime.weekday;
-  //       switch (weekday) {
-  //         case 1:
-  //           // Mon
-  //           break;
-  //         case 2:
-  //           // Tue
-  //           break;
-  //         case 3:
-  //           // Wed
-  //           break;
-  //         case 4:
-  //           // Thu
-  //           break;
-  //         case 5:
-  //           // Fri
-  //           break;
-  //         case 6:
-  //         // Sat
-  //         case 7:
-  //         // Sun
-  //         default:
-  //       }
-  //       if (element.dateTime?.day == dateTime.day &&
-  //           element.dateTime?.month == dateTime.month &&
-  //           element.dateTime?.year == dateTime.year) {
-  //         targetCounterHistories.add(element);
-  //       }
-  //     });
-  //   });
-  //   // group by counter by target hour and date.
-  //   List<int> days = [];
-  //   for (var i = 0; i <= 23; i++) {
-  //     int totalCount = 0;
-  //     targetCounterHistories.forEach((element) {
-  //       if (element.dateTime?.hour == i) {
-  //         totalCount += element.counter ?? 0;
-  //       }
-  //     });
-  //     days.add(totalCount);
-  //   }
-  //   // convert days to list of chart series
-  //   List<CounterDayBarChartData> data = days.asMap().entries.map((e) {
-  //     int index = e.key;
-  //     int counter = e.value;
-  //     return CounterDayBarChartData(index.toString(), counter,
-  //         charts.ColorUtil.fromDartColor(Color(0xff43c59e)));
-  //   }).toList();
-  //   // return
-  //   return [
-  //     new charts.Series<CounterDayBarChartData, String>(
-  //       id: 'Sales',
-  //       domainFn: (CounterDayBarChartData data, _) => data.hour,
-  //       measureFn: (CounterDayBarChartData data, _) => data.count,
-  //       data: data,
-  //       colorFn: (CounterDayBarChartData data, _) => data.color,
-  //       radiusPxFn: (CounterDayBarChartData data, _) => 40.0,
-  //     ),
-  //   ];
-  // }
+  static List<charts.Series<CounterWeekBarChartData, String>> getWeekReport(
+      {required DateTime dateTime, required List<Counter> counters}) {
+    // get counter histories from counters
+    List<CounterHistory> targetCounterHistories = [];
+    int weekday = dateTime.weekday;
+    DateTime? startWeek;
+    DateTime? endWeek;
+    switch (weekday) {
+      case 1:
+        // Mon
+        startWeek = dateTime;
+        endWeek = dateTime.add(Duration(days: 6));
+        break;
+      case 2:
+        // Tue
+        startWeek = dateTime.subtract(Duration(days: 1));
+        endWeek = dateTime.add(Duration(days: 5));
+        break;
+      case 3:
+        // Wed
+        startWeek = dateTime.subtract(Duration(days: 2));
+        endWeek = dateTime.add(Duration(days: 4));
+        break;
+      case 4:
+        // Thu
+        startWeek = dateTime.subtract(Duration(days: 3));
+        endWeek = dateTime.add(Duration(days: 3));
+        break;
+      case 5:
+        // Fri
+        startWeek = dateTime.subtract(Duration(days: 4));
+        endWeek = dateTime.add(Duration(days: 2));
+        break;
+      case 6:
+        // Sat
+        startWeek = dateTime.subtract(Duration(days: 5));
+        endWeek = dateTime.add(Duration(days: 1));
+        break;
+      case 7:
+        // Sun
+        startWeek = dateTime.subtract(Duration(days: 6));
+        endWeek = dateTime;
+        break;
+      default:
+    }
+    counters.forEach((element) {
+      element.histories?.forEach((element) {
+        // filter counter history for target date week
+        if (startWeek!.isBefore(element.dateTime ?? DateTime.now()) &&
+            endWeek!.isAfter(element.dateTime ?? DateTime.now())) {
+          targetCounterHistories.add(element);
+        }
+      });
+    });
+    // group by counter by target DayName.
+    List<Map<String, dynamic>> days = [];
+    List<int> totalCount = [0, 0, 0, 0, 0, 0, 0];
+    String? dayName;
+    for (var i = 0; i < 7; i++) {
+      targetCounterHistories.forEach((element) {
+        switch (i) {
+          case 0:
+            // Mon
+            dayName = 'Mon';
+            if (element.dateTime?.weekday == 1) {
+              totalCount[i] += element.counter ?? 0;
+            }
+            break;
+          case 1:
+            // Tue
+            dayName = 'Tue';
+            if (element.dateTime?.weekday == 2) {
+              totalCount[i] += element.counter ?? 0;
+            }
+            break;
+          case 2:
+            // Wed
+            dayName = 'Wed';
+            if (element.dateTime?.weekday == 3) {
+              totalCount[i] += element.counter ?? 0;
+            }
+            break;
+          case 3:
+            // Thu
+            dayName = 'Thu';
+            if (element.dateTime?.weekday == 4) {
+              totalCount[i] += element.counter ?? 0;
+            }
+            break;
+          case 4:
+            // Fri
+            dayName = 'Fri';
+            if (element.dateTime?.weekday == 5) {
+              totalCount[i] += element.counter ?? 0;
+            }
+            break;
+          case 5:
+            // Sat
+            dayName = 'Sat';
+            if (element.dateTime?.weekday == 6) {
+              totalCount[i] += element.counter ?? 0;
+            }
+            break;
+          case 6:
+            // Sun
+            dayName = 'Sun';
+            if (element.dateTime?.weekday == 7) {
+              totalCount[i] += element.counter ?? 0;
+            }
+            break;
+          default:
+        }
+      });
+      days.add({'day': dayName, 'count': totalCount[i]});
+    }
+    // convert days to list of chart series
+    List<CounterWeekBarChartData> data = days.asMap().entries.map((e) {
+      int index = e.key;
+      Map<String, dynamic> day = e.value;
+      return CounterWeekBarChartData(day['day'], day['count'],
+          charts.ColorUtil.fromDartColor(Color(0xff43c59e)));
+    }).toList();
+    // return
+    return [
+      new charts.Series<CounterWeekBarChartData, String>(
+        id: 'Week Graph Report',
+        domainFn: (CounterWeekBarChartData data, _) => data.dayName,
+        measureFn: (CounterWeekBarChartData data, _) => data.count,
+        data: data,
+        colorFn: (CounterWeekBarChartData data, _) => data.color,
+        radiusPxFn: (CounterWeekBarChartData data, _) => 40.0,
+      ),
+    ];
+  }
 }
 
 @HiveType(typeId: 1)
