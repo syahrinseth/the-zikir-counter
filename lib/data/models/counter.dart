@@ -290,6 +290,55 @@ class Counter {
       ),
     ];
   }
+
+  static String getStartEndWeekFromDate(DateTime currentDate) {
+    int weekDays = currentDate.weekday;
+    // get start and end weekdays date
+    DateTime? startWeekDate;
+    DateTime? endWeekDate;
+    switch (weekDays) {
+      case 1:
+        startWeekDate = currentDate;
+        endWeekDate = currentDate.add(Duration(days: 6));
+        break;
+      case 2:
+        startWeekDate = currentDate.subtract(Duration(days: 1));
+        endWeekDate = currentDate.add(Duration(days: 5));
+        break;
+      case 3:
+        startWeekDate = currentDate.subtract(Duration(days: 2));
+        endWeekDate = currentDate.add(Duration(days: 4));
+        break;
+      case 4:
+        startWeekDate = currentDate.subtract(Duration(days: 3));
+        endWeekDate = currentDate.add(Duration(days: 3));
+        break;
+      case 5:
+        startWeekDate = currentDate.subtract(Duration(days: 4));
+        endWeekDate = currentDate.add(Duration(days: 2));
+        break;
+      case 6:
+        startWeekDate = currentDate.subtract(Duration(days: 5));
+        endWeekDate = currentDate.add(Duration(days: 1));
+        break;
+      case 7:
+        startWeekDate = currentDate.subtract(Duration(days: 6));
+        endWeekDate = currentDate;
+        break;
+      default:
+    }
+    return startWeekDate!.day.toString() +
+        '/' +
+        startWeekDate.month.toString() +
+        '/' +
+        startWeekDate.year.toString() +
+        '  -  ' +
+        endWeekDate!.day.toString() +
+        '/' +
+        endWeekDate.month.toString() +
+        '/' +
+        endWeekDate.year.toString();
+  }
 }
 
 @HiveType(typeId: 1)

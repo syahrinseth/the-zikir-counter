@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_zikir_app/bloc/counter_bloc.dart';
+import 'package:the_zikir_app/data/models/counter.dart';
 import 'package:the_zikir_app/event/counter_event.dart';
 import 'package:the_zikir_app/state/counter_state.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
@@ -150,14 +151,16 @@ class _ViewReport extends State<ViewReport>
                                         state is CounterLoaded
                                             ? (state.targetDateTime!.day
                                                     .toString() +
-                                                ' / ' +
+                                                '/' +
                                                 state.targetDateTime!.month
                                                     .toString() +
-                                                ' / ' +
+                                                '/' +
                                                 state.targetDateTime!.year
                                                     .toString())
                                             : '',
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            letterSpacing: 2),
                                       ),
                                       state is CounterLoaded
                                           ? GestureDetector(
@@ -242,16 +245,13 @@ class _ViewReport extends State<ViewReport>
                                           : SizedBox(),
                                       Text(
                                         state is CounterLoaded
-                                            ? (state.targetDateTime!.day
-                                                    .toString() +
-                                                ' / ' +
-                                                state.targetDateTime!.month
-                                                    .toString() +
-                                                ' / ' +
-                                                state.targetDateTime!.year
-                                                    .toString())
+                                            ? (Counter.getStartEndWeekFromDate(
+                                                state.targetDateTime ??
+                                                    DateTime.now()))
                                             : '',
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            letterSpacing: 2),
                                       ),
                                       state is CounterLoaded
                                           ? GestureDetector(
