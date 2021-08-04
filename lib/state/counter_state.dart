@@ -26,7 +26,7 @@ class CounterLoaded extends CounterState {
   final List<Counter>? counters;
   final List<Series<CounterDayBarChartData, DateTime>>? dayBarChartData;
   final List<Series<CounterWeekBarChartData, String>>? weekBarChartData;
-  final List<Series<CounterMonthBarChartData, String>>? monthBarChartData;
+  final List<Series<CounterMonthBarChartData, DateTime>>? monthBarChartData;
   final List<Series<CounterYearBarChartData, String>>? yearBarChartData;
   final List props = [];
   final DateTime? targetDateTime;

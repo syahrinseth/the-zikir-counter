@@ -17,8 +17,7 @@ class ActiveProjectsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
+    return Container(
       child: GestureDetector(
         onTap: this.onTap,
         child: Container(

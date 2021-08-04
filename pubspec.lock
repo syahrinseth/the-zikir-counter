@@ -278,7 +278,7 @@ packages:
       name: flutter_bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.0.0"
+    version: "7.1.0"
   flutter_offline:
     dependency: "direct main"
     description:
@@ -562,6 +562,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  quiver:
+    dependency: "direct main"
+    description:
+      name: quiver
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.1"
   shelf:
     dependency: transitive
     description:

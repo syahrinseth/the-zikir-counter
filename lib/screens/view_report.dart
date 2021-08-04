@@ -8,6 +8,7 @@ import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/back_button.dart';
 import 'package:the_zikir_app/widgets/day_bar_graph_card.dart';
 import 'package:loading_animations/loading_animations.dart';
+import 'package:the_zikir_app/widgets/month_bar_graph_card.dart';
 import 'package:the_zikir_app/widgets/week_bar_graph_card.dart';
 
 class ViewReport extends StatefulWidget {
@@ -20,12 +21,15 @@ class _ViewReport extends State<ViewReport>
   TabController? _tabController;
   CounterBloc _dayReportCounterBloc = CounterBloc();
   CounterBloc _weekReportCounterBloc = CounterBloc();
+  CounterBloc _monthReportCounterBloc = CounterBloc();
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
     _dayReportCounterBloc.add(CounterGetDayReport(dateTime: DateTime.now()));
     _weekReportCounterBloc.add(CounterGetWeekReport(dateTime: DateTime.now()));
+    _monthReportCounterBloc
+        .add(CounterGetMonthReport(dateTime: DateTime.now()));
   }
 
   @override
@@ -33,19 +37,8 @@ class _ViewReport extends State<ViewReport>
     _tabController?.dispose();
     _dayReportCounterBloc.close();
     _weekReportCounterBloc.close();
+    _monthReportCounterBloc.close();
     super.dispose();
-  }
-
-  static CircleAvatar calendarIcon() {
-    return CircleAvatar(
-      radius: 25.0,
-      backgroundColor: LightColors.kGreen,
-      child: Icon(
-        Icons.calendar_today,
-        size: 20.0,
-        color: Colors.white,
-      ),
-    );
   }
 
   @override
@@ -195,7 +188,7 @@ class _ViewReport extends State<ViewReport>
                                           padding: const EdgeInsets.all(8.0),
                                           child: DayBarGraphCard(
                                               state.dayBarChartData ?? [],
-                                              title: 'Total Zikir',
+                                              title: 'Dhikred',
                                               desc: 'Time Distribution'),
                                         ),
                                       )
@@ -286,8 +279,8 @@ class _ViewReport extends State<ViewReport>
                                           padding: const EdgeInsets.all(8.0),
                                           child: WeekBarGraphCard(
                                               state.weekBarChartData ?? [],
-                                              title: 'Total Zikir',
-                                              desc: 'Days Distribution'),
+                                              title: 'Dhikred',
+                                              desc: 'Time Distribution'),
                                         ),
                                       )
                                     : Container(
@@ -304,16 +297,102 @@ class _ViewReport extends State<ViewReport>
                           );
                         },
                       ),
-                      SingleChildScrollView(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        child: Container(
-                          width: width,
-                          height: 500,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: DayBarGraphCard.withSampleData(),
-                          ),
-                        ),
+                      BlocBuilder<CounterBloc, CounterState>(
+                        bloc: _monthReportCounterBloc,
+                        builder: (context, state) {
+                          return SingleChildScrollView(
+                            physics: AlwaysScrollableScrollPhysics(),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 20.0, horizontal: 10.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      state is CounterLoaded
+                                          ? GestureDetector(
+                                              onTap: () {
+                                                _weekReportCounterBloc.add(
+                                                    CounterDayReportPrev(
+                                                        currentDateTime: state
+                                                                .targetDateTime ??
+                                                            DateTime.now()));
+                                              },
+                                              child: Icon(
+                                                Icons.arrow_back_ios,
+                                                size: 25,
+                                                color: Colors.white,
+                                              ),
+                                            )
+                                          : SizedBox(),
+                                      Text(
+                                        state is CounterLoaded
+                                            ? (state.targetDateTime!.day
+                                                    .toString() +
+                                                '/' +
+                                                state.targetDateTime!.month
+                                                    .toString() +
+                                                '/' +
+                                                state.targetDateTime!.year
+                                                    .toString())
+                                            : '',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            letterSpacing: 2),
+                                      ),
+                                      state is CounterLoaded
+                                          ? GestureDetector(
+                                              onTap: () {
+                                                _weekReportCounterBloc.add(
+                                                    CounterDayReportNext(
+                                                        currentDateTime: state
+                                                                .targetDateTime ??
+                                                            DateTime.now()));
+                                              },
+                                              child: Icon(
+                                                Icons.arrow_forward_ios,
+                                                size: 25,
+                                                color: _isDateAMSameAsDateB(
+                                                        dateA: state
+                                                                .targetDateTime ??
+                                                            DateTime.now(),
+                                                        dateB: DateTime.now())
+                                                    ? Color(0xff3d7068)
+                                                    : Colors.white,
+                                              ),
+                                            )
+                                          : SizedBox()
+                                    ],
+                                  ),
+                                ),
+                                state is CounterLoaded
+                                    ? Container(
+                                        width: width,
+                                        height: 350,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: MonthBarGraphCard(
+                                              state.monthBarChartData ?? [],
+                                              title: 'Dhikred'),
+                                          // child: MonthBarGraphCard
+                                          //     .withSampleData(),
+                                        ),
+                                      )
+                                    : Container(
+                                        width: width,
+                                        height: 350,
+                                        child: Center(
+                                          child: LoadingBouncingGrid.circle(
+                                            backgroundColor: Colors.black54,
+                                          ),
+                                        ),
+                                      ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
                       SingleChildScrollView(
                         physics: AlwaysScrollableScrollPhysics(),

@@ -31,7 +31,7 @@ dependencies:
   hive: ^2.0.4
   connectivity: ^3.0.3
   flutter_offline: ^2.0.0
-  flutter_bloc: ^7.0.0
+  flutter_bloc: ^7.1.0
   equatable: ^2.0.3
   hive_flutter: ^1.0.0
   path_provider: ^2.0.0
@@ -45,6 +45,7 @@ dependencies:
   loading_animations: ^2.2.0
   tutorial_coach_mark: ^1.0.3
   introduction_screen: ^2.1.0
+  quiver: ^3.0.1
 
 dev_dependencies:
   flutter_test:

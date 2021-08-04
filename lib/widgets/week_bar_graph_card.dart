@@ -71,6 +71,10 @@ class WeekBarGraphCard extends StatelessWidget {
               seriesList,
               animate: animate,
               defaultInteractions: true,
+              behaviors: [
+                new charts.SelectNearest(),
+                new charts.DomainHighlighter(),
+              ],
             )
                 // child: charts.BarChart(
                 //   seriesList,
