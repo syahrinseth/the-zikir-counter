@@ -353,6 +353,65 @@ class Counter {
     // }
   }
 
+  static List<charts.Series<CounterMonthBarChartData, DateTime>> getYearReport(
+      {required DateTime dateTime, required List<Counter> counters}) {
+    // try {
+    List<CounterHistory> targetCounterHistories = [];
+    // filter counters for this year
+    counters.forEach((element) {
+      element.histories?.forEach((element) {
+        if (element.dateTime?.year == dateTime.year) {
+          targetCounterHistories.add(element);
+        }
+      });
+    });
+    int totalMonthInYear = 12;
+    List<Map> months = [];
+    int index = 0;
+    for (var i = 1; i <= totalMonthInYear; i++) {
+      months.add({
+        'month': DateTime.parse(dateTime.year.toString() +
+            '-' +
+            (dateTime.month < 10
+                ? ('0' + dateTime.month.toString())
+                : dateTime.month.toString()) +
+            '-' +
+            "01"),
+        'total': 0
+      });
+      // group by
+      targetCounterHistories.forEach((element) {
+        if (element.dateTime?.month == i) {
+          months[index]['total'] += element.counter ?? 0;
+        }
+      });
+      index++;
+    }
+
+    // convert days to list of chart series
+    List<CounterMonthBarChartData> data = months.asMap().entries.map((e) {
+      int key = e.key;
+      Map day = e.value;
+      return CounterMonthBarChartData(day['month'] ?? DateTime.now(),
+          day['total'] ?? 0, charts.ColorUtil.fromDartColor(Color(0xff43c59e)));
+    }).toList();
+    // return
+    return [
+      new charts.Series<CounterMonthBarChartData, DateTime>(
+        id: 'Dzikr Time Distribution',
+        domainFn: (CounterMonthBarChartData data, _) => data.dateTime,
+        measureFn: (CounterMonthBarChartData data, _) => data.count,
+        data: data,
+        colorFn: (CounterMonthBarChartData data, _) => data.color,
+        radiusPxFn: (CounterMonthBarChartData data, _) => 40.0,
+      ),
+    ];
+    // } catch (e) {
+    //   print(e.toString());
+    //   return [];
+    // }
+  }
+
   static String getStartEndWeekFromDate(DateTime currentDate) {
     int weekDays = currentDate.weekday;
     // get start and end weekdays date

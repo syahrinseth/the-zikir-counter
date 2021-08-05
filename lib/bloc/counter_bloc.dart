@@ -211,6 +211,25 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         yield CounterError(message: e.toString());
       }
     }
+    if (event is CounterGetYearReport) {
+      try {
+        yield CounterLoading();
+        Box<Counter> countersBox = Hive.box<Counter>('myZikirCountersBox');
+        List<Counter> counters = [];
+        for (var i = 0; i < countersBox.length; i++) {
+          Counter? tempCounter = countersBox.getAt(i);
+          if (tempCounter != null) {
+            counters.add(tempCounter);
+          }
+        }
+        yield CounterLoaded(
+            targetDateTime: event.dateTime,
+            monthBarChartData: Counter.getYearReport(
+                counters: counters, dateTime: event.dateTime));
+      } catch (e) {
+        yield CounterError(message: e.toString());
+      }
+    }
     if (event is CounterGetDayReport) {
       try {
         yield CounterLoading();

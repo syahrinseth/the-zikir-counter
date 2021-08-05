@@ -4,7 +4,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class YearBarGraphCard extends StatelessWidget {
-  final List<charts.Series<dynamic, String>> seriesList;
+  final List<charts.Series<dynamic, DateTime>> seriesList;
   final bool animate;
   final String title;
   final String desc;
@@ -67,11 +67,12 @@ class YearBarGraphCard extends StatelessWidget {
               ],
             ),
             Expanded(
-                child: charts.BarChart(
+                child: charts.TimeSeriesChart(
               seriesList,
               animate: animate,
               defaultInteractions: false,
               domainAxis: charts.DateTimeAxisSpec(),
+              defaultRenderer: new charts.BarRendererConfig<DateTime>(),
               behaviors: [
                 new charts.SelectNearest(),
                 new charts.DomainHighlighter(),
@@ -104,13 +105,33 @@ class YearBarGraphCard extends StatelessWidget {
   }
 
   /// Create one series with sample hard coded data.
-  static List<charts.Series<CounterYearBarChartData, String>>
+  static List<charts.Series<CounterYearBarChartData, DateTime>>
       _createSampleData() {
     List<CounterYearBarChartData> data = [
-      // new CounterYearBarChartData(
-      //     'Sun', 5, charts.ColorUtil.fromDartColor(Color(0xff43c59e))),
-      // new CounterYearBarChartData(
-      //     'Mon', 25, charts.ColorUtil.fromDartColor(Color(0xff43c59e))),
+      new CounterYearBarChartData(DateTime.parse('2021-01-01'), 5,
+          charts.ColorUtil.fromDartColor(Color(0xff43c59e))),
+      new CounterYearBarChartData(DateTime.parse('2021-02-01'), 25,
+          charts.ColorUtil.fromDartColor(Color(0xff43c59e))),
+      new CounterYearBarChartData(DateTime.parse('2021-03-01'), 80,
+          charts.ColorUtil.fromDartColor(Color(0xff43c59e))),
+      new CounterYearBarChartData(DateTime.parse('2021-04-01'), 5,
+          charts.ColorUtil.fromDartColor(Color(0xff43c59e))),
+      new CounterYearBarChartData(DateTime.parse('2021-05-01'), 25,
+          charts.ColorUtil.fromDartColor(Color(0xff43c59e))),
+      new CounterYearBarChartData(DateTime.parse('2021-06-01'), 40,
+          charts.ColorUtil.fromDartColor(Color(0xff43c59e))),
+      new CounterYearBarChartData(DateTime.parse('2021-07-01'), 5,
+          charts.ColorUtil.fromDartColor(Color(0xff43c59e))),
+      new CounterYearBarChartData(DateTime.parse('2021-08-01'), 25,
+          charts.ColorUtil.fromDartColor(Color(0xff43c59e))),
+      new CounterYearBarChartData(DateTime.parse('2021-09-01'), 40,
+          charts.ColorUtil.fromDartColor(Color(0xff43c59e))),
+      new CounterYearBarChartData(DateTime.parse('2021-10-01'), 5,
+          charts.ColorUtil.fromDartColor(Color(0xff43c59e))),
+      new CounterYearBarChartData(DateTime.parse('2021-11-01'), 25,
+          charts.ColorUtil.fromDartColor(Color(0xff43c59e))),
+      new CounterYearBarChartData(DateTime.parse('2021-12-01'), 40,
+          charts.ColorUtil.fromDartColor(Color(0xff43c59e))),
       // new CounterYearBarChartData(
       //     'Tue', 110, charts.ColorUtil.fromDartColor(Color(0xff43c59e))),
       // new CounterYearBarChartData(
@@ -124,9 +145,9 @@ class YearBarGraphCard extends StatelessWidget {
     ];
 
     return [
-      new charts.Series<CounterYearBarChartData, String>(
+      new charts.Series<CounterYearBarChartData, DateTime>(
         id: 'Year Bar Chart',
-        domainFn: (CounterYearBarChartData data, _) => data.yearName,
+        domainFn: (CounterYearBarChartData data, _) => data.dateTime,
         measureFn: (CounterYearBarChartData data, _) => data.count,
         data: data,
         colorFn: (CounterYearBarChartData data, _) => data.color,
@@ -137,8 +158,8 @@ class YearBarGraphCard extends StatelessWidget {
 }
 
 class CounterYearBarChartData {
-  final String yearName;
+  final DateTime dateTime;
   final int count;
   final charts.Color color;
-  CounterYearBarChartData(this.yearName, this.count, this.color);
+  CounterYearBarChartData(this.dateTime, this.count, this.color);
 }
