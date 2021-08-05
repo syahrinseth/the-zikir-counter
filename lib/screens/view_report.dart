@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quiver/time.dart';
 import 'package:the_zikir_app/bloc/counter_bloc.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
 import 'package:the_zikir_app/event/counter_event.dart';
@@ -337,11 +338,18 @@ class _ViewReport extends State<ViewReport>
                                       state is CounterLoaded
                                           ? GestureDetector(
                                               onTap: () {
-                                                _weekReportCounterBloc.add(
-                                                    CounterDayReportPrev(
-                                                        currentDateTime: state
-                                                                .targetDateTime ??
-                                                            DateTime.now()));
+                                                _monthReportCounterBloc.add(CounterGetMonthReport(
+                                                    dateTime: state.targetDateTime?.subtract(Duration(
+                                                            days: daysInMonth(
+                                                                state.targetDateTime
+                                                                        ?.year ??
+                                                                    DateTime.now()
+                                                                        .year,
+                                                                state.targetDateTime
+                                                                        ?.month ??
+                                                                    DateTime.now()
+                                                                        .month))) ??
+                                                        DateTime.now()));
                                               },
                                               child: Icon(
                                                 Icons.arrow_back_ios,
@@ -352,27 +360,39 @@ class _ViewReport extends State<ViewReport>
                                           : SizedBox(),
                                       Text(
                                         state is CounterLoaded
-                                            ? (state.targetDateTime!.day
-                                                    .toString() +
-                                                '/' +
-                                                state.targetDateTime!.month
+                                            ? (state.targetDateTime!.month
                                                     .toString() +
                                                 '/' +
                                                 state.targetDateTime!.year
                                                     .toString())
                                             : '',
                                         style: TextStyle(
-                                            color: Colors.white,
+                                            color: state is CounterLoaded
+                                                ? (_isDateAMSameAsDateB(
+                                                        dateA: state
+                                                                .targetDateTime ??
+                                                            DateTime.now(),
+                                                        dateB: DateTime.now())
+                                                    ? Color(0xff3d7068)
+                                                    : Colors.white)
+                                                : Color(0xff3d7068),
                                             letterSpacing: 2),
                                       ),
                                       state is CounterLoaded
                                           ? GestureDetector(
                                               onTap: () {
-                                                _weekReportCounterBloc.add(
-                                                    CounterDayReportNext(
-                                                        currentDateTime: state
-                                                                .targetDateTime ??
-                                                            DateTime.now()));
+                                                _monthReportCounterBloc.add(CounterGetMonthReport(
+                                                    dateTime: state.targetDateTime?.add(Duration(
+                                                            days: daysInMonth(
+                                                                state.targetDateTime
+                                                                        ?.year ??
+                                                                    DateTime.now()
+                                                                        .year,
+                                                                state.targetDateTime
+                                                                        ?.month ??
+                                                                    DateTime.now()
+                                                                        .month))) ??
+                                                        DateTime.now()));
                                               },
                                               child: Icon(
                                                 Icons.arrow_forward_ios,
