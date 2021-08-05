@@ -162,11 +162,17 @@ class _ViewReport extends State<ViewReport>
                                       state is CounterLoaded
                                           ? GestureDetector(
                                               onTap: () {
-                                                _dayReportCounterBloc.add(
-                                                    CounterDayReportNext(
-                                                        currentDateTime: state
-                                                                .targetDateTime ??
-                                                            DateTime.now()));
+                                                if (!_isDateAMSameAsDateB(
+                                                    dateA:
+                                                        state.targetDateTime ??
+                                                            DateTime.now(),
+                                                    dateB: DateTime.now())) {
+                                                  _dayReportCounterBloc.add(
+                                                      CounterDayReportNext(
+                                                          currentDateTime: state
+                                                                  .targetDateTime ??
+                                                              DateTime.now()));
+                                                }
                                               },
                                               child: Icon(
                                                 Icons.arrow_forward_ios,
