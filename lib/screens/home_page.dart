@@ -141,7 +141,7 @@ class _HomePage extends State<HomePage> {
                                 children: <Widget>[
                                   Container(
                                     child: Text(
-                                      'Muhammad Adam',
+                                      'The Dhikr App',
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
                                         fontSize: 22.0,
@@ -152,7 +152,7 @@ class _HomePage extends State<HomePage> {
                                   ),
                                   Container(
                                     child: Text(
-                                      'Total Zikir Count: ' +
+                                      'Total Dhikr Count: ' +
                                           (state is CounterLoaded
                                               ? Counter
                                                       .getTotalCountFromCounters(
@@ -196,7 +196,7 @@ class _HomePage extends State<HomePage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    subheading('Active Zikir'),
+                                    subheading('Active Dhikr'),
                                     GestureDetector(
                                       onTap: () {
                                         Navigator.push(
@@ -229,7 +229,7 @@ class _HomePage extends State<HomePage> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  subheading('Completed Zikir'),
+                                  subheading('Completed Dhikr'),
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.push(
@@ -307,8 +307,8 @@ class _HomePage extends State<HomePage> {
         hideBackgroundAnimation: true,
         image: null,
         packageImage: PackageImage.Image_2,
-        title: 'No Active Zikir',
-        subTitle: 'You have no active zikir yet. Care to create one?',
+        title: 'No Active Dhikr',
+        subTitle: 'You have no active dhikr yet. Care to create one?',
         titleTextStyle: TextStyle(
           fontSize: 22,
           color: Color(0xff9da9c7),
@@ -414,7 +414,7 @@ class _HomePage extends State<HomePage> {
                     iconBackgroundColor: LightColors.getThemeColor(
                         colorName: counter.counterTheme, contrast: 'dark'),
                     title: counter.name ?? 'Counter',
-                    subtitle: counter.counter.toString() + ' Total Zikir Count',
+                    subtitle: counter.counter.toString() + ' Total Dhikr Count',
                   ),
                 ),
               ]);
@@ -426,9 +426,9 @@ class _HomePage extends State<HomePage> {
         hideBackgroundAnimation: true,
         image: null,
         packageImage: PackageImage.Image_3,
-        title: 'No Completed Zikir',
+        title: 'No Completed Dhikr',
         subTitle:
-            'You have no completed zikir yet. Do complete your current active zikir to update this list.',
+            'You have no completed dhikr yet. Do complete your current active dhikr to update this list.',
         titleTextStyle: TextStyle(
           fontSize: 22,
           color: Color(0xff9da9c7),

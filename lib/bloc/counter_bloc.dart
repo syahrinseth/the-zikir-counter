@@ -151,6 +151,11 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
             counter.limiter =
                 (event.counter > event.limiter ? event.counter : event.limiter);
             counter.counterTheme = event.counterTheme;
+            counter.histories?.clear();
+            for (var i = 0; i < (counter.counter ?? 0); i++) {
+              counter.histories
+                  ?.add(CounterHistory(counter: 1, dateTime: DateTime.now()));
+            }
             Counter.saveCounter(counter: counter);
             yield CounterSaved(counter: counter);
           }

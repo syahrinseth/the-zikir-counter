@@ -40,7 +40,7 @@ class Counter {
 
   Counter(
       {required this.id,
-      this.name = 'Zikir Counter',
+      this.name = 'Dhikr Counter',
       this.description,
       this.counter = 0,
       this.histories,
@@ -73,7 +73,7 @@ class Counter {
     var uuid = Uuid().v1();
     Counter counter = Counter(
         id: json['id'] ?? uuid,
-        name: json['name'] ?? 'Zikir Counter',
+        name: json['name'] ?? 'Dhikr Counter',
         description: json['description'],
         counter: json['counter'] ?? 0,
         histories: json['histories'] ?? [],
