@@ -174,23 +174,23 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       }
     }
     if (event is CounterGetWeekReport) {
-      try {
-        yield CounterLoading();
-        Box<Counter> countersBox = Hive.box<Counter>('myZikirCountersBox');
-        List<Counter> counters = [];
-        for (var i = 0; i < countersBox.length; i++) {
-          Counter? tempCounter = countersBox.getAt(i);
-          if (tempCounter != null) {
-            counters.add(tempCounter);
-          }
+      // try {
+      yield CounterLoading();
+      Box<Counter> countersBox = Hive.box<Counter>('myZikirCountersBox');
+      List<Counter> counters = [];
+      for (var i = 0; i < countersBox.length; i++) {
+        Counter? tempCounter = countersBox.getAt(i);
+        if (tempCounter != null) {
+          counters.add(tempCounter);
         }
-        yield CounterLoaded(
-            targetDateTime: event.dateTime,
-            weekBarChartData: Counter.getWeekReport(
-                counters: counters, dateTime: event.dateTime));
-      } catch (e) {
-        yield CounterError(message: e.toString());
       }
+      yield CounterLoaded(
+          targetDateTime: event.dateTime,
+          weekBarChartData: Counter.getWeekReport(
+              counters: counters, dateTime: event.dateTime));
+      // } catch (e) {
+      //   yield CounterError(message: e.toString());
+      // }
     }
     if (event is CounterGetMonthReport) {
       try {

@@ -234,9 +234,13 @@ class _ViewReport extends State<ViewReport>
                                           ? GestureDetector(
                                               onTap: () {
                                                 _weekReportCounterBloc.add(
-                                                    CounterDayReportPrev(
-                                                        currentDateTime: state
-                                                                .targetDateTime ??
+                                                    CounterGetWeekReport(
+                                                        dateTime: state
+                                                                .targetDateTime
+                                                                ?.subtract(
+                                                                    Duration(
+                                                                        days:
+                                                                            7)) ??
                                                             DateTime.now()));
                                               },
                                               child: Icon(
@@ -259,11 +263,20 @@ class _ViewReport extends State<ViewReport>
                                       state is CounterLoaded
                                           ? GestureDetector(
                                               onTap: () {
-                                                _weekReportCounterBloc.add(
-                                                    CounterDayReportNext(
-                                                        currentDateTime: state
-                                                                .targetDateTime ??
-                                                            DateTime.now()));
+                                                if (!_isDateAMSameAsDateB(
+                                                    dateA:
+                                                        state.targetDateTime ??
+                                                            DateTime.now(),
+                                                    dateB: DateTime.now())) {
+                                                  _weekReportCounterBloc.add(
+                                                      CounterGetWeekReport(
+                                                          dateTime: state
+                                                                  .targetDateTime
+                                                                  ?.add(Duration(
+                                                                      days:
+                                                                          7)) ??
+                                                              DateTime.now()));
+                                                }
                                               },
                                               child: Icon(
                                                 Icons.arrow_forward_ios,

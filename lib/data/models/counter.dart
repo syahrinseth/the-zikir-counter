@@ -217,53 +217,77 @@ class Counter {
     List<int> totalCount = [0, 0, 0, 0, 0, 0, 0];
     String? dayName;
     for (var i = 0; i < 7; i++) {
+      switch (i) {
+        case 0:
+          // Mon
+          dayName = 'Mon';
+          break;
+        case 1:
+          // Tue
+          dayName = 'Tue';
+          break;
+        case 2:
+          // Wed
+          dayName = 'Wed';
+          break;
+        case 3:
+          // Thu
+          dayName = 'Thu';
+          break;
+        case 4:
+          // Fri
+          dayName = 'Fri';
+          break;
+        case 5:
+          // Sat
+          dayName = 'Sat';
+          break;
+        case 6:
+          // Sun
+          dayName = 'Sun';
+          break;
+        default:
+      }
       targetCounterHistories.forEach((element) {
         switch (i) {
           case 0:
             // Mon
-            dayName = 'Mon';
             if (element.dateTime?.weekday == 1) {
               totalCount[i] += element.counter ?? 0;
             }
             break;
           case 1:
             // Tue
-            dayName = 'Tue';
             if (element.dateTime?.weekday == 2) {
               totalCount[i] += element.counter ?? 0;
             }
             break;
           case 2:
             // Wed
-            dayName = 'Wed';
             if (element.dateTime?.weekday == 3) {
               totalCount[i] += element.counter ?? 0;
             }
             break;
           case 3:
             // Thu
-            dayName = 'Thu';
             if (element.dateTime?.weekday == 4) {
               totalCount[i] += element.counter ?? 0;
             }
             break;
           case 4:
             // Fri
-            dayName = 'Fri';
             if (element.dateTime?.weekday == 5) {
               totalCount[i] += element.counter ?? 0;
             }
             break;
           case 5:
             // Sat
-            dayName = 'Sat';
             if (element.dateTime?.weekday == 6) {
               totalCount[i] += element.counter ?? 0;
             }
             break;
           case 6:
             // Sun
-            dayName = 'Sun';
             if (element.dateTime?.weekday == 7) {
               totalCount[i] += element.counter ?? 0;
             }

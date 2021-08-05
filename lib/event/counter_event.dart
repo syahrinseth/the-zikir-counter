@@ -132,6 +132,22 @@ class CounterDayReportNext extends CounterEvent {
   List<Object> get props => [currentDateTime];
 }
 
+class CounterWeekReportNext extends CounterEvent {
+  final DateTime currentDateTime;
+  CounterWeekReportNext({required this.currentDateTime});
+
+  @override
+  List<Object> get props => [currentDateTime];
+}
+
+class CounterWeekReportPrev extends CounterEvent {
+  final DateTime currentDateTime;
+  CounterWeekReportPrev({required this.currentDateTime});
+
+  @override
+  List<Object> get props => [currentDateTime];
+}
+
 class CounterUpdate extends CounterEvent {
   final String id;
   final String? title;
