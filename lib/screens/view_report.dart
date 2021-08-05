@@ -367,15 +367,7 @@ class _ViewReport extends State<ViewReport>
                                                     .toString())
                                             : '',
                                         style: TextStyle(
-                                            color: state is CounterLoaded
-                                                ? (_isDateAMSameAsDateB(
-                                                        dateA: state
-                                                                .targetDateTime ??
-                                                            DateTime.now(),
-                                                        dateB: DateTime.now())
-                                                    ? Color(0xff3d7068)
-                                                    : Colors.white)
-                                                : Color(0xff3d7068),
+                                            color: Colors.white,
                                             letterSpacing: 2),
                                       ),
                                       state is CounterLoaded
@@ -454,11 +446,16 @@ class _ViewReport extends State<ViewReport>
                                       state is CounterLoaded
                                           ? GestureDetector(
                                               onTap: () {
-                                                _weekReportCounterBloc.add(
-                                                    CounterDayReportPrev(
-                                                        currentDateTime: state
-                                                                .targetDateTime ??
-                                                            DateTime.now()));
+                                                _yearReportCounterBloc.add(CounterGetYearReport(
+                                                    dateTime: DateTime.parse(((state
+                                                                        .targetDateTime
+                                                                        ?.year ??
+                                                                    DateTime.now()
+                                                                        .year) -
+                                                                1)
+                                                            .toString() +
+                                                        "-" +
+                                                        '01-01')));
                                               },
                                               child: Icon(
                                                 Icons.arrow_back_ios,
@@ -479,11 +476,21 @@ class _ViewReport extends State<ViewReport>
                                       state is CounterLoaded
                                           ? GestureDetector(
                                               onTap: () {
-                                                _weekReportCounterBloc.add(
-                                                    CounterDayReportNext(
-                                                        currentDateTime: state
-                                                                .targetDateTime ??
-                                                            DateTime.now()));
+                                                if (!_isDateAMSameAsDateB(
+                                                    dateA:
+                                                        state.targetDateTime ??
+                                                            DateTime.now(),
+                                                    dateB: DateTime.now())) {
+                                                  _yearReportCounterBloc.add(
+                                                      CounterGetYearReport(
+                                                          dateTime: DateTime.parse(
+                                                              ((state.targetDateTime?.year ??
+                                                                              DateTime.now().year) +
+                                                                          1)
+                                                                      .toString() +
+                                                                  "-" +
+                                                                  '01-01')));
+                                                }
                                               },
                                               child: Icon(
                                                 Icons.arrow_forward_ios,
@@ -507,12 +514,10 @@ class _ViewReport extends State<ViewReport>
                                         height: 350,
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          // child: YearBarGraphCard(
-                                          //     state.yearBarChartData ?? [],
-                                          //     title: 'Dhikred',
-                                          //     desc: 'Time Distribution'),
-                                          child:
-                                              YearBarGraphCard.withSampleData(),
+                                          child: YearBarGraphCard(
+                                              state.yearBarChartData ?? [],
+                                              title: 'Dhikred',
+                                              desc: 'Time Distribution'),
                                         ),
                                       )
                                     : Container(

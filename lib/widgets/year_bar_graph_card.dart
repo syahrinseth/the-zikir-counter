@@ -71,22 +71,22 @@ class YearBarGraphCard extends StatelessWidget {
               seriesList,
               animate: animate,
               defaultInteractions: false,
-              domainAxis: charts.DateTimeAxisSpec(),
+              // domainAxis: charts.DateTimeAxisSpec(),
               defaultRenderer: new charts.BarRendererConfig<DateTime>(),
               behaviors: [
                 new charts.SelectNearest(),
                 new charts.DomainHighlighter(),
-                new charts.DomainA11yExploreBehavior(),
+                // new charts.DomainA11yExploreBehavior(),
                 // charts.LinePointHighlighter(
                 //     symbolRenderer: charts.SymbolRenderer())
               ],
               selectionModels: [
-                charts.SelectionModelConfig(
-                    changedListener: (charts.SelectionModel model) {
-                  // if (model.hasDatumSelection)
-                  //   print(model.selectedSeries[0]
-                  //       .measureFn(model.selectedDatum[0].index));
-                })
+                // charts.SelectionModelConfig(
+                //     changedListener: (charts.SelectionModel model) {
+                //   // if (model.hasDatumSelection)
+                //   //   print(model.selectedSeries[0]
+                //   //       .measureFn(model.selectedDatum[0].index));
+                // })
               ],
             )
                 // child: charts.BarChart(

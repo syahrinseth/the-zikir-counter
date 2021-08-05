@@ -224,7 +224,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         }
         yield CounterLoaded(
             targetDateTime: event.dateTime,
-            monthBarChartData: Counter.getYearReport(
+            yearBarChartData: Counter.getYearReport(
                 counters: counters, dateTime: event.dateTime));
       } catch (e) {
         yield CounterError(message: e.toString());

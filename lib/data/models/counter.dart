@@ -7,6 +7,7 @@ import 'package:quiver/time.dart';
 import 'package:the_zikir_app/widgets/day_bar_graph_card.dart';
 import 'package:the_zikir_app/widgets/month_bar_graph_card.dart';
 import 'package:the_zikir_app/widgets/week_bar_graph_card.dart';
+import 'package:the_zikir_app/widgets/year_bar_graph_card.dart';
 import 'package:uuid/uuid.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -377,7 +378,7 @@ class Counter {
     // }
   }
 
-  static List<charts.Series<CounterMonthBarChartData, DateTime>> getYearReport(
+  static List<charts.Series<CounterYearBarChartData, DateTime>> getYearReport(
       {required DateTime dateTime, required List<Counter> counters}) {
     // try {
     List<CounterHistory> targetCounterHistories = [];
@@ -396,9 +397,7 @@ class Counter {
       months.add({
         'month': DateTime.parse(dateTime.year.toString() +
             '-' +
-            (dateTime.month < 10
-                ? ('0' + dateTime.month.toString())
-                : dateTime.month.toString()) +
+            (i < 10 ? ('0' + i.toString()) : i.toString()) +
             '-' +
             "01"),
         'total': 0
@@ -413,21 +412,21 @@ class Counter {
     }
 
     // convert days to list of chart series
-    List<CounterMonthBarChartData> data = months.asMap().entries.map((e) {
+    List<CounterYearBarChartData> data = months.asMap().entries.map((e) {
       int key = e.key;
       Map day = e.value;
-      return CounterMonthBarChartData(day['month'] ?? DateTime.now(),
+      return CounterYearBarChartData(day['month'] ?? DateTime.now(),
           day['total'] ?? 0, charts.ColorUtil.fromDartColor(Color(0xff43c59e)));
     }).toList();
     // return
     return [
-      new charts.Series<CounterMonthBarChartData, DateTime>(
+      new charts.Series<CounterYearBarChartData, DateTime>(
         id: 'Dzikr Time Distribution',
-        domainFn: (CounterMonthBarChartData data, _) => data.dateTime,
-        measureFn: (CounterMonthBarChartData data, _) => data.count,
+        domainFn: (CounterYearBarChartData data, _) => data.dateTime,
+        measureFn: (CounterYearBarChartData data, _) => data.count,
         data: data,
-        colorFn: (CounterMonthBarChartData data, _) => data.color,
-        radiusPxFn: (CounterMonthBarChartData data, _) => 40.0,
+        colorFn: (CounterYearBarChartData data, _) => data.color,
+        radiusPxFn: (CounterYearBarChartData data, _) => 40.0,
       ),
     ];
     // } catch (e) {
