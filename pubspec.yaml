@@ -43,7 +43,7 @@ dependencies:
   empty_widget: ^0.0.5
   charts_flutter: ^0.11.0
   loading_animations: ^2.2.0
-  tutorial_coach_mark: ^1.0.3
+  tutorial_coach_mark: ^1.1.0
   introduction_screen: ^2.1.0
   quiver: ^3.0.1
 
