@@ -24,6 +24,7 @@ class MyTextField extends StatelessWidget {
       maxLines: maxLines,
       controller: controller,
       decoration: InputDecoration(
+          floatingLabelBehavior: FloatingLabelBehavior.always,
           suffixIcon: icon == null ? null : icon,
           labelText: label,
           labelStyle: TextStyle(color: Colors.black45),

@@ -141,7 +141,7 @@ class _HomePage extends State<HomePage> {
                                 children: <Widget>[
                                   Container(
                                     child: Text(
-                                      'The Dhikr App',
+                                      'Smart Dhikr',
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
                                         fontSize: 22.0,

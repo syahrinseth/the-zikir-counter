@@ -237,7 +237,9 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                       //   ],
                       // ),
 
-                      MyTextField(label: 'Title', controller: _titleController),
+                      MyTextField(
+                          label: 'Title - e.g: Salawat etc.',
+                          controller: _titleController),
                       MyTextField(
                           label: 'Note',
                           minLines: 3,

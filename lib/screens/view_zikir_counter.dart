@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
@@ -120,17 +121,47 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  Container(
-                                    child: Text(
-                                      state.counter!.name ?? '',
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                        fontSize: 22.0,
-                                        color: LightColors.getThemeColor(
-                                            colorName:
-                                                state.counter?.counterTheme,
-                                            contrast: 'dark'),
-                                        fontWeight: FontWeight.w800,
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditZikirCounter(
+                                                    counter: state.counter ??
+                                                        Counter.fromJson({}))),
+                                      ).then((value) {
+                                        counterBloc
+                                            .add(CounterGetById(widget.id));
+                                      });
+                                    },
+                                    child: Container(
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            state.counter!.name ?? '',
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              fontSize: 22.0,
+                                              color: LightColors.getThemeColor(
+                                                  colorName: state
+                                                      .counter?.counterTheme,
+                                                  contrast: 'dark'),
+                                              fontWeight: FontWeight.w800,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 2.0,
+                                          ),
+                                          Icon(Icons.edit,
+                                              color: LightColors.getThemeColor(
+                                                  colorName: state
+                                                      .counter?.counterTheme,
+                                                  contrast: 'dark'),
+                                              size: 16.0)
+                                        ],
                                       ),
                                     ),
                                   ),
@@ -139,7 +170,7 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
                                       ((state.counter!.limiter ?? 1) -
                                                   (state.counter!.counter ?? 0))
                                               .toString() +
-                                          ' zikir to go',
+                                          ' dhikr to go',
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
                                         fontSize: 16.0,
