@@ -19,6 +19,9 @@ import 'package:the_zikir_app/widgets/active_project_card.dart';
 import 'package:the_zikir_app/widgets/task_column.dart';
 import 'package:the_zikir_app/widgets/top_container.dart';
 import 'package:empty_widget/empty_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
+import 'dart:io' show Platform;
 
 class HomePage extends StatefulWidget {
   _HomePage createState() => _HomePage();
@@ -81,6 +84,65 @@ class _HomePage extends State<HomePage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color(0xff43c59e),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'Smart Dhikr',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontSize: 30.0,
+                      color: Color(0xff3d7068),
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  Text('')
+                ],
+              ),
+            ),
+            // ListTile(
+            //   title: const Text('Remove Ads'),
+            //   onTap: () {
+            //     // Update the state of the app.
+            //     // ...
+            //   },
+            // ),
+            ListTile(
+              title: const Text('Share this app'),
+              onTap: () {
+                if (Theme.of(context).platform == TargetPlatform.iOS) {
+                  Share.share(
+                      'Download Smart Dhikr to count, record and monitor your dhikrs on the App Store. #smartdhikrapp https://itunes.apple.com/appid12345567');
+                } else if (Theme.of(context).platform ==
+                    TargetPlatform.android) {
+                  Share.share(
+                      'Download Smart Dhikr to count, record and monitor your dhikrs on the Google Play Store. #smartdhikrapp https://play.google.com/store/apps/details?id=com.syahrinseth.thedhikrapp');
+                }
+              },
+            ),
+            // ListTile(
+            //   title: const Text('Rate this app'),
+            //   onTap: () {
+            //     // Update the state of the app.
+            //     // ...
+            //   },
+            // ),
+            ListTile(
+              title: const Text('Contact developer'),
+              onTap: () => launch('https://syahrinseth.com'),
+            ),
+          ],
+        ),
+      ),
       backgroundColor: LightColors.kLightYellow,
       body: SafeArea(
         child: BlocConsumer<CounterBloc, CounterState>(
@@ -104,8 +166,13 @@ class _HomePage extends State<HomePage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
-                                Icon(Icons.menu,
-                                    color: Color(0xff3d7068), size: 30.0),
+                                GestureDetector(
+                                  onTap: () {
+                                    Scaffold.of(context).openDrawer();
+                                  },
+                                  child: Icon(Icons.menu,
+                                      color: Color(0xff3d7068), size: 30.0),
+                                ),
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.push(
