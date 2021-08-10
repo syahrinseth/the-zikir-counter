@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:the_zikir_app/bloc/counter_bloc.dart';
+import 'package:the_zikir_app/bloc/profile_bloc.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
 import 'package:the_zikir_app/event/counter_event.dart';
+import 'package:the_zikir_app/event/profile_event.dart';
 import 'package:the_zikir_app/screens/create_new_zikir.dart';
+import 'package:the_zikir_app/screens/profile_edit.dart';
 import 'package:the_zikir_app/screens/view_report.dart';
 import 'package:the_zikir_app/screens/view_zikir_counter.dart';
 import 'package:the_zikir_app/state/counter_state.dart';
+import 'package:the_zikir_app/state/profile_state.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/active_project_card.dart';
 import 'package:the_zikir_app/widgets/task_column.dart';
@@ -21,6 +26,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePage extends State<HomePage> {
   CounterBloc counterBloc = CounterBloc()..add(CounterInit());
+  ProfileBloc profileBloc = ProfileBloc();
   Text subheading(String title) {
     return Text(
       title,
@@ -61,11 +67,14 @@ class _HomePage extends State<HomePage> {
     // TODO: implement initState
     super.initState();
     counterBloc.add(CounterGetAll());
+    profileBloc.add(ProfileGet());
   }
 
   @override
   void dispose() {
     super.dispose();
+    counterBloc.close();
+    profileBloc.close();
   }
 
   @override
@@ -82,99 +91,151 @@ class _HomePage extends State<HomePage> {
           builder: (context, state) {
             return Column(
               children: <Widget>[
-                TopContainer(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  height: 200,
-                  width: width,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                BlocBuilder<ProfileBloc, ProfileState>(
+                  bloc: profileBloc,
+                  builder: (context, profileState) {
+                    return TopContainer(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      height: 200,
+                      width: width,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            Icon(Icons.menu,
-                                color: Color(0xff3d7068), size: 30.0),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ViewReport()),
-                                ).then((value) {
-                                  counterBloc.add(CounterGetAll());
-                                });
-                              },
-                              child: Icon(Icons.bar_chart,
-                                  color: Color(0xff3d7068), size: 25.0),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 0, vertical: 0.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              CircularPercentIndicator(
-                                radius: 90.0,
-                                lineWidth: 5.0,
-                                animation: true,
-                                percent:
-                                    Counter.getTotalCountPercentageFromCounters(
-                                        counters: (state is CounterLoaded
-                                            ? state.counters ?? []
-                                            : [])),
-                                circularStrokeCap: CircularStrokeCap.round,
-                                progressColor: Color(0xff3d7068),
-                                backgroundColor: Color(0xff43c59e),
-                                center: CircleAvatar(
-                                  backgroundColor: Color(0xff43c59e),
-                                  radius: 35.0,
-                                  backgroundImage: AssetImage(
-                                    'assets/images/avatar.png',
-                                  ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Icon(Icons.menu,
+                                    color: Color(0xff3d7068), size: 30.0),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ViewReport()),
+                                    ).then((value) {
+                                      counterBloc.add(CounterGetAll());
+                                      profileBloc.add(ProfileGet());
+                                    });
+                                  },
+                                  child: Icon(Icons.bar_chart,
+                                      color: Color(0xff3d7068), size: 25.0),
                                 ),
-                              ),
-                              Column(
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 0, vertical: 0.0),
+                              child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
-                                  Container(
-                                    child: Text(
-                                      'Smart Dhikr',
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                        fontSize: 22.0,
-                                        color: Color(0xff3d7068),
-                                        fontWeight: FontWeight.w800,
-                                      ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProfileEdit()),
+                                      ).then((value) {
+                                        counterBloc.add(CounterGetAll());
+                                        profileBloc.add(ProfileGet());
+                                      });
+                                    },
+                                    child: CircularPercentIndicator(
+                                      radius: 90.0,
+                                      lineWidth: 5.0,
+                                      animation: true,
+                                      percent: Counter
+                                          .getTotalCountPercentageFromCounters(
+                                              counters: (state is CounterLoaded
+                                                  ? state.counters ?? []
+                                                  : [])),
+                                      circularStrokeCap:
+                                          CircularStrokeCap.round,
+                                      progressColor: Color(0xff3d7068),
+                                      backgroundColor: Color(0xff43c59e),
+                                      center: CircleAvatar(
+                                          backgroundColor: Color(0xff43c59e),
+                                          radius: 35.0,
+                                          child: profileState is ProfileLoaded
+                                              ? (profileState.avatar == 'male'
+                                                  ? SvgPicture.asset(
+                                                      'assets/svgs/man.svg')
+                                                  : SvgPicture.asset(
+                                                      'assets/svgs/woman.svg'))
+                                              : SizedBox()),
                                     ),
                                   ),
-                                  Container(
-                                    child: Text(
-                                      'Total Dhikr Count: ' +
-                                          (state is CounterLoaded
-                                              ? Counter
-                                                      .getTotalCountFromCounters(
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProfileEdit()),
+                                          ).then((value) {
+                                            counterBloc.add(CounterGetAll());
+                                            profileBloc.add(ProfileGet());
+                                          });
+                                        },
+                                        child: Container(
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                (profileState is ProfileLoaded
+                                                    ? (profileState.name ??
+                                                        'Smart Dhikr')
+                                                    : 'Smart Dhikr'),
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                  fontSize: 22.0,
+                                                  color: Color(0xff3d7068),
+                                                  fontWeight: FontWeight.w800,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 2.0,
+                                              ),
+                                              Icon(Icons.edit,
+                                                  color: Color(0xff3d7068),
+                                                  size: 16.0)
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Text(
+                                          'Total Dhikr Count: ' +
+                                              (state is CounterLoaded
+                                                  ? Counter.getTotalCountFromCounters(
                                                           counters:
                                                               state.counters ??
                                                                   [])
-                                                  .toString()
-                                              : ''),
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                        fontSize: 16.0,
-                                        color: Color(0xff3d7068),
-                                        fontWeight: FontWeight.w400,
+                                                      .toString()
+                                                  : ''),
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            color: Color(0xff3d7068),
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
+                                    ],
+                                  )
                                 ],
-                              )
-                            ],
-                          ),
-                        )
-                      ]),
+                              ),
+                            )
+                          ]),
+                    );
+                  },
                 ),
                 Expanded(
                   child: SingleChildScrollView(
@@ -206,6 +267,7 @@ class _HomePage extends State<HomePage> {
                                                   CreateNewZikirCounter()),
                                         ).then((value) {
                                           counterBloc.add(CounterGetAll());
+                                          profileBloc.add(ProfileGet());
                                         });
                                       },
                                       child: plusIcon(),
@@ -239,6 +301,7 @@ class _HomePage extends State<HomePage> {
                                                 CreateNewZikirCounter()),
                                       ).then((value) {
                                         counterBloc.add(CounterGetAll());
+                                        profileBloc.add(ProfileGet());
                                       });
                                       ;
                                     },
@@ -296,6 +359,7 @@ class _HomePage extends State<HomePage> {
                                 ViewZikirCounter(id: counter.id)),
                       ).then((value) {
                         counterBloc.add(CounterGetAll());
+                        profileBloc.add(ProfileGet());
                       });
                     }),
               );
@@ -407,6 +471,7 @@ class _HomePage extends State<HomePage> {
                               ViewZikirCounter(id: counter.id)),
                     ).then((value) {
                       counterBloc.add(CounterGetAll());
+                      profileBloc.add(ProfileGet());
                     });
                   },
                   child: TaskColumn(

@@ -22,6 +22,7 @@ void main() async {
   Hive.registerAdapter(CounterAdapter());
   Hive.registerAdapter(CounterHistoryAdapter());
   await Hive.openBox<Counter>('myZikirCountersBox');
+  await Hive.openBox<String>('myProfileBox');
   // Box<Counter> countersBox = Hive.box<Counter>('myZikirCountersBox');
   // countersBox.clear();
   return runApp(MyApp());

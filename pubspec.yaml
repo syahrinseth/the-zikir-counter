@@ -46,6 +46,7 @@ dependencies:
   tutorial_coach_mark: ^1.1.0
   introduction_screen: ^2.1.0
   quiver: ^3.0.1
+  flutter_svg: ^0.22.0
 
 dev_dependencies:
   flutter_test:
@@ -98,6 +99,7 @@ flutter:
   assets:
     - assets/images/
     - assets/sounds/
+    - assets/svgs/
   fonts:
     - family: Poppins
       fonts:
