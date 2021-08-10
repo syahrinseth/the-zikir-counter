@@ -128,15 +128,15 @@ class _EditZikirCounter extends State<EditZikirCounter> {
           builder: (context, state) {
             if (state is CounterSaved) {
               _titleController.value =
-                  TextEditingValue(text: state.counter!.name ?? 'Counter');
+                  TextEditingValue(text: state.counter?.name ?? 'Counter');
               _descriptionController.value =
-                  TextEditingValue(text: state.counter!.description ?? '');
-              _counterLimitController.value =
-                  TextEditingValue(text: state.counter!.limiter.toString());
+                  TextEditingValue(text: state.counter?.description ?? '');
+              _counterLimitController.value = TextEditingValue(
+                  text: state.counter?.limiter.toString() ?? '');
               _themeController.value = TextEditingValue(
-                  text: state.counter!.counterTheme ?? 'green');
-              _zikirCountController.value =
-                  TextEditingValue(text: state.counter!.counter.toString());
+                  text: state.counter?.counterTheme ?? 'green');
+              _zikirCountController.value = TextEditingValue(
+                  text: state.counter?.counter.toString() ?? '');
             }
             return Column(
               children: <Widget>[
@@ -201,7 +201,7 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                             style: TextStyle(
                                 color: LightColors.getThemeColor(
                                     colorName: state is CounterLoaded
-                                        ? state.counter!.counterTheme
+                                        ? state.counter?.counterTheme
                                         : null,
                                     contrast: 'dark'),
                                 fontSize: 30.0,
