@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:the_zikir_app/bloc/counter_bloc.dart';
 import 'package:the_zikir_app/bloc/profile_bloc.dart';
@@ -30,6 +31,10 @@ class HomePage extends StatefulWidget {
 class _HomePage extends State<HomePage> {
   CounterBloc counterBloc = CounterBloc()..add(CounterInit());
   ProfileBloc profileBloc = ProfileBloc();
+  String? appName;
+  String? packageName;
+  String? version;
+  String? buildNumber;
   Text subheading(String title) {
     return Text(
       title,
@@ -71,6 +76,14 @@ class _HomePage extends State<HomePage> {
     super.initState();
     counterBloc.add(CounterGetAll());
     profileBloc.add(ProfileGet());
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      setState(() {
+        appName = packageInfo.appName;
+        packageName = packageInfo.packageName;
+        version = packageInfo.version;
+        buildNumber = packageInfo.buildNumber;
+      });
+    });
   }
 
   @override
@@ -105,7 +118,8 @@ class _HomePage extends State<HomePage> {
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  Text('')
+                  SizedBox(width: 5.0),
+                  Text('v' + (version ?? ''))
                 ],
               ),
             ),
@@ -140,6 +154,9 @@ class _HomePage extends State<HomePage> {
               title: const Text('Contact developer'),
               onTap: () => launch('https://syahrinseth.com'),
             ),
+            ListTile(
+                title: const Text('App Avatar Attribution'),
+                onTap: () => launch('https://www.flaticon.com/authors/ddara'))
           ],
         ),
       ),
