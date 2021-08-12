@@ -261,6 +261,20 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                       //     icon: downwardIcon,
                       //     controller: _themeController),
                       // SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Theme',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                       DropdownButton<String>(
                         style: TextStyle(color: Colors.black),
                         hint: Text('Theme'),
