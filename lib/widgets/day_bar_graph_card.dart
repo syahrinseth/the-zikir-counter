@@ -2,8 +2,9 @@ import 'dart:math';
 // EXCLUDE_FROM_GALLERY_DOCS_END
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'package:the_zikir_app/widgets/month_bar_graph_card.dart';
 
-class DayBarGraphCard extends StatelessWidget {
+class DayBarGraphCard extends StatefulWidget {
   final List<charts.Series<dynamic, DateTime>> seriesList;
   final bool animate;
   final String title;
@@ -22,96 +23,7 @@ class DayBarGraphCard extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    // This is just a simple bar chart with optional property
-    // [defaultInteractions] set to true to include the default
-    // interactions/behaviors when building the chart.
-    // This includes bar highlighting.
-    //
-    // Note: defaultInteractions defaults to true.
-    //
-    // [defaultInteractions] can be set to false to avoid the default
-    // interactions.
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(10.0),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    title,
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    desc,
-                    style: TextStyle(fontSize: 16.0),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-              ],
-            ),
-            Expanded(
-                child: charts.TimeSeriesChart(
-              seriesList,
-              animate: animate,
-              defaultInteractions: false,
-              defaultRenderer: new charts.BarRendererConfig<DateTime>(),
-              dateTimeFactory: const charts.LocalDateTimeFactory(),
-              domainAxis: charts.DateTimeAxisSpec(
-                tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
-                  day: charts.TimeFormatterSpec(
-                    format: 'dd',
-                    transitionFormat: 'dd',
-                  ),
-                ),
-              ),
-              behaviors: [
-                new charts.SelectNearest(),
-                new charts.DomainHighlighter(),
-                new charts.DomainA11yExploreBehavior(),
-                // charts.LinePointHighlighter(
-
-                //     symbolRenderer: charts.SymbolRenderer())
-              ],
-              selectionModels: [
-                charts.SelectionModelConfig(
-                    changedListener: (charts.SelectionModel model) {
-                  // if (model.hasDatumSelection)
-                  //   print(model.selectedSeries[0]
-                  //       .measureFn(model.selectedDatum[0].index));
-                })
-              ],
-            )
-                // child: charts.BarChart(
-                //   seriesList,
-                //   animate: animate,
-                //   defaultInteractions: true,
-                //   // primaryMeasureAxis: new charts.NumericAxisSpec(
-                //   //   tickProviderSpec: charts.NumericTickProviderSpec,
-                //   // ),
-                // ),
-                ),
-          ],
-        ),
-      ),
-    );
-  }
+  _DayBarGraphCardState createState() => _DayBarGraphCardState();
 
   /// Create one series with sample hard coded data.
   static List<charts.Series<CounterDayBarChartData, DateTime>>
@@ -143,6 +55,101 @@ class DayBarGraphCard extends StatelessWidget {
         radiusPxFn: (CounterDayBarChartData data, _) => 40.0,
       ),
     ];
+  }
+}
+
+class _DayBarGraphCardState extends State<DayBarGraphCard> {
+  int graphLabel = 0;
+  @override
+  Widget build(BuildContext context) {
+    charts.ChartBehavior<DateTime> labelDraw = new charts.LinePointHighlighter(
+        symbolRenderer: CustomCircleSymbolRenderer(amount: graphLabel));
+    // This is just a simple bar chart with optional property
+    // [defaultInteractions] set to true to include the default
+    // interactions/behaviors when building the chart.
+    // This includes bar highlighting.
+    //
+    // Note: defaultInteractions defaults to true.
+    //
+    // [defaultInteractions] can be set to false to avoid the default
+    // interactions.
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(10.0),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    widget.title,
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    widget.desc,
+                    style: TextStyle(fontSize: 16.0),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+              ],
+            ),
+            Expanded(
+                child: charts.TimeSeriesChart(
+              widget.seriesList,
+              animate: widget.animate,
+              defaultInteractions: false,
+              defaultRenderer: new charts.BarRendererConfig<DateTime>(),
+              dateTimeFactory: const charts.LocalDateTimeFactory(),
+              domainAxis: charts.DateTimeAxisSpec(
+                tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
+                  day: charts.TimeFormatterSpec(
+                    format: 'dd',
+                    transitionFormat: 'dd',
+                  ),
+                ),
+              ),
+              behaviors: [
+                new charts.SelectNearest(),
+                new charts.DomainHighlighter(),
+                new charts.DomainA11yExploreBehavior(),
+                labelDraw
+              ],
+              selectionModels: [
+                charts.SelectionModelConfig(
+                    changedListener: (charts.SelectionModel model) {
+                  // if (model.hasDatumSelection)
+                  //   print(model.selectedSeries[0]
+                  //       .measureFn(model.selectedDatum[0].index));
+                })
+              ],
+            )
+                // child: charts.BarChart(
+                //   seriesList,
+                //   animate: animate,
+                //   defaultInteractions: true,
+                //   // primaryMeasureAxis: new charts.NumericAxisSpec(
+                //   //   tickProviderSpec: charts.NumericTickProviderSpec,
+                //   // ),
+                // ),
+                ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
