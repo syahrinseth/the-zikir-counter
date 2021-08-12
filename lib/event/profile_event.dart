@@ -36,3 +36,7 @@ class ProfileShowTutorialMark extends ProfileEvent {
   final List<ContentAlign> contentAligns;
   final bool markFinishTutorial;
 }
+
+class ProfileDoneWelcomeScreen extends ProfileEvent {
+  ProfileDoneWelcomeScreen();
+}

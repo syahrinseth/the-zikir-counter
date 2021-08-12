@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:the_zikir_app/bloc/profile_bloc.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
+import 'package:the_zikir_app/event/profile_event.dart';
 import 'package:the_zikir_app/screens/home_page.dart';
+import 'package:the_zikir_app/screens/welcome_screen.dart';
+import 'package:the_zikir_app/state/profile_state.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
 
 void main() async {
@@ -28,21 +33,48 @@ void main() async {
   return runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ProfileBloc profileBloc = ProfileBloc();
+
+  @override
+  void initState() {
+    super.initState();
+    profileBloc.add(ProfileGet());
+  }
+
+  @override
+  void dispose() {
+    profileBloc.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        textTheme: Theme.of(context).textTheme.apply(
-            bodyColor: Color(0xff3d7068),
-            displayColor: Color(0xff3d7068),
-            fontFamily: 'Poppins'),
-      ),
-      home: HomePage(),
-      debugShowCheckedModeBanner: false,
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      bloc: profileBloc,
+      builder: (context, state) {
+        return MaterialApp(
+          title: 'Smart Dhikr',
+          theme: ThemeData(
+            primarySwatch: Colors.green,
+            textTheme: Theme.of(context).textTheme.apply(
+                bodyColor: Color(0xff3d7068),
+                displayColor: Color(0xff3d7068),
+                fontFamily: 'Poppins'),
+          ),
+          home: state is ProfileLoaded
+              ? (state.isDoneWelcomeScreen == 'yes'
+                  ? HomePage()
+                  : WelcomeScreen())
+              : HomePage(),
+          debugShowCheckedModeBanner: false,
+        );
+      },
     );
   }
 }

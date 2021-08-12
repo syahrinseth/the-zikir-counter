@@ -18,8 +18,21 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         String name = profileBox.get('name') ?? 'Smart Dhikr';
         String avatar = profileBox.get('avatar') ?? 'male';
         String isDoneTutorial = profileBox.get('is_done_tutorial') ?? 'no';
+        String isDoneWelcomeScreen =
+            profileBox.get('is_done_welcome_screen') ?? 'no';
         yield ProfileLoaded(
-            name: name, avatar: avatar, isDoneTutorial: isDoneTutorial);
+            name: name,
+            avatar: avatar,
+            isDoneTutorial: isDoneTutorial,
+            isDoneWelcomeScreen: isDoneWelcomeScreen);
+      } catch (e) {
+        yield ProfileError(message: e.toString());
+      }
+    }
+    if (event is ProfileDoneWelcomeScreen) {
+      try {
+        Box<String> profileBox = Hive.box<String>('myProfileBox');
+        profileBox.put('is_done_welcome_screen', 'yes');
       } catch (e) {
         yield ProfileError(message: e.toString());
       }
