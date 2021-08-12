@@ -20,9 +20,9 @@ import 'package:the_zikir_app/widgets/active_project_card.dart';
 import 'package:the_zikir_app/widgets/task_column.dart';
 import 'package:the_zikir_app/widgets/top_container.dart';
 import 'package:empty_widget/empty_widget.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
-import 'dart:io' show Platform;
 
 class HomePage extends StatefulWidget {
   _HomePage createState() => _HomePage();
@@ -35,6 +35,18 @@ class _HomePage extends State<HomePage> {
   String? packageName;
   String? version;
   String? buildNumber;
+  List<GlobalKey> buttonKeys = [GlobalKey(), GlobalKey(), GlobalKey()];
+  List<String> tutorialTexts = [
+    'Tap this button to create new smart dhikr counter.',
+    'Tap this section to edit your name and avatar.',
+    'Tap this button to see your dhikr history.'
+  ];
+  List<ContentAlign> tutorialTextAligns = [
+    ContentAlign.bottom,
+    ContentAlign.bottom,
+    ContentAlign.bottom
+  ];
+
   Text subheading(String title) {
     return Text(
       title,
@@ -155,7 +167,7 @@ class _HomePage extends State<HomePage> {
               onTap: () => launch('https://syahrinseth.com'),
             ),
             ListTile(
-                title: const Text('App Avatar Attribution'),
+                title: const Text('App avatar attribution'),
                 onTap: () => launch('https://www.flaticon.com/authors/ddara'))
           ],
         ),
@@ -170,8 +182,18 @@ class _HomePage extends State<HomePage> {
           builder: (context, state) {
             return Column(
               children: <Widget>[
-                BlocBuilder<ProfileBloc, ProfileState>(
+                BlocConsumer<ProfileBloc, ProfileState>(
                   bloc: profileBloc,
+                  listener: (context, state) {
+                    if (state is ProfileLoaded) {
+                      if (state.isDoneTutorial == 'no') {
+                        profileBloc.add(ProfileShowTutorialMark(context,
+                            buttonKeys: buttonKeys,
+                            tutorialTexts: tutorialTexts,
+                            contentAligns: tutorialTextAligns));
+                      }
+                    }
+                  },
                   builder: (context, profileState) {
                     return TopContainer(
                       padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -191,6 +213,7 @@ class _HomePage extends State<HomePage> {
                                       color: Color(0xff3d7068), size: 30.0),
                                 ),
                                 GestureDetector(
+                                  key: buttonKeys[2],
                                   onTap: () {
                                     Navigator.push(
                                       context,
@@ -256,6 +279,7 @@ class _HomePage extends State<HomePage> {
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
                                       GestureDetector(
+                                        key: buttonKeys[1],
                                         onTap: () {
                                           Navigator.push(
                                             context,
@@ -343,6 +367,7 @@ class _HomePage extends State<HomePage> {
                                   children: [
                                     subheading('Active Dhikr'),
                                     GestureDetector(
+                                      key: buttonKeys[0],
                                       onTap: () {
                                         Navigator.push(
                                           context,

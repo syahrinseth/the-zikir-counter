@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class ProfileEvent extends Equatable {
   const ProfileEvent();
@@ -20,4 +22,17 @@ class ProfileUpdate extends ProfileEvent {
 
   @override
   List<Object> get props => [];
+}
+
+class ProfileShowTutorialMark extends ProfileEvent {
+  ProfileShowTutorialMark(this.context,
+      {required this.buttonKeys,
+      required this.tutorialTexts,
+      required this.contentAligns,
+      this.markFinishTutorial = false});
+  final BuildContext context;
+  final List<GlobalKey> buttonKeys;
+  final List<String> tutorialTexts;
+  final List<ContentAlign> contentAligns;
+  final bool markFinishTutorial;
 }

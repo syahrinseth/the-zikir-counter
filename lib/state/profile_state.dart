@@ -20,7 +20,8 @@ class ProfileLoaded extends ProfileState {
   final String? name;
   final String? avatar;
   final List props = [];
-  ProfileLoaded({this.name, this.avatar});
+  final String? isDoneTutorial;
+  ProfileLoaded({this.name, this.avatar, this.isDoneTutorial});
 }
 
 class ProfileSaved extends ProfileState {

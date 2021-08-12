@@ -1,9 +1,10 @@
-import 'dart:developer';
-
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:the_zikir_app/event/profile_event.dart';
 import 'package:the_zikir_app/state/profile_state.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInit());
@@ -16,7 +17,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         Box<String> profileBox = Hive.box<String>('myProfileBox');
         String name = profileBox.get('name') ?? 'Smart Dhikr';
         String avatar = profileBox.get('avatar') ?? 'male';
-        yield ProfileLoaded(name: name, avatar: avatar);
+        String isDoneTutorial = profileBox.get('is_done_tutorial') ?? 'no';
+        yield ProfileLoaded(
+            name: name, avatar: avatar, isDoneTutorial: isDoneTutorial);
       } catch (e) {
         yield ProfileError(message: e.toString());
       }
@@ -33,5 +36,82 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         yield ProfileError(message: e.toString());
       }
     }
+    if (event is ProfileShowTutorialMark) {
+      try {
+        ProfileState tempState = this.state;
+        yield (ProfileLoading(
+            name: tempState is ProfileLoaded ? tempState.name : null,
+            avatar: tempState is ProfileLoaded ? tempState.avatar : null));
+        late TutorialCoachMark tutorialCoachMark;
+        List<TargetFocus> targets = initTargets(
+            event.buttonKeys, event.tutorialTexts, event.contentAligns);
+        tutorialCoachMark = TutorialCoachMark(
+          event.context,
+          targets: targets,
+          colorShadow: Color(0xff3d7068),
+          textSkip: "SKIP",
+          paddingFocus: 10,
+          opacityShadow: 0.8,
+          onFinish: () {
+            if (event.markFinishTutorial == true) {
+              Box<String> profileBox = Hive.box<String>('myProfileBox');
+              profileBox.put('is_done_tutorial', 'yes');
+            }
+            print("finish");
+          },
+          onClickTarget: (target) {
+            print('onClickTarget: $target');
+          },
+          onSkip: () {
+            print("skip");
+          },
+          onClickOverlay: (target) {
+            print('onClickOverlay: $target');
+          },
+        )..show();
+        yield (ProfileLoaded(
+            name: tempState is ProfileLoaded ? tempState.name : null,
+            avatar: tempState is ProfileLoaded ? tempState.avatar : null));
+      } catch (e) {
+        yield ProfileError(message: e.toString());
+      }
+    }
+  }
+
+  List<TargetFocus> initTargets(List<GlobalKey> buttonKeys,
+      List<String> tutorialTexts, List<ContentAlign> contentAligns) {
+    List<TargetFocus> targets = [];
+    for (var i = 0; i < buttonKeys.length; i++) {
+      targets.add(TargetFocus(
+        enableOverlayTab: true,
+        enableTargetTab: true,
+        identify: "keyButton" + buttonKeys[i].toString(),
+        keyTarget: buttonKeys[i],
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: contentAligns[i],
+            builder: (context, controller) {
+              return Container(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      tutorialTexts[i],
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+      ));
+    }
+    return targets;
   }
 }
