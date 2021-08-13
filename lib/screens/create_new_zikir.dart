@@ -70,13 +70,13 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                 bloc: profileBloc,
                 builder: (context, profileState) {
                   if (profileState is ProfileLoaded) {
-                    if (profileState.isDoneTutorial == 'no') {
+                    if (profileState.isDoneTutorial2 == 'no') {
                       Future.delayed(Duration(seconds: 1), () {
                         profileBloc.add(ProfileShowTutorialMark(context,
                             buttonKeys: buttonKeys,
                             tutorialTexts: tutorialTexts,
                             contentAligns: tutorialTextAligns,
-                            markFinishTutorial: true));
+                            markFinishTutorial2: true));
                       });
                     }
                   }

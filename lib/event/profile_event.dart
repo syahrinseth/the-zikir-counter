@@ -29,12 +29,14 @@ class ProfileShowTutorialMark extends ProfileEvent {
       {required this.buttonKeys,
       required this.tutorialTexts,
       required this.contentAligns,
-      this.markFinishTutorial = false});
+      this.markFinishTutorial1 = false,
+      this.markFinishTutorial2 = false});
   final BuildContext context;
   final List<GlobalKey> buttonKeys;
   final List<String> tutorialTexts;
   final List<ContentAlign> contentAligns;
-  final bool markFinishTutorial;
+  final bool markFinishTutorial1;
+  final bool markFinishTutorial2;
 }
 
 class ProfileDoneWelcomeScreen extends ProfileEvent {

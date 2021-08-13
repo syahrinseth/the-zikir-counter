@@ -186,11 +186,14 @@ class _HomePage extends State<HomePage> {
                   bloc: profileBloc,
                   listener: (context, state) {
                     if (state is ProfileLoaded) {
-                      if (state.isDoneTutorial == 'no') {
-                        profileBloc.add(ProfileShowTutorialMark(context,
-                            buttonKeys: buttonKeys,
-                            tutorialTexts: tutorialTexts,
-                            contentAligns: tutorialTextAligns));
+                      if (state.isDoneTutorial1 == 'no') {
+                        Future.delayed(Duration(seconds: 1), () {
+                          profileBloc.add(ProfileShowTutorialMark(context,
+                              buttonKeys: buttonKeys,
+                              tutorialTexts: tutorialTexts,
+                              contentAligns: tutorialTextAligns,
+                              markFinishTutorial1: true));
+                        });
                       }
                     }
                   },

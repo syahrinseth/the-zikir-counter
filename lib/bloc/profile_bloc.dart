@@ -17,13 +17,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         Box<String> profileBox = Hive.box<String>('myProfileBox');
         String name = profileBox.get('name') ?? 'Smart Dhikr';
         String avatar = profileBox.get('avatar') ?? 'male';
-        String isDoneTutorial = profileBox.get('is_done_tutorial') ?? 'no';
+        String isDoneTutorial1 = profileBox.get('is_done_tutorial_1') ?? 'no';
+        String isDoneTutorial2 = profileBox.get('is_done_tutorial_2') ?? 'no';
         String isDoneWelcomeScreen =
             profileBox.get('is_done_welcome_screen') ?? 'no';
         yield ProfileLoaded(
             name: name,
             avatar: avatar,
-            isDoneTutorial: isDoneTutorial,
+            isDoneTutorial1: isDoneTutorial1,
+            isDoneTutorial2: isDoneTutorial2,
             isDoneWelcomeScreen: isDoneWelcomeScreen);
       } catch (e) {
         yield ProfileError(message: e.toString());
@@ -66,9 +68,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           paddingFocus: 10,
           opacityShadow: 0.8,
           onFinish: () {
-            if (event.markFinishTutorial == true) {
+            if (event.markFinishTutorial1 == true) {
               Box<String> profileBox = Hive.box<String>('myProfileBox');
-              profileBox.put('is_done_tutorial', 'yes');
+              profileBox.put('is_done_tutorial_1', 'yes');
+            }
+            if (event.markFinishTutorial2 == true) {
+              Box<String> profileBox = Hive.box<String>('myProfileBox');
+              profileBox.put('is_done_tutorial_2', 'yes');
             }
             print("finish");
           },
@@ -76,6 +82,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             print('onClickTarget: $target');
           },
           onSkip: () {
+            if (event.markFinishTutorial1 == true) {
+              Box<String> profileBox = Hive.box<String>('myProfileBox');
+              profileBox.put('is_done_tutorial_1', 'yes');
+            }
+            if (event.markFinishTutorial2 == true) {
+              Box<String> profileBox = Hive.box<String>('myProfileBox');
+              profileBox.put('is_done_tutorial_2', 'yes');
+            }
             print("skip");
           },
           onClickOverlay: (target) {

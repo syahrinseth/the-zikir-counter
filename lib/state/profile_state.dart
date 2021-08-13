@@ -20,10 +20,15 @@ class ProfileLoaded extends ProfileState {
   final String? name;
   final String? avatar;
   final List props = [];
-  final String? isDoneTutorial;
+  final String? isDoneTutorial1;
+  final String? isDoneTutorial2;
   final String? isDoneWelcomeScreen;
   ProfileLoaded(
-      {this.name, this.avatar, this.isDoneTutorial, this.isDoneWelcomeScreen});
+      {this.name,
+      this.avatar,
+      this.isDoneTutorial1,
+      this.isDoneTutorial2,
+      this.isDoneWelcomeScreen});
 }
 
 class ProfileSaved extends ProfileState {
