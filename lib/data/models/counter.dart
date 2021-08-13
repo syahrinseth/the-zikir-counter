@@ -155,6 +155,8 @@ class Counter {
         data: data,
         colorFn: (CounterDayBarChartData data, _) => data.color,
         radiusPxFn: (CounterDayBarChartData data, _) => 40.0,
+        labelAccessorFn: (CounterDayBarChartData data, _) =>
+            "${data.count.toString()}",
       ),
     ];
   }
@@ -308,13 +310,14 @@ class Counter {
     // return
     return [
       new charts.Series<CounterWeekBarChartData, String>(
-        id: 'Week Graph Report',
-        domainFn: (CounterWeekBarChartData data, _) => data.dayName,
-        measureFn: (CounterWeekBarChartData data, _) => data.count,
-        data: data,
-        colorFn: (CounterWeekBarChartData data, _) => data.color,
-        radiusPxFn: (CounterWeekBarChartData data, _) => 40.0,
-      ),
+          id: 'Week Graph Report',
+          domainFn: (CounterWeekBarChartData data, _) => data.dayName,
+          measureFn: (CounterWeekBarChartData data, _) => data.count,
+          data: data,
+          colorFn: (CounterWeekBarChartData data, _) => data.color,
+          radiusPxFn: (CounterWeekBarChartData data, _) => 40.0,
+          labelAccessorFn: (CounterWeekBarChartData data, _) =>
+              data.count.toString()),
     ];
   }
 
@@ -370,6 +373,8 @@ class Counter {
         data: data,
         colorFn: (CounterMonthBarChartData data, _) => data.color,
         radiusPxFn: (CounterMonthBarChartData data, _) => 40.0,
+        labelAccessorFn: (CounterMonthBarChartData data, _) =>
+            "${data.count.toString()}",
       ),
     ];
     // } catch (e) {
@@ -427,6 +432,8 @@ class Counter {
         data: data,
         colorFn: (CounterYearBarChartData data, _) => data.color,
         radiusPxFn: (CounterYearBarChartData data, _) => 40.0,
+        labelAccessorFn: (CounterYearBarChartData data, _) =>
+            "${data.count.toString()}",
       ),
     ];
     // } catch (e) {

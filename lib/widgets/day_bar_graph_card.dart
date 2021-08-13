@@ -63,7 +63,7 @@ class _DayBarGraphCardState extends State<DayBarGraphCard> {
   @override
   Widget build(BuildContext context) {
     charts.ChartBehavior<DateTime> labelDraw = new charts.LinePointHighlighter(
-        symbolRenderer: CustomCircleSymbolRenderer(amount: graphLabel));
+        symbolRenderer: CustomCircleSymbolRenderer(labelAmount: graphLabel));
     // This is just a simple bar chart with optional property
     // [defaultInteractions] set to true to include the default
     // interactions/behaviors when building the chart.
@@ -112,7 +112,14 @@ class _DayBarGraphCardState extends State<DayBarGraphCard> {
               widget.seriesList,
               animate: widget.animate,
               defaultInteractions: false,
-              defaultRenderer: new charts.BarRendererConfig<DateTime>(),
+              customSeriesRenderers: [],
+              defaultRenderer: new charts.BarRendererConfig<DateTime>(
+                barRendererDecorator: new charts.BarLabelDecorator<DateTime>(
+                  outsideLabelStyleSpec: new charts.TextStyleSpec(
+                      color: charts.Color.fromHex(code: '#3d7068'),
+                      fontSize: 10),
+                ),
+              ),
               dateTimeFactory: const charts.LocalDateTimeFactory(),
               domainAxis: charts.DateTimeAxisSpec(
                 tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
@@ -125,8 +132,8 @@ class _DayBarGraphCardState extends State<DayBarGraphCard> {
               behaviors: [
                 new charts.SelectNearest(),
                 new charts.DomainHighlighter(),
-                new charts.DomainA11yExploreBehavior(),
-                labelDraw
+                // new charts.DomainA11yExploreBehavior(),
+                labelDraw,
               ],
               selectionModels: [
                 charts.SelectionModelConfig(

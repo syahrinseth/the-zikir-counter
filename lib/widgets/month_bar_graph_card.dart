@@ -63,9 +63,17 @@ class MonthBarGraphCard extends StatefulWidget {
 
 class _MonthBarGraphCardState extends State<MonthBarGraphCard> {
   int graphLabel = 0;
+  charts.ChartBehavior<DateTime> labelDraw = new charts.LinePointHighlighter(
+      symbolRenderer: CustomCircleSymbolRenderer(labelAmount: 0));
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    labelDraw = new charts.LinePointHighlighter(
+        symbolRenderer: CustomCircleSymbolRenderer(labelAmount: 22));
     // This is just a simple bar chart with optional property
     // [defaultInteractions] set to true to include the default
     // interactions/behaviors when building the chart.
@@ -75,8 +83,7 @@ class _MonthBarGraphCardState extends State<MonthBarGraphCard> {
     //
     // [defaultInteractions] can be set to false to avoid the default
     // interactions.
-    charts.ChartBehavior<DateTime> labelDraw = new charts.LinePointHighlighter(
-        symbolRenderer: CustomCircleSymbolRenderer(amount: graphLabel));
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -116,24 +123,50 @@ class _MonthBarGraphCardState extends State<MonthBarGraphCard> {
               child: Column(
                 children: [
                   Expanded(
-                    child: charts.TimeSeriesChart(
-                      widget.seriesList,
-                      animate: widget.animate,
-                      // Set the default renderer to a bar renderer.
-                      // This can also be one of the custom renderers of the time series chart.
-                      defaultRenderer: new charts.BarRendererConfig<DateTime>(),
-                      // It is recommended that default interactions be turned off if using bar
-                      // renderer, because the line point highlighter is the default for time
-                      // series chart.
-                      defaultInteractions: true,
-                      // If default interactions were removed, optionally add select nearest
-                      // and the domain highlighter that are typical for bar charts.
-                      behaviors: [
-                        new charts.SelectNearest(),
-                        new charts.DomainHighlighter(),
-                        labelDraw
-                      ],
-                    ),
+                    child: charts.TimeSeriesChart(widget.seriesList,
+                        animate: widget.animate,
+                        // Set the default renderer to a bar renderer.
+                        // This can also be one of the custom renderers of the time series chart.
+                        defaultRenderer: new charts.BarRendererConfig<DateTime>(
+                          barRendererDecorator:
+                              new charts.BarLabelDecorator<DateTime>(
+                            outsideLabelStyleSpec: new charts.TextStyleSpec(
+                                color: charts.Color.fromHex(code: '#3d7068'),
+                                fontSize: 10),
+                          ),
+                        ),
+                        // It is recommended that default interactions be turned off if using bar
+                        // renderer, because the line point highlighter is the default for time
+                        // series chart.
+                        defaultInteractions: true,
+                        // If default interactions were removed, optionally add select nearest
+                        // and the domain highlighter that are typical for bar charts.
+                        behaviors: [
+                          new charts.SelectNearest(),
+                          new charts.DomainHighlighter(),
+                          labelDraw,
+                        ],
+                        selectionModels: [
+                          new charts.SelectionModelConfig(
+                            type: charts.SelectionModelType.info,
+                            changedListener: (model) {
+                              if (model.hasDatumSelection) {
+                                print(model.selectedSeries[0]
+                                    .measureFn(model.selectedDatum[0].index));
+                                setState(() {
+                                  graphLabel = (model.selectedSeries[0]
+                                          .measureFn(
+                                              model.selectedDatum[0].index)
+                                          ?.toInt() ??
+                                      0);
+                                });
+                              }
+                            },
+                            updatedListener: (model) {
+                              print('updatedListener in $model');
+                            },
+                          ),
+                        ]),
                   ),
                 ],
               ),
@@ -161,9 +194,8 @@ class CounterMonthBarChartData {
 }
 
 class CustomCircleSymbolRenderer extends charts.CircleSymbolRenderer {
-  CustomCircleSymbolRenderer({required this.amount});
-
-  final int amount;
+  CustomCircleSymbolRenderer({required this.labelAmount}) : super();
+  int labelAmount;
   @override
   void paint(
     charts.ChartCanvas canvas,
@@ -187,7 +219,7 @@ class CustomCircleSymbolRenderer extends charts.CircleSymbolRenderer {
     textStyle.color = charts.Color.black;
     textStyle.fontSize = 15;
     // canvas.drawText(
-    //     TextElement.TextElement(amount.toString(), style: textStyle),
+    //     TextElement.TextElement(labelAmount.toString(), style: textStyle),
     //     (bounds.left).round(),
     //     (bounds.height).round());
   }

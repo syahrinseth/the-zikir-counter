@@ -83,7 +83,7 @@ class _YearBarGraphCardState extends State<YearBarGraphCard> {
   @override
   Widget build(BuildContext context) {
     charts.ChartBehavior<DateTime> labelDraw = new charts.LinePointHighlighter(
-        symbolRenderer: CustomCircleSymbolRenderer(amount: graphLabel));
+        symbolRenderer: CustomCircleSymbolRenderer(labelAmount: graphLabel));
     // This is just a simple bar chart with optional property
     // [defaultInteractions] set to true to include the default
     // interactions/behaviors when building the chart.
@@ -133,7 +133,13 @@ class _YearBarGraphCardState extends State<YearBarGraphCard> {
               animate: widget.animate,
               defaultInteractions: false,
               // domainAxis: charts.DateTimeAxisSpec(),
-              defaultRenderer: new charts.BarRendererConfig<DateTime>(),
+              defaultRenderer: new charts.BarRendererConfig<DateTime>(
+                barRendererDecorator: new charts.BarLabelDecorator<DateTime>(
+                  outsideLabelStyleSpec: new charts.TextStyleSpec(
+                      color: charts.Color.fromHex(code: '#3d7068'),
+                      fontSize: 10),
+                ),
+              ),
               behaviors: [
                 new charts.SelectNearest(),
                 new charts.DomainHighlighter(),

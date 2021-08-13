@@ -64,7 +64,7 @@ class _WeekBarGraphCardState extends State<WeekBarGraphCard> {
   @override
   Widget build(BuildContext context) {
     charts.ChartBehavior<String> labelDraw = new charts.LinePointHighlighter(
-        symbolRenderer: CustomCircleSymbolRenderer(amount: graphLabel));
+        symbolRenderer: CustomCircleSymbolRenderer(labelAmount: graphLabel));
     // This is just a simple bar chart with optional property
     // [defaultInteractions] set to true to include the default
     // interactions/behaviors when building the chart.
@@ -113,6 +113,10 @@ class _WeekBarGraphCardState extends State<WeekBarGraphCard> {
               widget.seriesList,
               animate: widget.animate,
               defaultInteractions: true,
+              barRendererDecorator: new charts.BarLabelDecorator<String>(
+                outsideLabelStyleSpec: new charts.TextStyleSpec(
+                    color: charts.Color.fromHex(code: '#3d7068'), fontSize: 10),
+              ),
               behaviors: [
                 new charts.SelectNearest(),
                 new charts.DomainHighlighter(),
