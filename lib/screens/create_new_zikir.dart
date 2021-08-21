@@ -8,6 +8,7 @@ import 'package:the_zikir_app/bloc/profile_bloc.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
 import 'package:the_zikir_app/event/counter_event.dart';
 import 'package:the_zikir_app/event/profile_event.dart';
+import 'package:the_zikir_app/global_var.dart';
 import 'package:the_zikir_app/screens/edit_zikir_counter.dart';
 import 'package:the_zikir_app/state/counter_state.dart';
 import 'package:the_zikir_app/state/profile_state.dart';
@@ -36,7 +37,7 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
     ContentAlign.bottom,
   ];
   final BannerAd myBanner = BannerAd(
-    adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+    adUnitId: GlobalVar.bannerAdId,
     size: AdSize.banner,
     request: AdRequest(),
     listener: BannerAdListener(),
