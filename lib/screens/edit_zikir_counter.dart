@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:the_zikir_app/bloc/counter_bloc.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
 import 'package:the_zikir_app/event/counter_event.dart';
+import 'package:the_zikir_app/global_var.dart';
 import 'package:the_zikir_app/screens/home_page.dart';
 import 'package:the_zikir_app/state/counter_state.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
@@ -26,10 +28,17 @@ class _EditZikirCounter extends State<EditZikirCounter> {
   TextEditingController _zikirCountController = TextEditingController();
   TextEditingController _themeController = TextEditingController();
   CounterBloc _counterBloc = CounterBloc();
+  final BannerAd myBanner = BannerAd(
+    adUnitId: GlobalVar.bannerAdId,
+    size: AdSize.banner,
+    request: AdRequest(),
+    listener: BannerAdListener(),
+  );
 
   @override
   void initState() {
     super.initState();
+    myBanner.load();
     _counterBloc.add(CounterGetById(widget.counter.id));
     _titleController.value =
         TextEditingValue(text: widget.counter.name ?? 'Counter');
@@ -85,6 +94,11 @@ class _EditZikirCounter extends State<EditZikirCounter> {
       color: Colors.black54,
     );
     return Scaffold(
+      bottomNavigationBar: Container(
+        child: AdWidget(ad: myBanner),
+        width: myBanner.size.width.toDouble(),
+        height: myBanner.size.height.toDouble(),
+      ),
       body: SafeArea(
         child: BlocConsumer<CounterBloc, CounterState>(
           bloc: _counterBloc,

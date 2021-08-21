@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -9,6 +10,7 @@ import 'package:the_zikir_app/bloc/profile_bloc.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
 import 'package:the_zikir_app/event/counter_event.dart';
 import 'package:the_zikir_app/event/profile_event.dart';
+import 'package:the_zikir_app/global_var.dart';
 import 'package:the_zikir_app/screens/create_new_zikir.dart';
 import 'package:the_zikir_app/screens/profile_edit.dart';
 import 'package:the_zikir_app/screens/view_report.dart';
@@ -46,6 +48,18 @@ class _HomePage extends State<HomePage> {
     ContentAlign.bottom,
     ContentAlign.bottom
   ];
+  final BannerAd myBanner = BannerAd(
+    adUnitId: GlobalVar.bannerAdId,
+    size: AdSize.banner,
+    request: AdRequest(),
+    listener: BannerAdListener(),
+  );
+  final BannerAd myBanner2 = BannerAd(
+    adUnitId: GlobalVar.bannerAdId,
+    size: AdSize.banner,
+    request: AdRequest(),
+    listener: BannerAdListener(),
+  );
 
   Text subheading(String title) {
     return Text(
@@ -86,6 +100,8 @@ class _HomePage extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    myBanner.load();
+    myBanner2.load();
     counterBloc.add(CounterGetAll());
     profileBloc.add(ProfileGet());
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
@@ -109,6 +125,11 @@ class _HomePage extends State<HomePage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      bottomNavigationBar: Container(
+        child: AdWidget(ad: myBanner),
+        width: myBanner.size.width.toDouble(),
+        height: myBanner.size.height.toDouble(),
+      ),
       drawer: Drawer(
         child: ListView(
           // Important: Remove any padding from the ListView.
@@ -168,7 +189,15 @@ class _HomePage extends State<HomePage> {
             ),
             ListTile(
                 title: const Text('App avatar attribution'),
-                onTap: () => launch('https://www.flaticon.com/authors/ddara'))
+                onTap: () => launch('https://www.flaticon.com/authors/ddara')),
+            ListTile(
+                title: Container(
+                  alignment: Alignment.center,
+                  child: AdWidget(ad: myBanner2),
+                  width: myBanner2.size.width.toDouble(),
+                  height: myBanner2.size.height.toDouble(),
+                ),
+                onTap: () {})
           ],
         ),
       ),
@@ -415,13 +444,12 @@ class _HomePage extends State<HomePage> {
                                         counterBloc.add(CounterGetAll());
                                         profileBloc.add(ProfileGet());
                                       });
-                                      ;
                                     },
                                     child: plusIcon(),
                                   ),
                                 ],
                               ),
-                              generateCompletedZikirWidget(state)
+                              generateCompletedZikirWidget(state),
                             ],
                           ),
                         ),

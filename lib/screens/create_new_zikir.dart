@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:the_zikir_app/bloc/counter_bloc.dart';
@@ -34,10 +35,17 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
     ContentAlign.top,
     ContentAlign.bottom,
   ];
+  final BannerAd myBanner = BannerAd(
+    adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+    size: AdSize.banner,
+    request: AdRequest(),
+    listener: BannerAdListener(),
+  );
 
   @override
   void initState() {
     // TODO: implement initState
+    myBanner.load();
     counterBloc.add(CounterCreate());
     profileBloc.add(ProfileGet());
     super.initState();
@@ -52,6 +60,11 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      bottomNavigationBar: Container(
+        child: AdWidget(ad: myBanner),
+        width: myBanner.size.width.toDouble(),
+        height: myBanner.size.height.toDouble(),
+      ),
       body: SafeArea(
         child: BlocConsumer<CounterBloc, CounterState>(
           bloc: counterBloc,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:the_zikir_app/bloc/profile_bloc.dart';
 import 'package:the_zikir_app/event/profile_event.dart';
+import 'package:the_zikir_app/global_var.dart';
 import 'package:the_zikir_app/state/profile_state.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/avatar_picker.dart';
@@ -18,9 +20,17 @@ class _ProfileEdit extends State<ProfileEdit> {
   ProfileBloc _profileBloc = ProfileBloc();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _avatarController = TextEditingController(text: 'male');
+  final BannerAd myBanner = BannerAd(
+    adUnitId: GlobalVar.bannerAdId,
+    size: AdSize.banner,
+    request: AdRequest(),
+    listener: BannerAdListener(),
+  );
+
   @override
   void initState() {
     super.initState();
+    myBanner.load();
     _profileBloc.add(ProfileGet());
   }
 
@@ -33,6 +43,11 @@ class _ProfileEdit extends State<ProfileEdit> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      bottomNavigationBar: Container(
+        child: AdWidget(ad: myBanner),
+        width: myBanner.size.width.toDouble(),
+        height: myBanner.size.height.toDouble(),
+      ),
       body: SafeArea(
         child: BlocConsumer<ProfileBloc, ProfileState>(
           bloc: _profileBloc,
