@@ -114,6 +114,8 @@ class _WeekBarGraphCardState extends State<WeekBarGraphCard> {
               animate: widget.animate,
               defaultInteractions: true,
               barRendererDecorator: new charts.BarLabelDecorator<String>(
+                insideLabelStyleSpec: new charts.TextStyleSpec(
+                    color: charts.Color.white, fontSize: 10),
                 outsideLabelStyleSpec: new charts.TextStyleSpec(
                     color: charts.Color.fromHex(code: '#3d7068'), fontSize: 10),
               ),

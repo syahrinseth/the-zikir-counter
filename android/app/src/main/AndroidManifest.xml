@@ -2,7 +2,7 @@
     package="com.example.zikir_app">
   <uses-permission android:name="android.permission.VIBRATE"/>
    <application
-        android:label="zikir_app"
+        android:label="Smart Dhikr"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -28,6 +28,10 @@
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
               android:resource="@drawable/launch_background"
               />
+            <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+            <meta-data
+              android:name="com.google.android.gms.ads.com.syahrinseth.thedhikrapp"
+              android:value="ca-app-pub-7782324487799920~8081917539"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
