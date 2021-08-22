@@ -128,15 +128,15 @@ class _MonthBarGraphCardState extends State<MonthBarGraphCard> {
                         // Set the default renderer to a bar renderer.
                         // This can also be one of the custom renderers of the time series chart.
                         defaultRenderer: new charts.BarRendererConfig<DateTime>(
-                          barRendererDecorator:
-                              new charts.BarLabelDecorator<DateTime>(
-                            insideLabelStyleSpec: new charts.TextStyleSpec(
-                                color: charts.Color.white, fontSize: 10),
-                            outsideLabelStyleSpec: new charts.TextStyleSpec(
-                                color: charts.Color.fromHex(code: '#3d7068'),
-                                fontSize: 10),
-                          ),
-                        ),
+                            // barRendererDecorator:
+                            //     new charts.BarLabelDecorator<DateTime>(
+                            //   insideLabelStyleSpec: new charts.TextStyleSpec(
+                            //       color: charts.Color.white, fontSize: 10),
+                            //   outsideLabelStyleSpec: new charts.TextStyleSpec(
+                            //       color: charts.Color.fromHex(code: '#3d7068'),
+                            //       fontSize: 10),
+                            // ),
+                            ),
                         // It is recommended that default interactions be turned off if using bar
                         // renderer, because the line point highlighter is the default for time
                         // series chart.

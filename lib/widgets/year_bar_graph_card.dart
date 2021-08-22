@@ -134,14 +134,14 @@ class _YearBarGraphCardState extends State<YearBarGraphCard> {
               defaultInteractions: false,
               // domainAxis: charts.DateTimeAxisSpec(),
               defaultRenderer: new charts.BarRendererConfig<DateTime>(
-                barRendererDecorator: new charts.BarLabelDecorator<DateTime>(
-                  insideLabelStyleSpec: new charts.TextStyleSpec(
-                      color: charts.Color.white, fontSize: 10),
-                  outsideLabelStyleSpec: new charts.TextStyleSpec(
-                      color: charts.Color.fromHex(code: '#3d7068'),
-                      fontSize: 10),
-                ),
-              ),
+                  // barRendererDecorator: new charts.BarLabelDecorator<DateTime>(
+                  //   insideLabelStyleSpec: new charts.TextStyleSpec(
+                  //       color: charts.Color.white, fontSize: 10),
+                  //   outsideLabelStyleSpec: new charts.TextStyleSpec(
+                  //       color: charts.Color.fromHex(code: '#3d7068'),
+                  //       fontSize: 10),
+                  // ),
+                  ),
               behaviors: [
                 new charts.SelectNearest(),
                 new charts.DomainHighlighter(),
