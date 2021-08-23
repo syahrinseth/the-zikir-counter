@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "945066968327",
+    "project_id": "smart-dhikr",
+    "storage_bucket": "smart-dhikr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:945066968327:android:966a4b6670b509ed37f1a2",
+        "android_client_info": {
+          "package_name": "com.syahrinseth.thedhikrapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "945066968327-9lmic4kue1tfbeb1splb1jvlc712sssm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIkBi7eQ6QnEINy3hmH2LMv3ULte1Golc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "945066968327-9lmic4kue1tfbeb1splb1jvlc712sssm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
