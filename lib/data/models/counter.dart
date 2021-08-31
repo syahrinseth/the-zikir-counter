@@ -168,6 +168,9 @@ class Counter {
     int weekday = dateTime.weekday;
     DateTime? startWeek;
     DateTime? endWeek;
+    dateTime = DateTime.parse(dateTime.year.toString() +
+        dateTime.month.toString().padLeft(2, "0") +
+        dateTime.day.toString().padLeft(2, "0"));
     switch (weekday) {
       case 1:
         // Mon
