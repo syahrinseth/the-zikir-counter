@@ -25,7 +25,7 @@ class ViewZikirCounter extends StatefulWidget {
 class _ViewZikirCounter extends State<ViewZikirCounter> {
   CounterBloc counterBloc = CounterBloc()..add(CounterInit());
   final BannerAd myBanner = BannerAd(
-    adUnitId: GlobalVar.bannerAdId,
+    adUnitId: GlobalVar.counterBannerAdId,
     size: AdSize.banner,
     request: AdRequest(),
     listener: BannerAdListener(),

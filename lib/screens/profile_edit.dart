@@ -21,7 +21,7 @@ class _ProfileEdit extends State<ProfileEdit> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _avatarController = TextEditingController(text: 'male');
   final BannerAd myBanner = BannerAd(
-    adUnitId: GlobalVar.bannerAdId,
+    adUnitId: GlobalVar.profileEditBannerAdId,
     size: AdSize.banner,
     request: AdRequest(),
     listener: BannerAdListener(),

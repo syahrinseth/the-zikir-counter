@@ -49,13 +49,13 @@ class _HomePage extends State<HomePage> {
     ContentAlign.bottom
   ];
   final BannerAd myBanner = BannerAd(
-    adUnitId: GlobalVar.bannerAdId,
+    adUnitId: GlobalVar.homeBannerAdId,
     size: AdSize.banner,
     request: AdRequest(),
     listener: BannerAdListener(),
   );
   final BannerAd myBanner2 = BannerAd(
-    adUnitId: GlobalVar.bannerAdId,
+    adUnitId: GlobalVar.menuBannerAdId,
     size: AdSize.banner,
     request: AdRequest(),
     listener: BannerAdListener(),

@@ -37,7 +37,7 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
     ContentAlign.bottom,
   ];
   final BannerAd myBanner = BannerAd(
-    adUnitId: GlobalVar.bannerAdId,
+    adUnitId: GlobalVar.counterBannerAdId,
     size: AdSize.banner,
     request: AdRequest(),
     listener: BannerAdListener(),

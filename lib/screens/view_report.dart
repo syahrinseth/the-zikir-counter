@@ -26,7 +26,7 @@ class _ViewReport extends State<ViewReport>
   CounterBloc _monthReportCounterBloc = CounterBloc();
   CounterBloc _yearReportCounterBloc = CounterBloc();
   final BannerAd myBanner = BannerAd(
-    adUnitId: GlobalVar.bannerAdId,
+    adUnitId: GlobalVar.historyBannerAdId,
     size: AdSize.banner,
     request: AdRequest(),
     listener: BannerAdListener(),

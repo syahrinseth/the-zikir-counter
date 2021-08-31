@@ -29,7 +29,7 @@ class _EditZikirCounter extends State<EditZikirCounter> {
   TextEditingController _themeController = TextEditingController();
   CounterBloc _counterBloc = CounterBloc();
   final BannerAd myBanner = BannerAd(
-    adUnitId: GlobalVar.bannerAdId,
+    adUnitId: GlobalVar.counterEditBannerAdId,
     size: AdSize.banner,
     request: AdRequest(),
     listener: BannerAdListener(),
