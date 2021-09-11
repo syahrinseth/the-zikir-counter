@@ -168,17 +168,53 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
-                                      Container(
-                                        child: Text(
-                                          state.counter!.name ?? '',
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            fontSize: 22.0,
-                                            color: LightColors.getThemeColor(
-                                                colorName:
-                                                    state.counter?.counterTheme,
-                                                contrast: 'dark'),
-                                            fontWeight: FontWeight.w800,
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    EditZikirCounter(
+                                                        counter: state
+                                                                .counter ??
+                                                            Counter.fromJson(
+                                                                {}))),
+                                          ).then((value) {
+                                            counterBloc.add(CounterGetById(
+                                                state.counter!.id));
+                                          });
+                                        },
+                                        child: Container(
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                state.counter!.name ?? '',
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                  fontSize: 22.0,
+                                                  color:
+                                                      LightColors.getThemeColor(
+                                                          colorName: state
+                                                              .counter
+                                                              ?.counterTheme,
+                                                          contrast: 'dark'),
+                                                  fontWeight: FontWeight.w800,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 2.0,
+                                              ),
+                                              Icon(Icons.edit,
+                                                  color:
+                                                      LightColors.getThemeColor(
+                                                          colorName: state
+                                                              .counter
+                                                              ?.counterTheme,
+                                                          contrast: 'dark'),
+                                                  size: 16.0)
+                                            ],
                                           ),
                                         ),
                                       ),
@@ -188,7 +224,7 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                                                       (state.counter!.counter ??
                                                           0))
                                                   .toString() +
-                                              ' to go',
+                                              ' dhikr to go',
                                           textAlign: TextAlign.start,
                                           style: TextStyle(
                                             fontSize: 16.0,
