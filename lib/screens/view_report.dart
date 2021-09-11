@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:quiver/time.dart';
 import 'package:the_zikir_app/bloc/counter_bloc.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
 import 'package:the_zikir_app/event/counter_event.dart';
-import 'package:the_zikir_app/global_var.dart';
 import 'package:the_zikir_app/state/counter_state.dart';
 import 'package:the_zikir_app/widgets/day_bar_graph_card.dart';
 import 'package:loading_animations/loading_animations.dart';
@@ -25,17 +23,17 @@ class _ViewReport extends State<ViewReport>
   CounterBloc _weekReportCounterBloc = CounterBloc();
   CounterBloc _monthReportCounterBloc = CounterBloc();
   CounterBloc _yearReportCounterBloc = CounterBloc();
-  final BannerAd myBanner = BannerAd(
-    adUnitId: GlobalVar.historyBannerAdId,
-    size: AdSize.banner,
-    request: AdRequest(),
-    listener: BannerAdListener(),
-  );
+  // final BannerAd myBanner = BannerAd(
+  //   adUnitId: GlobalVar.historyBannerAdId,
+  //   size: AdSize.banner,
+  //   request: AdRequest(),
+  //   listener: BannerAdListener(),
+  // );
 
   @override
   void initState() {
     super.initState();
-    myBanner.load();
+    // myBanner.load();
     _tabController = TabController(length: 4, vsync: this);
     _dayReportCounterBloc.add(CounterGetDayReport(dateTime: DateTime.now()));
     _weekReportCounterBloc.add(CounterGetWeekReport(dateTime: DateTime.now()));
@@ -57,16 +55,12 @@ class _ViewReport extends State<ViewReport>
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    var downwardIcon = Icon(
-      Icons.keyboard_arrow_down,
-      color: Colors.black54,
-    );
     return Scaffold(
-      bottomNavigationBar: Container(
-        child: AdWidget(ad: myBanner),
-        width: myBanner.size.width.toDouble(),
-        height: myBanner.size.height.toDouble(),
-      ),
+      // bottomNavigationBar: Container(
+      //   child: AdWidget(ad: myBanner),
+      //   width: myBanner.size.width.toDouble(),
+      //   height: myBanner.size.height.toDouble(),
+      // ),
       backgroundColor: Color(0xff43c59e),
       body: SafeArea(
         child: Column(

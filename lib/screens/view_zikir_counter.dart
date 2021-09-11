@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:the_zikir_app/bloc/counter_bloc.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
 import 'package:the_zikir_app/event/counter_event.dart';
-import 'package:the_zikir_app/global_var.dart';
 import 'package:the_zikir_app/screens/edit_zikir_counter.dart';
 import 'package:the_zikir_app/state/counter_state.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
@@ -24,17 +22,16 @@ class ViewZikirCounter extends StatefulWidget {
 
 class _ViewZikirCounter extends State<ViewZikirCounter> {
   CounterBloc counterBloc = CounterBloc()..add(CounterInit());
-  final BannerAd myBanner = BannerAd(
-    adUnitId: GlobalVar.counterBannerAdId,
-    size: AdSize.banner,
-    request: AdRequest(),
-    listener: BannerAdListener(),
-  );
+  // final BannerAd myBanner = BannerAd(
+  //   adUnitId: GlobalVar.counterBannerAdId,
+  //   size: AdSize.banner,
+  //   request: AdRequest(),
+  //   listener: BannerAdListener(),
+  // );
 
   @override
   void initState() {
-    // TODO: implement initState
-    myBanner.load();
+    // myBanner.load();
     counterBloc.add(CounterGetById(widget.id));
     super.initState();
   }
@@ -48,16 +45,15 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      bottomNavigationBar: Container(
-        child: AdWidget(ad: myBanner),
-        width: myBanner.size.width.toDouble(),
-        height: myBanner.size.height.toDouble(),
-      ),
+      // bottomNavigationBar: Container(
+      //   child: AdWidget(ad: myBanner),
+      //   width: myBanner.size.width.toDouble(),
+      //   height: myBanner.size.height.toDouble(),
+      // ),
       body: SafeArea(
         child: BlocConsumer<CounterBloc, CounterState>(
           bloc: counterBloc,
           listener: (context, state) {
-            // TODO: implement listener
             if (state is CounterError) {
               print(state.message);
             }

@@ -3,7 +3,6 @@ import 'dart:ui';
 // EXCLUDE_FROM_GALLERY_DOCS_END
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/src/text_element.dart' as TextElement;
 import 'package:charts_flutter/src/text_style.dart' as style;
 
 class MonthBarGraphCard extends StatefulWidget {

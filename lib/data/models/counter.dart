@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -305,7 +304,7 @@ class Counter {
     }
     // convert days to list of chart series
     List<CounterWeekBarChartData> data = days.asMap().entries.map((e) {
-      int index = e.key;
+      // int index = e.key;
       Map<String, dynamic> day = e.value;
       return CounterWeekBarChartData(day['day'], day['count'],
           charts.ColorUtil.fromDartColor(Color(0xff43c59e)));
@@ -362,7 +361,7 @@ class Counter {
 
     // convert days to list of chart series
     List<CounterMonthBarChartData> data = days.asMap().entries.map((e) {
-      int key = e.key;
+      // int key = e.key;
       Map day = e.value;
       return CounterMonthBarChartData(day['day'] ?? DateTime.now(),
           day['total'] ?? 0, charts.ColorUtil.fromDartColor(Color(0xff43c59e)));
@@ -421,7 +420,7 @@ class Counter {
 
     // convert days to list of chart series
     List<CounterYearBarChartData> data = months.asMap().entries.map((e) {
-      int key = e.key;
+      // int key = e.key;
       Map day = e.value;
       return CounterYearBarChartData(day['month'] ?? DateTime.now(),
           day['total'] ?? 0, charts.ColorUtil.fromDartColor(Color(0xff43c59e)));

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:the_zikir_app/theme/colors/light_colors.dart';
 
 class MyBackButton extends StatelessWidget {
   final Color? color;
