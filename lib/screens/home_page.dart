@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -11,12 +12,14 @@ import 'package:the_zikir_app/event/counter_event.dart';
 import 'package:the_zikir_app/event/profile_event.dart';
 import 'package:the_zikir_app/screens/create_new_zikir.dart';
 import 'package:the_zikir_app/screens/profile_edit.dart';
+import 'package:the_zikir_app/screens/setting_page.dart';
 import 'package:the_zikir_app/screens/view_report.dart';
 import 'package:the_zikir_app/screens/view_zikir_counter.dart';
 import 'package:the_zikir_app/state/counter_state.dart';
 import 'package:the_zikir_app/state/profile_state.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/active_project_card.dart';
+import 'package:the_zikir_app/widgets/slide_left_route.dart';
 import 'package:the_zikir_app/widgets/task_column.dart';
 import 'package:the_zikir_app/widgets/top_container.dart';
 import 'package:empty_widget/empty_widget.dart';
@@ -115,77 +118,6 @@ class _HomePage extends State<HomePage> {
       //   width: myBanner.size.width.toDouble(),
       //   height: myBanner.size.height.toDouble(),
       // ),
-      drawer: Drawer(
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Color(0xff43c59e),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Smart Dhikr',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      fontSize: 30.0,
-                      color: Color(0xff3d7068),
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  SizedBox(width: 5.0),
-                  Text('v' + (version ?? ''))
-                ],
-              ),
-            ),
-            // ListTile(
-            //   title: const Text('Remove Ads'),
-            //   onTap: () {
-            //     // Update the state of the app.
-            //     // ...
-            //   },
-            // ),
-            ListTile(
-              title: const Text('Share this app'),
-              onTap: () {
-                if (Theme.of(context).platform == TargetPlatform.iOS) {
-                  Share.share(
-                      'Download Smart Dhikr to count, record and monitor your dhikrs on the App Store. #smartdhikrapp https://itunes.apple.com/appid12345567');
-                } else if (Theme.of(context).platform ==
-                    TargetPlatform.android) {
-                  Share.share(
-                      'Download Smart Dhikr to count, record and monitor your dhikrs on the Google Play Store. #smartdhikrapp https://play.google.com/store/apps/details?id=com.syahrinseth.thedhikrapp');
-                }
-              },
-            ),
-            // ListTile(
-            //   title: const Text('Rate this app'),
-            //   onTap: () {
-            //     // Update the state of the app.
-            //     // ...
-            //   },
-            // ),
-            ListTile(
-              title: const Text('Contact developer'),
-              onTap: () => launch('https://syahrinseth.com'),
-            ),
-            ListTile(
-                title: const Text('App avatar attribution'),
-                onTap: () => launch('https://www.flaticon.com/authors/ddara')),
-            // ListTile(
-            //     title: Container(
-            //       alignment: Alignment.center,
-            //       child: AdWidget(ad: myBanner2),
-            //       width: myBanner2.size.width.toDouble(),
-            //       height: myBanner2.size.height.toDouble(),
-            //     ),
-            //     onTap: () {})
-          ],
-        ),
-      ),
       backgroundColor: LightColors.kLightYellow,
       body: SafeArea(
         child: BlocConsumer<CounterBloc, CounterState>(
@@ -222,9 +154,17 @@ class _HomePage extends State<HomePage> {
                               children: <Widget>[
                                 GestureDetector(
                                   onTap: () {
-                                    Scaffold.of(context).openDrawer();
+                                    // Scaffold.of(context).openDrawer();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => SettingPage()),
+                                    ).then((value) {
+                                      counterBloc.add(CounterGetAll());
+                                      profileBloc.add(ProfileGet());
+                                    });
                                   },
-                                  child: Icon(Icons.menu,
+                                  child: Icon(CupertinoIcons.settings,
                                       color: Color(0xff3d7068), size: 30.0),
                                 ),
                                 GestureDetector(
@@ -239,7 +179,7 @@ class _HomePage extends State<HomePage> {
                                       profileBloc.add(ProfileGet());
                                     });
                                   },
-                                  child: Icon(Icons.bar_chart,
+                                  child: Icon(CupertinoIcons.chart_bar_fill,
                                       color: Color(0xff3d7068), size: 25.0),
                                 ),
                               ],

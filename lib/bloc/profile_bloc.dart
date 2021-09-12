@@ -57,10 +57,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         yield (ProfileLoading(
             name: tempState is ProfileLoaded ? tempState.name : null,
             avatar: tempState is ProfileLoaded ? tempState.avatar : null));
-        late TutorialCoachMark tutorialCoachMark;
         List<TargetFocus> targets = initTargets(
             event.buttonKeys, event.tutorialTexts, event.contentAligns);
-        tutorialCoachMark = TutorialCoachMark(
+        TutorialCoachMark(
           event.context,
           targets: targets,
           colorShadow: Color(0xff3d7068),
