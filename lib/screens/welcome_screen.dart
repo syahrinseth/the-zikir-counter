@@ -100,7 +100,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             PageViewModel(
               title: "Customizable Dhikr Counter",
               body:
-                  "You can customize your counter name, target dhikr, and theme.",
+                  "You can customize your counter name, dhikr goal, and theme.",
               image: _buildFullscrenImage(),
               decoration: pageDecoration.copyWith(
                 contentMargin: const EdgeInsets.symmetric(horizontal: 16),

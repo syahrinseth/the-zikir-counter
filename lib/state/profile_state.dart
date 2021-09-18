@@ -7,8 +7,9 @@ abstract class ProfileState extends Equatable {
 class ProfileLoading extends ProfileState {
   final String? name;
   final String? avatar;
+  final String? counterGoal;
   final List props = [];
-  ProfileLoading({this.name, this.avatar});
+  ProfileLoading({this.name, this.avatar, this.counterGoal});
 }
 
 class ProfileInit extends ProfileState {
@@ -18,12 +19,14 @@ class ProfileInit extends ProfileState {
   final String? isDoneTutorial1;
   final String? isDoneTutorial2;
   final String? isDoneWelcomeScreen;
+  final String? counterGoal;
   ProfileInit(
       {this.name,
       this.avatar,
       this.isDoneTutorial1,
       this.isDoneTutorial2,
-      this.isDoneWelcomeScreen});
+      this.isDoneWelcomeScreen,
+      this.counterGoal});
 }
 
 class ProfileLoaded extends ProfileState {
@@ -33,19 +36,22 @@ class ProfileLoaded extends ProfileState {
   final String? isDoneTutorial1;
   final String? isDoneTutorial2;
   final String? isDoneWelcomeScreen;
+  final String? counterGoal;
   ProfileLoaded(
       {this.name,
       this.avatar,
       this.isDoneTutorial1,
       this.isDoneTutorial2,
-      this.isDoneWelcomeScreen});
+      this.isDoneWelcomeScreen,
+      this.counterGoal});
 }
 
 class ProfileSaved extends ProfileState {
   final String? name;
   final String? avatar;
+  final String? counterGoal;
   final List props = [];
-  ProfileSaved({this.name, this.avatar});
+  ProfileSaved({this.name, this.avatar, this.counterGoal});
 }
 
 class ProfileError extends ProfileState {

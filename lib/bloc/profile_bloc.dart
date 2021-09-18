@@ -21,12 +21,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         String isDoneTutorial2 = profileBox.get('is_done_tutorial_2') ?? 'no';
         String isDoneWelcomeScreen =
             profileBox.get('is_done_welcome_screen') ?? 'no';
+        String counterGoal = profileBox.get('counter_goal') ?? '100';
         yield ProfileLoaded(
             name: name,
             avatar: avatar,
             isDoneTutorial1: isDoneTutorial1,
             isDoneTutorial2: isDoneTutorial2,
-            isDoneWelcomeScreen: isDoneWelcomeScreen);
+            isDoneWelcomeScreen: isDoneWelcomeScreen,
+            counterGoal: counterGoal);
       } catch (e) {
         yield ProfileError(message: e.toString());
       }
@@ -45,7 +47,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         Box<String> profileBox = Hive.box<String>('myProfileBox');
         profileBox.put('name', event.name);
         profileBox.put('avatar', event.avatar);
-        yield ProfileSaved(name: event.name, avatar: event.avatar);
+        profileBox.put('counter_goal', event.counterGoal);
+        yield ProfileSaved(
+            name: event.name,
+            avatar: event.avatar,
+            counterGoal: event.counterGoal);
         // yield ProfileLoaded(name: event.name, avatar: event.avatar);
       } catch (e) {
         yield ProfileError(message: e.toString());

@@ -11,6 +11,7 @@ import 'package:the_zikir_app/state/profile_state.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/back_button.dart';
 import 'package:the_zikir_app/widgets/dhikr_list_tile.dart';
+import 'package:the_zikir_app/widgets/my_text_field.dart';
 import 'package:the_zikir_app/widgets/task_column.dart';
 import 'package:the_zikir_app/widgets/top_container.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,6 +27,11 @@ class _ProfileEdit extends State<SettingPage> {
   String? packageName;
   String? version;
   String? buildNumber;
+  bool isInit = true;
+  TextEditingController _counterNameController = TextEditingController();
+  TextEditingController _counterAvatarController = TextEditingController();
+  TextEditingController _counterGoalController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -49,12 +55,8 @@ class _ProfileEdit extends State<SettingPage> {
 
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      // bottomNavigationBar: Container(
-      //   child: AdWidget(ad: myBanner),
-      //   width: myBanner.size.width.toDouble(),
-      //   height: myBanner.size.height.toDouble(),
-      // ),
       body: SafeArea(
         child: BlocConsumer<ProfileBloc, ProfileState>(
           bloc: _profileBloc,
@@ -64,12 +66,6 @@ class _ProfileEdit extends State<SettingPage> {
               SnackBar(
                 backgroundColor: Colors.red,
                 content: Text(state.message ?? 'Counter Error.'),
-                // action: SnackBarAction(
-                //   label: 'Undo',
-                //   onPressed: () {
-                //     // Some code to undo the change.
-                //   },
-                // ),
               );
             }
 
@@ -170,19 +166,94 @@ class _ProfileEdit extends State<SettingPage> {
                                       );
                                     },
                                   ),
-                                  // DhikrListTile(
-                                  //   title: 'Counter Default Goals',
-                                  //   subtitle:
-                                  //       'Manage your counters default goals.',
-                                  //   onTap: () {
-                                  //     Navigator.push(
-                                  //       context,
-                                  //       MaterialPageRoute(
-                                  //           builder: (context) =>
-                                  //               ProfileEdit()),
-                                  //     );
-                                  //   },
-                                  // )
+                                  BlocBuilder<ProfileBloc, ProfileState>(
+                                    bloc: _profileBloc,
+                                    builder: (context, state) {
+                                      if (state is ProfileLoaded &&
+                                          isInit == true) {
+                                        _counterGoalController.value =
+                                            TextEditingValue(
+                                                text: state.counterGoal
+                                                        ?.toString() ??
+                                                    '100');
+                                        _counterNameController.value =
+                                            TextEditingValue(
+                                                text: state.name ?? '');
+                                        _counterAvatarController.value =
+                                            TextEditingValue(
+                                                text: state.avatar ?? 'male');
+                                        isInit = false;
+                                      }
+                                      return DhikrListTile(
+                                        title: 'Dhikr Goal',
+                                        subtitle:
+                                            'Manage your counter default dhikr goal.',
+                                        icon: CupertinoIcons
+                                            .gamecontroller_alt_fill,
+                                        onTap: () {
+                                          showDialog<bool>(
+                                            context: context,
+                                            builder: (context) {
+                                              return CupertinoAlertDialog(
+                                                title: Text('Dhikr Goal'),
+                                                content: Card(
+                                                  color: Colors.transparent,
+                                                  elevation: 0.0,
+                                                  child: Column(
+                                                    children: <Widget>[
+                                                      TextField(
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        controller:
+                                                            _counterGoalController,
+                                                        decoration:
+                                                            InputDecoration(
+                                                                filled: true,
+                                                                fillColor: Colors
+                                                                    .grey
+                                                                    .shade50),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    child: Text(
+                                                      'Cancel',
+                                                      style: TextStyle(
+                                                          color: Colors.red),
+                                                    ),
+                                                    onPressed: () =>
+                                                        Navigator.of(context)
+                                                            .pop(true),
+                                                  ),
+                                                  TextButton(
+                                                    child: Text('Done'),
+                                                    onPressed: () {
+                                                      _profileBloc.add(ProfileUpdate(
+                                                          name:
+                                                              _counterNameController
+                                                                  .text,
+                                                          avatar:
+                                                              _counterAvatarController
+                                                                  .text,
+                                                          counterGoal:
+                                                              _counterGoalController
+                                                                  .text));
+                                                      return Navigator.of(
+                                                              context)
+                                                          .pop(true);
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                  )
                                 ],
                               ),
                               SizedBox(

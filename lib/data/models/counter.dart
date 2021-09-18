@@ -52,6 +52,8 @@ class Counter {
 
   static Counter fromJson(Map json) {
     var uuid = Uuid().v1();
+    Box<String> profileBox = Hive.box<String>('myProfileBox');
+    String limiter = profileBox.get('counter_goal') ?? '100';
     Counter counter = Counter(
         id: json['id'] ?? uuid,
         name: json['name'] ?? 'Zikir Counter',
@@ -60,7 +62,7 @@ class Counter {
         histories: json['histories'] ?? [],
         createdAt: json['createdAt'] ?? DateTime.now(),
         updatedAt: json['updatedAt'] ?? DateTime.now(),
-        limiter: json['limiter'] ?? 100,
+        limiter: json['limiter'] ?? int.parse(limiter),
         isVibrationOn: json['isVibrationOn'] ?? true,
         isSoundOn: json['isSoundOn'] ?? true,
         counterTheme: json['counterTheme'] ?? 'green');
@@ -70,6 +72,8 @@ class Counter {
   static Counter createFromJson(Map json) {
     var box = Hive.box<Counter>('myZikirCountersBox');
     var uuid = Uuid().v1();
+    Box<String> profileBox = Hive.box<String>('myProfileBox');
+    String limiter = profileBox.get('counter_goal') ?? '100';
     Counter counter = Counter(
         id: json['id'] ?? uuid,
         name: json['name'] ?? 'Dhikr Counter',
@@ -78,7 +82,7 @@ class Counter {
         histories: json['histories'] ?? [],
         createdAt: json['createdAt'] ?? DateTime.now(),
         updatedAt: json['updatedAt'] ?? DateTime.now(),
-        limiter: json['limiter'] ?? 100,
+        limiter: json['limiter'] ?? int.parse(limiter),
         isVibrationOn: json['isVibrationOn'] ?? true,
         isSoundOn: json['isSoundOn'] ?? true,
         counterTheme: json['counterTheme'] ?? 'green');

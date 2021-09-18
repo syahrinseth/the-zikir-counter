@@ -238,7 +238,7 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                       SizedBox(height: 20),
                       MyTextField(
                           keyboardType: TextInputType.number,
-                          label: 'Target Zikir Count',
+                          label: 'Dhikr Goal',
                           controller: _counterLimitController),
                       SizedBox(height: 20),
                       // MyTextField(

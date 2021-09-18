@@ -18,6 +18,8 @@ class _ProfileEdit extends State<ProfileEdit> {
   ProfileBloc _profileBloc = ProfileBloc();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _avatarController = TextEditingController(text: 'male');
+  TextEditingController _counterGoalController =
+      TextEditingController(text: '100');
   bool initMark = true;
   // final BannerAd myBanner = BannerAd(
   //   adUnitId: GlobalVar.profileEditBannerAdId,
@@ -90,6 +92,8 @@ class _ProfileEdit extends State<ProfileEdit> {
                   TextEditingValue(text: state.name ?? 'Counter');
               _avatarController.value =
                   TextEditingValue(text: state.avatar ?? 'male');
+              _counterGoalController.value =
+                  TextEditingValue(text: state.counterGoal ?? '100');
             }
             return Column(
               children: [
@@ -131,7 +135,8 @@ class _ProfileEdit extends State<ProfileEdit> {
                             setState(() {
                               _profileBloc.add(ProfileUpdate(
                                   name: _nameController.text,
-                                  avatar: _avatarController.text));
+                                  avatar: _avatarController.text,
+                                  counterGoal: _counterGoalController.text));
                             });
                           },
                           child: Container(
