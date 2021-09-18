@@ -244,7 +244,8 @@ class _ViewReport extends State<ViewReport>
                                           child: DayBarGraphCard(
                                               state.dayBarChartData ?? [],
                                               title: 'Dhikred',
-                                              desc: 'Time Distribution'),
+                                              desc:
+                                                  'Total dhikred ${state.totalDhikrs ?? '0'}.'),
                                         ),
                                       )
                                     : Container(
@@ -348,7 +349,8 @@ class _ViewReport extends State<ViewReport>
                                           child: WeekBarGraphCard(
                                               state.weekBarChartData ?? [],
                                               title: 'Dhikred',
-                                              desc: 'Time Distribution'),
+                                              desc:
+                                                  'Total dhikred ${state.totalDhikrs ?? '0'}.'),
                                         ),
                                       )
                                     : Container(
@@ -454,6 +456,7 @@ class _ViewReport extends State<ViewReport>
                                           padding: const EdgeInsets.all(8.0),
                                           child: MonthBarGraphCard(
                                               state.monthBarChartData ?? [],
+                                              total: state.totalDhikrs ?? 0,
                                               title: 'Dhikred'),
                                           // child: MonthBarGraphCard
                                           //     .withSampleData(),
@@ -561,7 +564,8 @@ class _ViewReport extends State<ViewReport>
                                           child: YearBarGraphCard(
                                               state.yearBarChartData ?? [],
                                               title: 'Dhikred',
-                                              desc: 'Time Distribution'),
+                                              desc:
+                                                  'Total dhikred ${state.totalDhikrs ?? '0'}.'),
                                         ),
                                       )
                                     : Container(

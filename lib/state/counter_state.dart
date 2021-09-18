@@ -28,6 +28,7 @@ class CounterLoaded extends CounterState {
   final List<Series<CounterWeekBarChartData, String>>? weekBarChartData;
   final List<Series<CounterMonthBarChartData, DateTime>>? monthBarChartData;
   final List<Series<CounterYearBarChartData, DateTime>>? yearBarChartData;
+  final int? totalDhikrs; // for report use
   final List props = [];
   final DateTime? targetDateTime;
   CounterLoaded(
@@ -37,7 +38,8 @@ class CounterLoaded extends CounterState {
       this.targetDateTime,
       this.weekBarChartData,
       this.monthBarChartData,
-      this.yearBarChartData});
+      this.yearBarChartData,
+      this.totalDhikrs});
 }
 
 class CounterError extends CounterState {

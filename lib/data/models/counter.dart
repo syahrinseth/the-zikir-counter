@@ -111,6 +111,34 @@ class Counter {
     countersBox.put(counter.id, counter);
   }
 
+  static int getDayReportTotal(
+      {required DateTime dateTime, required List<Counter> counters}) {
+    // get counter histories from counters
+    List<CounterHistory> targetCounterHistories = [];
+    counters.forEach((element) {
+      element.histories?.forEach((element) {
+        // filter counter history for target date
+        if (element.dateTime?.day == dateTime.day &&
+            element.dateTime?.month == dateTime.month &&
+            element.dateTime?.year == dateTime.year) {
+          targetCounterHistories.add(element);
+        }
+      });
+    });
+    // group by counter by target hour and date.
+    int total = 0;
+    for (var i = 0; i <= 23; i++) {
+      int totalCount = 0;
+      targetCounterHistories.forEach((element) {
+        if (element.dateTime?.hour == i) {
+          totalCount += element.counter ?? 0;
+        }
+      });
+      total += totalCount;
+    }
+    return total;
+  }
+
   static List<charts.Series<CounterDayBarChartData, DateTime>> getDayReport(
       {required DateTime dateTime, required List<Counter> counters}) {
     // get counter histories from counters
@@ -158,6 +186,119 @@ class Counter {
             "${data.count.toString()}",
       ),
     ];
+  }
+
+  static int getWeekReportTotal(
+      {required DateTime dateTime, required List<Counter> counters}) {
+    // get counter histories from counters
+    int total = 0;
+    List<CounterHistory> targetCounterHistories = [];
+    int weekday = dateTime.weekday;
+    DateTime? startWeek;
+    DateTime? endWeek;
+    dateTime = DateTime.parse(dateTime.year.toString() +
+        dateTime.month.toString().padLeft(2, "0") +
+        dateTime.day.toString().padLeft(2, "0"));
+    switch (weekday) {
+      case 1:
+        // Mon
+        startWeek = dateTime;
+        endWeek = dateTime.add(Duration(days: 6));
+        break;
+      case 2:
+        // Tue
+        startWeek = dateTime.subtract(Duration(days: 1));
+        endWeek = dateTime.add(Duration(days: 5));
+        break;
+      case 3:
+        // Wed
+        startWeek = dateTime.subtract(Duration(days: 2));
+        endWeek = dateTime.add(Duration(days: 4));
+        break;
+      case 4:
+        // Thu
+        startWeek = dateTime.subtract(Duration(days: 3));
+        endWeek = dateTime.add(Duration(days: 3));
+        break;
+      case 5:
+        // Fri
+        startWeek = dateTime.subtract(Duration(days: 4));
+        endWeek = dateTime.add(Duration(days: 2));
+        break;
+      case 6:
+        // Sat
+        startWeek = dateTime.subtract(Duration(days: 5));
+        endWeek = dateTime.add(Duration(days: 1));
+        break;
+      case 7:
+        // Sun
+        startWeek = dateTime.subtract(Duration(days: 6));
+        endWeek = dateTime;
+        break;
+      default:
+    }
+    counters.forEach((element) {
+      element.histories?.forEach((element) {
+        // filter counter history for target date week
+        if (startWeek!.isBefore(element.dateTime ?? DateTime.now()) &&
+            endWeek!.isAfter(element.dateTime ?? DateTime.now())) {
+          targetCounterHistories.add(element);
+        }
+      });
+    });
+    // group by counter by target DayName.
+    List<int> totalCount = [0, 0, 0, 0, 0, 0, 0];
+    for (var i = 0; i < 7; i++) {
+      targetCounterHistories.forEach((element) {
+        switch (i) {
+          case 0:
+            // Mon
+            if (element.dateTime?.weekday == 1) {
+              totalCount[i] += element.counter ?? 0;
+            }
+            break;
+          case 1:
+            // Tue
+            if (element.dateTime?.weekday == 2) {
+              totalCount[i] += element.counter ?? 0;
+            }
+            break;
+          case 2:
+            // Wed
+            if (element.dateTime?.weekday == 3) {
+              totalCount[i] += element.counter ?? 0;
+            }
+            break;
+          case 3:
+            // Thu
+            if (element.dateTime?.weekday == 4) {
+              totalCount[i] += element.counter ?? 0;
+            }
+            break;
+          case 4:
+            // Fri
+            if (element.dateTime?.weekday == 5) {
+              totalCount[i] += element.counter ?? 0;
+            }
+            break;
+          case 5:
+            // Sat
+            if (element.dateTime?.weekday == 6) {
+              totalCount[i] += element.counter ?? 0;
+            }
+            break;
+          case 6:
+            // Sun
+            if (element.dateTime?.weekday == 7) {
+              totalCount[i] += element.counter ?? 0;
+            }
+            break;
+          default:
+        }
+      });
+      total += totalCount[i];
+    }
+    return total;
   }
 
   static List<charts.Series<CounterWeekBarChartData, String>> getWeekReport(
@@ -383,6 +524,61 @@ class Counter {
     //   print(e.toString());
     //   return [];
     // }
+  }
+
+  static int getMonthReportTotal(
+      {required DateTime dateTime, required List<Counter> counters}) {
+    List<CounterHistory> targetCounterHistories = [];
+    int total = 0;
+    try {
+      // filter counters for this year
+      counters.forEach((element) {
+        element.histories?.forEach((element) {
+          if (element.dateTime?.year == dateTime.year &&
+              element.dateTime?.month == dateTime.month) {
+            targetCounterHistories.add(element);
+          }
+        });
+      });
+      int totalDaysInMonth = daysInMonth(dateTime.year, dateTime.month);
+      for (var i = 1; i <= totalDaysInMonth; i++) {
+        // group by
+        targetCounterHistories.forEach((element) {
+          if (element.dateTime?.day == i) {
+            total += element.counter ?? 0;
+          }
+        });
+      }
+    } catch (e) {}
+    return total;
+  }
+
+  static int getYearReportTotal(
+      {required DateTime dateTime, required List<Counter> counters}) {
+    List<CounterHistory> targetCounterHistories = [];
+    int total = 0;
+    try {
+      // filter counters for this year
+      counters.forEach((element) {
+        element.histories?.forEach((element) {
+          if (element.dateTime?.year == dateTime.year) {
+            targetCounterHistories.add(element);
+          }
+        });
+      });
+      int totalMonthInYear = 12;
+      for (var i = 1; i <= totalMonthInYear; i++) {
+        // group by
+        targetCounterHistories.forEach((element) {
+          if (element.dateTime?.month == i) {
+            total += element.counter ?? 0;
+          }
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return total;
   }
 
   static List<charts.Series<CounterYearBarChartData, DateTime>> getYearReport(

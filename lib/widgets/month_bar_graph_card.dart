@@ -110,7 +110,7 @@ class _MonthBarGraphCardState extends State<MonthBarGraphCard> {
               children: [
                 Expanded(
                   child: Text(
-                    'Time Distribution',
+                    'Total dhikred ${widget.total}.',
                     style: TextStyle(fontSize: 16.0),
                     textAlign: TextAlign.left,
                   ),

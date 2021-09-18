@@ -192,6 +192,8 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       yield CounterLoaded(
           targetDateTime: event.dateTime,
           weekBarChartData: Counter.getWeekReport(
+              counters: counters, dateTime: event.dateTime),
+          totalDhikrs: Counter.getWeekReportTotal(
               counters: counters, dateTime: event.dateTime));
       // } catch (e) {
       //   yield CounterError(message: e.toString());
@@ -211,6 +213,8 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         yield CounterLoaded(
             targetDateTime: event.dateTime,
             monthBarChartData: Counter.getMonthReport(
+                counters: counters, dateTime: event.dateTime),
+            totalDhikrs: Counter.getMonthReportTotal(
                 counters: counters, dateTime: event.dateTime));
       } catch (e) {
         yield CounterError(message: e.toString());
@@ -230,6 +234,8 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         yield CounterLoaded(
             targetDateTime: event.dateTime,
             yearBarChartData: Counter.getYearReport(
+                counters: counters, dateTime: event.dateTime),
+            totalDhikrs: Counter.getYearReportTotal(
                 counters: counters, dateTime: event.dateTime));
       } catch (e) {
         yield CounterError(message: e.toString());
@@ -249,6 +255,8 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         yield CounterLoaded(
             targetDateTime: event.dateTime,
             dayBarChartData: Counter.getDayReport(
+                counters: counters, dateTime: event.dateTime),
+            totalDhikrs: Counter.getDayReportTotal(
                 counters: counters, dateTime: event.dateTime));
       } catch (e) {
         yield CounterError(message: e.toString());
@@ -270,7 +278,9 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         yield CounterLoaded(
             dayBarChartData: Counter.getDayReport(
                 counters: counters, dateTime: prevDateTime),
-            targetDateTime: prevDateTime);
+            targetDateTime: prevDateTime,
+            totalDhikrs: Counter.getDayReportTotal(
+                counters: counters, dateTime: prevDateTime));
       } catch (e) {
         yield (CounterError(message: e.toString()));
       }
@@ -290,7 +300,9 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         yield CounterLoaded(
             dayBarChartData: Counter.getDayReport(
                 counters: counters, dateTime: nextDateTime),
-            targetDateTime: nextDateTime);
+            targetDateTime: nextDateTime,
+            totalDhikrs: Counter.getDayReportTotal(
+                counters: counters, dateTime: nextDateTime));
       } catch (e) {
         yield (CounterError(message: e.toString()));
       }
