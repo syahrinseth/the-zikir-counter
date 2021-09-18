@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
@@ -31,6 +32,7 @@ class _ProfileEdit extends State<SettingPage> {
   TextEditingController _counterNameController = TextEditingController();
   TextEditingController _counterAvatarController = TextEditingController();
   TextEditingController _counterGoalController = TextEditingController();
+  final InAppReview inAppReview = InAppReview.instance;
 
   @override
   void initState() {
@@ -290,6 +292,17 @@ class _ProfileEdit extends State<SettingPage> {
                                     title: 'App Avatar Attribution',
                                     onTap: () => launch(
                                         'https://www.flaticon.com/authors/ddara'),
+                                  ),
+                                  DhikrListTile(
+                                    icon: CupertinoIcons.heart,
+                                    subtitle:
+                                        'Tell us what we are doing correct or wrong.',
+                                    title: 'Review the app.',
+                                    onTap: () async {
+                                      if (await inAppReview.isAvailable()) {
+                                        inAppReview.requestReview();
+                                      }
+                                    },
                                   )
                                 ],
                               ),

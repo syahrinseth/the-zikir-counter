@@ -48,7 +48,7 @@ dependencies:
   quiver: ^3.0.1
   flutter_svg: ^0.22.0
   url_launcher: ^6.0.9
-  in_app_review: ^2.0.2
+  in_app_review: ^2.0.3
   share_plus: ^2.1.4
   package_info_plus: ^1.0.4
   google_mobile_ads: ^0.13.3
