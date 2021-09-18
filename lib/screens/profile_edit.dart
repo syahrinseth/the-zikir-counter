@@ -18,6 +18,7 @@ class _ProfileEdit extends State<ProfileEdit> {
   ProfileBloc _profileBloc = ProfileBloc();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _avatarController = TextEditingController(text: 'male');
+  bool initMark = true;
   // final BannerAd myBanner = BannerAd(
   //   adUnitId: GlobalVar.profileEditBannerAdId,
   //   size: AdSize.banner,
@@ -83,7 +84,8 @@ class _ProfileEdit extends State<ProfileEdit> {
             }
           },
           builder: (context, state) {
-            if (state is ProfileLoaded) {
+            if (state is ProfileLoaded && initMark == true) {
+              initMark = false;
               _nameController.value =
                   TextEditingValue(text: state.name ?? 'Counter');
               _avatarController.value =

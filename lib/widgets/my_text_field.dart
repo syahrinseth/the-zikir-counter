@@ -7,13 +7,15 @@ class MyTextField extends StatelessWidget {
   final Icon? icon;
   final TextEditingController? controller;
   final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
   MyTextField(
       {required this.label,
       this.maxLines = 1,
       this.minLines = 1,
       this.icon,
       this.controller,
-      this.keyboardType});
+      this.keyboardType,
+      this.textInputAction = TextInputAction.done});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class MyTextField extends StatelessWidget {
       minLines: minLines,
       maxLines: maxLines,
       controller: controller,
+      textInputAction: textInputAction,
       decoration: InputDecoration(
           floatingLabelBehavior: FloatingLabelBehavior.always,
           suffixIcon: icon == null ? null : icon,

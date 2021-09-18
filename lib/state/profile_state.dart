@@ -13,7 +13,17 @@ class ProfileLoading extends ProfileState {
 
 class ProfileInit extends ProfileState {
   final List props = [];
-  ProfileInit();
+  final String? name;
+  final String? avatar;
+  final String? isDoneTutorial1;
+  final String? isDoneTutorial2;
+  final String? isDoneWelcomeScreen;
+  ProfileInit(
+      {this.name,
+      this.avatar,
+      this.isDoneTutorial1,
+      this.isDoneTutorial2,
+      this.isDoneWelcomeScreen});
 }
 
 class ProfileLoaded extends ProfileState {

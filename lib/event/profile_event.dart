@@ -15,6 +15,12 @@ class ProfileGet extends ProfileEvent {
   List<Object> get props => [];
 }
 
+class ProfileInitiate extends ProfileEvent {
+  ProfileInitiate();
+  @override
+  List<Object> get props => [];
+}
+
 class ProfileUpdate extends ProfileEvent {
   ProfileUpdate({required this.name, required this.avatar});
   final String name;
