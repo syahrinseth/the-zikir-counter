@@ -62,6 +62,8 @@ class ActiveProjectsCard extends StatelessWidget {
                   ),
                   Text(
                     subtitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
                     style: TextStyle(
                       fontSize: 12.0,
                       color: Colors.white54,

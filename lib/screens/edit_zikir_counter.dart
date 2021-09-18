@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_zikir_app/bloc/counter_bloc.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
 import 'package:the_zikir_app/event/counter_event.dart';
+import 'package:the_zikir_app/global_var.dart';
 // import 'package:the_zikir_app/global_var.dart';
 import 'package:the_zikir_app/screens/home_page.dart';
 import 'package:the_zikir_app/state/counter_state.dart';
@@ -221,10 +222,54 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                       //     ),
                       //   ],
                       // ),
-
                       MyTextField(
-                          label: 'Title - e.g: Salawat etc.',
-                          controller: _titleController),
+                        label: 'Dhikr Name',
+                        controller: _titleController,
+                        onTap: () {
+                          List<Map> dhikrNames = GlobalVar.dhikrNames;
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext builder) {
+                                return Container(
+                                  height: MediaQuery.of(context)
+                                          .copyWith()
+                                          .size
+                                          .height /
+                                      3,
+                                  child: CupertinoPicker(
+                                      itemExtent: 50.0,
+                                      onSelectedItemChanged: (value) {
+                                        _titleController.value =
+                                            TextEditingValue(
+                                                text: dhikrNames[value]
+                                                    ['name']);
+                                      },
+                                      diameterRatio: 10.0,
+                                      children: dhikrNames
+                                          .map((e) => Center(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      10.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text('${e['name']}'),
+                                                      Text(
+                                                        '${e['translate']}',
+                                                        style: TextStyle(
+                                                            fontSize: 12),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ))
+                                          .toList()),
+                                );
+                              });
+                        },
+                      ),
                       MyTextField(
                           label: 'Note',
                           minLines: 3,

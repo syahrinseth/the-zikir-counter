@@ -1,8 +1,18 @@
 class GlobalVar {
-  String avatarFemaleAttr =
+  final String avatarFemaleAttr =
       '<div>Icons made by <a href="https://www.flaticon.com/authors/ddara" title="dDara">dDara</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>';
-  String avatarMaleAttr =
+  final String avatarMaleAttr =
       '<div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>';
+  static final List<Map> dhikrNames = [
+    {'name': 'Dhikr Counter', 'translate': ''},
+    {'name': 'Allahu Akbar', 'translate': 'Allah is The Greatest'},
+    {'name': 'Alhamdulillah', 'translate': 'Praise be to Allah'},
+    {'name': 'Subhan Allah', 'translate': 'Glory be to Allah'},
+    {
+      'name': 'La ilaha illa Allah',
+      'translate': 'There is no god except Allah'
+    },
+  ];
   // static String homeBannerAdId =
   //     "ca-app-pub-3940256099942544/6300978111"; // test
   // static String menuBannerAdId =

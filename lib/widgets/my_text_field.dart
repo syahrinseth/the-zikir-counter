@@ -8,6 +8,8 @@ class MyTextField extends StatelessWidget {
   final TextEditingController? controller;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
+  final Function()? onTap;
+  final bool? enabled;
   MyTextField(
       {required this.label,
       this.maxLines = 1,
@@ -15,11 +17,15 @@ class MyTextField extends StatelessWidget {
       this.icon,
       this.controller,
       this.keyboardType,
+      this.enabled = true,
+      this.onTap,
       this.textInputAction = TextInputAction.done});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onTap: onTap,
+      enabled: enabled,
       keyboardType: keyboardType,
       style: TextStyle(color: Colors.black87),
       minLines: minLines,

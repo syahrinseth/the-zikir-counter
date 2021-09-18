@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:quiver/time.dart';
+import 'package:the_zikir_app/global_var.dart';
 import 'package:the_zikir_app/widgets/day_bar_graph_card.dart';
 import 'package:the_zikir_app/widgets/month_bar_graph_card.dart';
 import 'package:the_zikir_app/widgets/week_bar_graph_card.dart';
@@ -88,6 +89,18 @@ class Counter {
         counterTheme: json['counterTheme'] ?? 'green');
     box.put(counter.id, counter);
     return counter;
+  }
+
+  String displayDhikrNameTranslate() {
+    List<Map> dhikrNames = GlobalVar.dhikrNames;
+    Map dhikr = dhikrNames.firstWhere((element) {
+      if (element['name'].toString().toLowerCase() ==
+          this.name!.toLowerCase()) {
+        return true;
+      }
+      return false;
+    });
+    return '${dhikr['translate'] ?? null}';
   }
 
   static int getTotalCountFromCounters({required List<Counter> counters}) {

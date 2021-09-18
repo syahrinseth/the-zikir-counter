@@ -275,7 +275,7 @@ class _HomePage extends State<HomePage> {
                                       ),
                                       Container(
                                         child: Text(
-                                          'Total Dhikr Count: ' +
+                                          'Total Dhikr: ' +
                                               (state is CounterLoaded
                                                   ? Counter.getTotalCountFromCounters(
                                                           counters:
@@ -411,9 +411,7 @@ class _HomePage extends State<HomePage> {
                     loadingPercent:
                         ((counter.counter ?? 0) / (counter.limiter ?? 1)),
                     title: counter.name ?? ('Counter ' + index.toString()),
-                    subtitle: ((counter.limiter ?? 1) - (counter.counter ?? 0))
-                            .toString() +
-                        ' to go',
+                    subtitle: counter.displayDhikrNameTranslate(),
                     onTap: () {
                       Navigator.push(
                         context,
