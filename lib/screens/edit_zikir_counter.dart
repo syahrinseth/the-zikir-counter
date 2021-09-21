@@ -237,7 +237,7 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                                           .height /
                                       3,
                                   child: CupertinoPicker(
-                                      itemExtent: 50.0,
+                                      itemExtent: 80.0,
                                       onSelectedItemChanged: (value) {
                                         _titleController.value =
                                             TextEditingValue(
@@ -248,8 +248,10 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                                       children: dhikrNames
                                           .map((e) => Center(
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      10.0),
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: 10.0,
+                                                      horizontal: 20),
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment

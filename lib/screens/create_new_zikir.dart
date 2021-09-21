@@ -187,19 +187,63 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                state.counter!.name ?? '',
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                  fontSize: 22.0,
-                                                  color:
-                                                      LightColors.getThemeColor(
-                                                          colorName: state
-                                                              .counter
-                                                              ?.counterTheme,
-                                                          contrast: 'dark'),
-                                                  fontWeight: FontWeight.w800,
-                                                ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    state.counter!.name ?? '',
+                                                    textAlign: TextAlign.start,
+                                                    style: TextStyle(
+                                                      fontSize: 22.0,
+                                                      color: LightColors
+                                                          .getThemeColor(
+                                                              colorName: state
+                                                                  .counter
+                                                                  ?.counterTheme,
+                                                              contrast: 'dark'),
+                                                      fontWeight:
+                                                          FontWeight.w800,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    state.counter!
+                                                        .displayDhikrNameTranslate(),
+                                                    textAlign: TextAlign.start,
+                                                    style: TextStyle(
+                                                      fontSize: 14.0,
+                                                      color: LightColors
+                                                          .getThemeColor(
+                                                              colorName: state
+                                                                  .counter
+                                                                  ?.counterTheme,
+                                                              contrast: 'dark'),
+                                                      fontWeight:
+                                                          FontWeight.w800,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    ((state.counter!.limiter ??
+                                                                    1) -
+                                                                (state.counter!
+                                                                        .counter ??
+                                                                    0))
+                                                            .toString() +
+                                                        ' dhikr to go',
+                                                    textAlign: TextAlign.start,
+                                                    style: TextStyle(
+                                                      fontSize: 16.0,
+                                                      color: LightColors
+                                                          .getThemeColor(
+                                                              colorName: state
+                                                                  .counter
+                                                                  ?.counterTheme,
+                                                              contrast: 'dark'),
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                               SizedBox(
                                                 width: 2.0,
@@ -213,24 +257,6 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                                                           contrast: 'dark'),
                                                   size: 16.0)
                                             ],
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Text(
-                                          ((state.counter!.limiter ?? 1) -
-                                                      (state.counter!.counter ??
-                                                          0))
-                                                  .toString() +
-                                              ' dhikr to go',
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                            color: LightColors.getThemeColor(
-                                                colorName:
-                                                    state.counter?.counterTheme,
-                                                contrast: 'dark'),
-                                            fontWeight: FontWeight.w400,
                                           ),
                                         ),
                                       ),
