@@ -34,10 +34,6 @@ class HomePage extends StatefulWidget {
 class _HomePage extends State<HomePage> {
   CounterBloc counterBloc = CounterBloc()..add(CounterInit());
   ProfileBloc profileBloc = ProfileBloc();
-  String? appName;
-  String? packageName;
-  String? version;
-  String? buildNumber;
   List<GlobalKey> buttonKeys = [GlobalKey(), GlobalKey(), GlobalKey()];
   List<String> tutorialTexts = [
     'Tap this button to create new smart dhikr counter.',
@@ -92,14 +88,6 @@ class _HomePage extends State<HomePage> {
     // myBanner2.load();
     counterBloc.add(CounterGetAll());
     profileBloc.add(ProfileGet());
-    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-      setState(() {
-        appName = packageInfo.appName;
-        packageName = packageInfo.packageName;
-        version = packageInfo.version;
-        buildNumber = packageInfo.buildNumber;
-      });
-    });
   }
 
   @override

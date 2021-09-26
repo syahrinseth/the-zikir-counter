@@ -51,7 +51,9 @@ dependencies:
   in_app_review: ^2.0.3
   share_plus: ^2.1.4
   package_info_plus: ^1.0.4
-  google_mobile_ads: ^0.13.3
+  # google_mobile_ads: ^0.13.3
+  firebase_core: ^1.6.0
+  firebase_crashlytics: ^2.2.1
 
 dev_dependencies:
   flutter_test:
