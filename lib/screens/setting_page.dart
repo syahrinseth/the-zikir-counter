@@ -72,7 +72,7 @@ class _ProfileEdit extends State<SettingPage> {
             }
 
             if (state is ProfileSaved) {
-              print('Counter Saved...');
+              print('Saved...');
               final snackBar = SnackBar(
                 backgroundColor: LightColors.kGreen,
                 content: Text('Saved.'),
