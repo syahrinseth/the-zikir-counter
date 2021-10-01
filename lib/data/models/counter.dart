@@ -99,8 +99,8 @@ class Counter {
         return true;
       }
       return false;
-    });
-    return '${dhikr['translate'] ?? null}';
+    }, orElse: () => Map.from({'translate': null}));
+    return '${dhikr['translate'] ?? ''}';
   }
 
   static int getTotalCountFromCounters({required List<Counter> counters}) {

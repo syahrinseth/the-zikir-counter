@@ -182,16 +182,24 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text(
-                            _titleController.text,
-                            style: TextStyle(
-                                color: LightColors.getThemeColor(
-                                    colorName: state is CounterLoaded
-                                        ? state.counter?.counterTheme
-                                        : null,
-                                    contrast: 'dark'),
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.w700),
+                          ConstrainedBox(
+                            constraints:
+                                BoxConstraints(minWidth: 180, maxWidth: 300),
+                            child: Text(
+                              _titleController.text,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              softWrap: true,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: LightColors.getThemeColor(
+                                      colorName: state is CounterLoaded
+                                          ? state.counter?.counterTheme
+                                          : null,
+                                      contrast: 'dark'),
+                                  fontSize: 30.0,
+                                  fontWeight: FontWeight.w700),
+                            ),
                           ),
                         ],
                       ),
@@ -237,14 +245,14 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                                           .height /
                                       3,
                                   child: CupertinoPicker(
-                                      itemExtent: 80.0,
+                                      itemExtent: 50.0,
                                       onSelectedItemChanged: (value) {
                                         _titleController.value =
                                             TextEditingValue(
                                                 text: dhikrNames[value]
                                                     ['name']);
                                       },
-                                      diameterRatio: 10.0,
+                                      diameterRatio: 40.0,
                                       children: dhikrNames
                                           .map((e) => Center(
                                                 child: Padding(

@@ -75,7 +75,7 @@ class _ProfileEdit extends State<SettingPage> {
               print('Counter Saved...');
               final snackBar = SnackBar(
                 backgroundColor: LightColors.kGreen,
-                content: Text('Counter Saved.'),
+                content: Text('Saved.'),
                 // action: SnackBarAction(
                 //   label: 'Undo',
                 //   onPressed: () {
@@ -297,7 +297,7 @@ class _ProfileEdit extends State<SettingPage> {
                                     icon: CupertinoIcons.heart,
                                     subtitle:
                                         'Tell us what we are doing correct or wrong.',
-                                    title: 'Review the app.',
+                                    title: 'Review The App',
                                     onTap: () async {
                                       if (await inAppReview.isAvailable()) {
                                         inAppReview.requestReview();

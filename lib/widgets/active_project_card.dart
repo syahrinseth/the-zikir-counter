@@ -54,6 +54,9 @@ class ActiveProjectsCard extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     title,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    softWrap: true,
                     style: TextStyle(
                       fontSize: 14.0,
                       color: Colors.white,
@@ -63,7 +66,8 @@ class ActiveProjectsCard extends StatelessWidget {
                   Text(
                     subtitle,
                     maxLines: 1,
-                    overflow: TextOverflow.fade,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: true,
                     style: TextStyle(
                       fontSize: 12.0,
                       color: Colors.white54,

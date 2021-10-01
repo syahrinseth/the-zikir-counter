@@ -239,16 +239,25 @@ class _HomePage extends State<HomePage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                (profileState is ProfileLoaded
-                                                    ? (profileState.name ??
-                                                        'Smart Dhikr')
-                                                    : 'Smart Dhikr'),
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                  fontSize: 22.0,
-                                                  color: Color(0xff3d7068),
-                                                  fontWeight: FontWeight.w800,
+                                              ConstrainedBox(
+                                                constraints: BoxConstraints(
+                                                    minWidth: 180,
+                                                    maxWidth: 200),
+                                                child: Text(
+                                                  (profileState is ProfileLoaded
+                                                      ? (profileState.name ??
+                                                          'Smart Dhikr')
+                                                      : 'Smart Dhikr'),
+                                                  textAlign: TextAlign.start,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 2,
+                                                  softWrap: true,
+                                                  style: TextStyle(
+                                                    fontSize: 22.0,
+                                                    color: Color(0xff3d7068),
+                                                    fontWeight: FontWeight.w800,
+                                                  ),
                                                 ),
                                               ),
                                               SizedBox(
@@ -271,7 +280,7 @@ class _HomePage extends State<HomePage> {
                                                                   [])
                                                       .toString()
                                                   : ''),
-                                          textAlign: TextAlign.start,
+                                          textAlign: TextAlign.end,
                                           style: TextStyle(
                                             fontSize: 16.0,
                                             color: Color(0xff3d7068),

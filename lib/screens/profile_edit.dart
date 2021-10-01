@@ -68,10 +68,10 @@ class _ProfileEdit extends State<ProfileEdit> {
             }
 
             if (state is ProfileSaved) {
-              print('Counter Saved...');
+              print('Saved...');
               final snackBar = SnackBar(
                 backgroundColor: LightColors.kGreen,
-                content: Text('Counter Saved.'),
+                content: Text('Profile Saved.'),
                 // action: SnackBarAction(
                 //   label: 'Undo',
                 //   onPressed: () {
