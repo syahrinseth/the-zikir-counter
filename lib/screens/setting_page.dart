@@ -316,7 +316,7 @@ class _ProfileEdit extends State<SettingPage> {
                 Text(
                   'Smart Dhikr - Version ${version ?? ''} (${buildNumber ?? ''})',
                   style: TextStyle(
-                    color: LightColors.kGreen,
+                    color: Color(0xff3d7068),
                   ),
                 )
               ],
