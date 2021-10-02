@@ -201,18 +201,27 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
                                                   ),
                                                 ),
                                               ),
-                                              Text(
-                                                'Dhikr goal ${state.counter!.counter} / ${state.counter!.limiter}',
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  color:
-                                                      LightColors.getThemeColor(
-                                                          colorName: state
-                                                              .counter
-                                                              ?.counterTheme,
-                                                          contrast: 'dark'),
-                                                  fontWeight: FontWeight.w400,
+                                              ConstrainedBox(
+                                                constraints: BoxConstraints(
+                                                    minWidth: 180,
+                                                    maxWidth: 200),
+                                                child: Text(
+                                                  'Dhikr Goal ${state.counter!.counter} / ${state.counter!.limiter}',
+                                                  textAlign: TextAlign.end,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  softWrap: true,
+                                                  style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: LightColors
+                                                        .getThemeColor(
+                                                            colorName: state
+                                                                .counter
+                                                                ?.counterTheme,
+                                                            contrast: 'dark'),
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
                                                 ),
                                               )
                                             ],

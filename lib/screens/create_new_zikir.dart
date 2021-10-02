@@ -29,7 +29,7 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
   ProfileBloc profileBloc = ProfileBloc();
   List<GlobalKey> buttonKeys = [GlobalKey(), GlobalKey()];
   List<String> tutorialTexts = [
-    'Tap on this section to start count your dhikir.',
+    'Tap on this section to start count your dhikr.',
     'Tap this button to edit your dhikr counter.'
   ];
   List<ContentAlign> tutorialTextAligns = [
@@ -242,27 +242,31 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                                                       ),
                                                     ),
                                                   ),
-                                                  Text(
-                                                    ((state.counter!.limiter ??
-                                                                    1) -
-                                                                (state.counter!
-                                                                        .counter ??
-                                                                    0))
-                                                            .toString() +
-                                                        ' dhikr to go',
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      fontSize: 16.0,
-                                                      color: LightColors
-                                                          .getThemeColor(
-                                                              colorName: state
-                                                                  .counter
-                                                                  ?.counterTheme,
-                                                              contrast: 'dark'),
-                                                      fontWeight:
-                                                          FontWeight.w400,
+                                                  ConstrainedBox(
+                                                    constraints: BoxConstraints(
+                                                        minWidth: 180,
+                                                        maxWidth: 200),
+                                                    child: Text(
+                                                      'Dhikr Goal ${state.counter!.counter} / ${state.counter!.limiter}',
+                                                      textAlign: TextAlign.end,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      maxLines: 1,
+                                                      softWrap: true,
+                                                      style: TextStyle(
+                                                        fontSize: 16.0,
+                                                        color: LightColors
+                                                            .getThemeColor(
+                                                                colorName: state
+                                                                    .counter
+                                                                    ?.counterTheme,
+                                                                contrast:
+                                                                    'dark'),
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
                                                     ),
-                                                  ),
+                                                  )
                                                 ],
                                               ),
                                               SizedBox(
