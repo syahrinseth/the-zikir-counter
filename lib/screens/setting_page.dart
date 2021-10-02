@@ -231,7 +231,7 @@ class _ProfileEdit extends State<SettingPage> {
                                                             .pop(true),
                                                   ),
                                                   TextButton(
-                                                    child: Text('Done'),
+                                                    child: Text('Save'),
                                                     onPressed: () {
                                                       _profileBloc.add(ProfileUpdate(
                                                           name:
