@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:soundpool/soundpool.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:the_zikir_app/bloc/counter_bloc.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
@@ -29,6 +31,8 @@ class _EditZikirCounter extends State<EditZikirCounter> {
   TextEditingController _zikirCountController = TextEditingController();
   TextEditingController _themeController = TextEditingController();
   CounterBloc _counterBloc = CounterBloc();
+  Soundpool pool = Soundpool.fromOptions(
+      options: SoundpoolOptions(streamType: StreamType.notification));
   // final BannerAd myBanner = BannerAd(
   //   adUnitId: GlobalVar.counterEditBannerAdId,
   //   size: AdSize.banner,
@@ -246,13 +250,20 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                                       3,
                                   child: CupertinoPicker(
                                       itemExtent: 50.0,
-                                      onSelectedItemChanged: (value) {
+                                      onSelectedItemChanged: (value) async {
+                                        int soundId = await rootBundle
+                                            .load(
+                                                "assets/sounds/zapsplat_technology_studio_speaker_active_power_switch_click_005_68877.mp3")
+                                            .then((ByteData soundData) {
+                                          return pool.load(soundData);
+                                        });
+                                        await pool.play(soundId);
                                         _titleController.value =
                                             TextEditingValue(
                                                 text: dhikrNames[value]
                                                     ['name']);
                                       },
-                                      diameterRatio: 40.0,
+                                      diameterRatio: 1.1,
                                       children: dhikrNames
                                           .map((e) => Center(
                                                 child: Padding(

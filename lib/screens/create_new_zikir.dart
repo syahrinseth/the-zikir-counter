@@ -191,35 +191,55 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.end,
                                                 children: [
-                                                  Text(
-                                                    state.counter!.name ?? '',
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      fontSize: 22.0,
-                                                      color: LightColors
-                                                          .getThemeColor(
-                                                              colorName: state
-                                                                  .counter
-                                                                  ?.counterTheme,
-                                                              contrast: 'dark'),
-                                                      fontWeight:
-                                                          FontWeight.w800,
+                                                  ConstrainedBox(
+                                                    constraints: BoxConstraints(
+                                                        minWidth: 180,
+                                                        maxWidth: 200),
+                                                    child: Text(
+                                                      state.counter!.name ?? '',
+                                                      textAlign: TextAlign.end,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      maxLines: 2,
+                                                      softWrap: true,
+                                                      style: TextStyle(
+                                                        fontSize: 22.0,
+                                                        color: LightColors
+                                                            .getThemeColor(
+                                                                colorName: state
+                                                                    .counter
+                                                                    ?.counterTheme,
+                                                                contrast:
+                                                                    'dark'),
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                      ),
                                                     ),
                                                   ),
-                                                  Text(
-                                                    state.counter!
-                                                        .displayDhikrNameTranslate(),
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      fontSize: 14.0,
-                                                      color: LightColors
-                                                          .getThemeColor(
-                                                              colorName: state
-                                                                  .counter
-                                                                  ?.counterTheme,
-                                                              contrast: 'dark'),
-                                                      fontWeight:
-                                                          FontWeight.w800,
+                                                  ConstrainedBox(
+                                                    constraints: BoxConstraints(
+                                                        minWidth: 180,
+                                                        maxWidth: 200),
+                                                    child: Text(
+                                                      state.counter!
+                                                          .displayDhikrNameTranslate(),
+                                                      textAlign: TextAlign.end,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      maxLines: 1,
+                                                      softWrap: true,
+                                                      style: TextStyle(
+                                                        fontSize: 14.0,
+                                                        color: LightColors
+                                                            .getThemeColor(
+                                                                colorName: state
+                                                                    .counter
+                                                                    ?.counterTheme,
+                                                                contrast:
+                                                                    'dark'),
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                      ),
                                                     ),
                                                   ),
                                                   Text(
