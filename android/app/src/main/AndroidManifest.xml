@@ -29,9 +29,9 @@
               android:resource="@drawable/launch_background"
               />
             <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
-            <meta-data
+            <!-- <meta-data
               android:name="com.google.android.gms.ads.com.syahrinseth.thedhikrapp"
-              android:value="ca-app-pub-7782324487799920~8081917539"/>
+              android:value="ca-app-pub-7782324487799920~8081917539"/> -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -42,8 +42,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <meta-data
+        <!-- <meta-data
           android:name="com.google.android.gms.ads.APPLICATION_ID"
-          android:value="ca-app-pub-7782324487799920~8081917539"/>
+          android:value="ca-app-pub-7782324487799920~8081917539"/> -->
     </application>
 </manifest>
