@@ -218,8 +218,7 @@ class _HomePage extends State<HomePage> {
                                     ),
                                   ),
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       GestureDetector(
                                         key: buttonKeys[1],
@@ -248,7 +247,7 @@ class _HomePage extends State<HomePage> {
                                                       ? (profileState.name ??
                                                           'Smart Dhikr')
                                                       : 'Smart Dhikr'),
-                                                  textAlign: TextAlign.start,
+                                                  textAlign: TextAlign.end,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   maxLines: 2,
@@ -261,7 +260,7 @@ class _HomePage extends State<HomePage> {
                                                 ),
                                               ),
                                               SizedBox(
-                                                width: 2.0,
+                                                width: 10.0,
                                               ),
                                               Icon(Icons.edit,
                                                   color: Color(0xff3d7068),
