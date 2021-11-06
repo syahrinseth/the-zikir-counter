@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class TaskColumn extends StatelessWidget {
   final IconData icon;
@@ -7,11 +8,13 @@ class TaskColumn extends StatelessWidget {
   final String title;
   final String subtitle;
   final IconData? tailingIcon;
+  final DateTime? dateTime;
   TaskColumn(
       {required this.icon,
       required this.iconBackgroundColor,
       required this.title,
       required this.subtitle,
+      this.dateTime,
       this.tailingIcon});
   @override
   Widget build(BuildContext context) {
@@ -63,6 +66,20 @@ class TaskColumn extends StatelessWidget {
               ],
             ),
           ],
+        ),
+        Text(
+          dateTime == null
+              ? ''
+              : (timeago.format(dateTime ?? DateTime.now())[0].toUpperCase() +
+                  timeago.format(dateTime ?? DateTime.now()).substring(1)),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          softWrap: true,
+          style: TextStyle(
+            fontSize: 10.0,
+            color: Colors.black45,
+            fontWeight: FontWeight.w400,
+          ),
         ),
         Icon(
           tailingIcon,

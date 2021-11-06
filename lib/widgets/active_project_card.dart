@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ActiveProjectsCard extends StatelessWidget {
   final Color cardColor;
   final double loadingPercent;
   final String title;
   final String subtitle;
+  final DateTime? dateTime;
   final Function()? onTap;
 
   ActiveProjectsCard(
@@ -13,6 +15,7 @@ class ActiveProjectsCard extends StatelessWidget {
       required this.loadingPercent,
       required this.title,
       required this.subtitle,
+      this.dateTime,
       this.onTap});
 
   @override
@@ -58,7 +61,7 @@ class ActiveProjectsCard extends StatelessWidget {
                     maxLines: 1,
                     softWrap: true,
                     style: TextStyle(
-                      fontSize: 14.0,
+                      fontSize: 16.0,
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
                     ),
@@ -70,6 +73,20 @@ class ActiveProjectsCard extends StatelessWidget {
                     softWrap: true,
                     style: TextStyle(
                       fontSize: 12.0,
+                      color: Colors.white54,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Text(
+                    timeago
+                            .format(dateTime ?? DateTime.now())[0]
+                            .toUpperCase() +
+                        timeago.format(dateTime ?? DateTime.now()).substring(1),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: true,
+                    style: TextStyle(
+                      fontSize: 10.0,
                       color: Colors.white54,
                       fontWeight: FontWeight.w400,
                     ),

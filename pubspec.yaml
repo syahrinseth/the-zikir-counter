@@ -59,6 +59,7 @@ dependencies:
   firebase_crashlytics: ^2.2.1
   flutter_local_notifications: ^8.2.0
   # marquee_widget: ^1.2.0
+  timeago: ^3.1.0
 
 dev_dependencies:
   flutter_test:

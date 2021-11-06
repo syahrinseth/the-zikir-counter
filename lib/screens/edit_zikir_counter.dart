@@ -212,7 +212,7 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                 ),
                 Expanded(
                     child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: <Widget>[

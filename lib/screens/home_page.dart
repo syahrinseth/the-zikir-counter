@@ -19,6 +19,7 @@ import 'package:the_zikir_app/state/counter_state.dart';
 import 'package:the_zikir_app/state/profile_state.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/active_project_card.dart';
+import 'package:the_zikir_app/widgets/dhikr_list_tile.dart';
 import 'package:the_zikir_app/widgets/slide_left_route.dart';
 import 'package:the_zikir_app/widgets/task_column.dart';
 import 'package:the_zikir_app/widgets/top_container.dart';
@@ -298,7 +299,7 @@ class _HomePage extends State<HomePage> {
                 ),
                 Expanded(
                   child: SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: BouncingScrollPhysics(),
                     child: Column(
                       children: <Widget>[
                         Container(
@@ -402,23 +403,27 @@ class _HomePage extends State<HomePage> {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: ActiveProjectsCard(
-                    cardColor: LightColors.getThemeColor(
-                        colorName: counter.counterTheme, contrast: 'dark'),
-                    loadingPercent:
-                        ((counter.counter ?? 0) / (counter.limiter ?? 1)),
-                    title: counter.name ?? ('Counter ' + index.toString()),
-                    subtitle: counter.displayDhikrNameTranslate(),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ViewZikirCounter(id: counter.id)),
-                      ).then((value) {
+                  cardColor: LightColors.getThemeColor(
+                      colorName: counter.counterTheme, contrast: 'dark'),
+                  loadingPercent:
+                      ((counter.counter ?? 0) / (counter.limiter ?? 1)),
+                  title: counter.name ?? ('Counter ' + index.toString()),
+                  subtitle: counter.displayDhikrNameTranslate(),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ViewZikirCounter(id: counter.id)),
+                    ).then(
+                      (value) {
                         counterBloc.add(CounterGetAll());
                         profileBloc.add(ProfileGet());
-                      });
-                    }),
+                      },
+                    );
+                  },
+                  dateTime: counter.updatedAt,
+                ),
               );
             })
             .toList()
@@ -445,7 +450,7 @@ class _HomePage extends State<HomePage> {
       width: double.infinity,
       height: 200,
       child: GridView.count(
-        physics: AlwaysScrollableScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         childAspectRatio: 1.0, //1.0
         mainAxisSpacing: 0.1, //1.0
         crossAxisSpacing: 4.0,
@@ -518,7 +523,6 @@ class _HomePage extends State<HomePage> {
               // int index = entry.key;
               Counter counter = entry.value;
               return Column(children: [
-                SizedBox(height: 15.0),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -531,12 +535,20 @@ class _HomePage extends State<HomePage> {
                       profileBloc.add(ProfileGet());
                     });
                   },
-                  child: TaskColumn(
+                  // child: TaskColumn(
+                  //   icon: LineIcons.check,
+                  //   iconBackgroundColor: LightColors.getThemeColor(
+                  //       colorName: counter.counterTheme, contrast: 'dark'),
+                  //   title: counter.name ?? 'Counter',
+                  //   subtitle: counter.counter.toString() + ' Total Dhikr Count',
+                  // ),
+                  child: DhikrListTile(
                     icon: LineIcons.check,
-                    iconBackgroundColor: LightColors.getThemeColor(
+                    iconColor: LightColors.getThemeColor(
                         colorName: counter.counterTheme, contrast: 'dark'),
                     title: counter.name ?? 'Counter',
                     subtitle: counter.counter.toString() + ' Total Dhikr Count',
+                    dateTime: counter.updatedAt,
                   ),
                 ),
               ]);

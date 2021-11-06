@@ -163,7 +163,7 @@ class _ViewReport extends State<ViewReport>
                         bloc: _dayReportCounterBloc,
                         builder: (context, state) {
                           return SingleChildScrollView(
-                            physics: AlwaysScrollableScrollPhysics(),
+                            physics: BouncingScrollPhysics(),
                             child: Column(
                               children: [
                                 Padding(
@@ -266,7 +266,7 @@ class _ViewReport extends State<ViewReport>
                         bloc: _weekReportCounterBloc,
                         builder: (context, state) {
                           return SingleChildScrollView(
-                            physics: AlwaysScrollableScrollPhysics(),
+                            physics: BouncingScrollPhysics(),
                             child: Column(
                               children: [
                                 Padding(
@@ -371,7 +371,7 @@ class _ViewReport extends State<ViewReport>
                         bloc: _monthReportCounterBloc,
                         builder: (context, state) {
                           return SingleChildScrollView(
-                            physics: AlwaysScrollableScrollPhysics(),
+                            physics: BouncingScrollPhysics(),
                             child: Column(
                               children: [
                                 Padding(
@@ -480,7 +480,7 @@ class _ViewReport extends State<ViewReport>
                         bloc: _yearReportCounterBloc,
                         builder: (context, state) {
                           return SingleChildScrollView(
-                            physics: AlwaysScrollableScrollPhysics(),
+                            physics: BouncingScrollPhysics(),
                             child: Column(
                               children: [
                                 Padding(
@@ -585,7 +585,7 @@ class _ViewReport extends State<ViewReport>
                     ],
                   )),
               // child: SingleChildScrollView(
-              //   physics: AlwaysScrollableScrollPhysics(),
+              //   physics: BouncingScrollPhysics(),
               //   child: Column(
               //     children: [
               //       Container(

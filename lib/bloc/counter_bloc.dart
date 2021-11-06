@@ -53,6 +53,9 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
           if (tempCounter != null) {
             counters.add(tempCounter);
           }
+          counters.sort((a, b) {
+            return b.updatedAt!.compareTo(a.updatedAt ?? DateTime.now());
+          });
         }
         yield CounterLoaded(counters: counters);
       } catch (err) {

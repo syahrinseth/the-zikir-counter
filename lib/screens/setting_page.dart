@@ -129,7 +129,7 @@ class _ProfileEdit extends State<SettingPage> {
                     )),
                 Expanded(
                   child: SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: BouncingScrollPhysics(),
                     child: Column(
                       children: <Widget>[
                         Container(

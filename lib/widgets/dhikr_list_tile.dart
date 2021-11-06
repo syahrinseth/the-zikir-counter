@@ -10,13 +10,15 @@ class DhikrListTile extends StatelessWidget {
       this.iconColor,
       this.onTap,
       required this.subtitle,
-      required this.title});
+      required this.title,
+      this.dateTime});
 
   final Function()? onTap;
   final IconData? icon;
   final Color? iconColor;
   final String title;
   final String subtitle;
+  final DateTime? dateTime;
 
   Widget build(BuildContext context) {
     return Column(children: [
@@ -37,6 +39,7 @@ class DhikrListTile extends StatelessWidget {
               title: title,
               subtitle: subtitle,
               tailingIcon: CupertinoIcons.forward,
+              dateTime: dateTime,
             ),
           ),
         ),
