@@ -30,7 +30,7 @@ class _EditZikirCounter extends State<EditZikirCounter> {
   TextEditingController _counterLimitController = TextEditingController();
   TextEditingController _zikirCountController = TextEditingController();
   TextEditingController _themeController = TextEditingController();
-  CounterBloc _counterBloc = CounterBloc();
+  CounterBloc _counterBloc = CounterBloc()..add(CounterInit());
   Soundpool pool = Soundpool.fromOptions(
       options: SoundpoolOptions(streamType: StreamType.notification));
   // final BannerAd myBanner = BannerAd(
@@ -251,13 +251,7 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                                   child: CupertinoPicker(
                                       itemExtent: 50.0,
                                       onSelectedItemChanged: (value) async {
-                                        int soundId = await rootBundle
-                                            .load(
-                                                "assets/sounds/zapsplat_technology_studio_speaker_active_power_switch_click_005_68877.mp3")
-                                            .then((ByteData soundData) {
-                                          return pool.load(soundData);
-                                        });
-                                        await pool.play(soundId);
+                                        _counterBloc.add(CounterPlaySound());
                                         _titleController.value =
                                             TextEditingValue(
                                                 text: dhikrNames[value]

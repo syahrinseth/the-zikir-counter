@@ -16,6 +16,11 @@ class CounterGetByIndex extends CounterEvent {
   List<Object> get props => [index];
 }
 
+class CounterPlaySound extends CounterEvent {
+  @override
+  List<Object> get props => [];
+}
+
 class CounterInit extends CounterEvent {
   @override
   List<Object> get props => [];

@@ -25,6 +25,13 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         yield CounterError(message: e.toString());
       }
     }
+    if (event is CounterPlaySound) {
+      try {
+        playSound();
+      } catch (e) {
+        yield CounterError(message: e.toString());
+      }
+    }
     if (event is CounterCreate) {
       try {
         yield CounterLoading();
@@ -82,7 +89,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         event.counter.updatedAt = DateTime.now();
         event.counter.histories
             ?.add(CounterHistory(counter: 1, dateTime: DateTime.now()));
-        playSound(event.counter);
+        playSound(counter: event.counter);
         lightVibrate(event.counter);
         Counter.saveCounter(counter: event.counter);
         yield CounterLoaded(counter: event.counter);
@@ -134,7 +141,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         yield CounterLoading();
         event.counter.isSoundOn = event.counter.isSoundOn ? false : true;
         event.counter.updatedAt = DateTime.now();
-        playSound(event.counter);
+        playSound(counter: event.counter);
         Counter.saveCounter(counter: event.counter);
         yield CounterLoaded(counter: event.counter);
       } catch (err) {
@@ -329,8 +336,8 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
     return null;
   }
 
-  void playSound(Counter counter) async {
-    if (counter.isSoundOn) {
+  void playSound({Counter? counter}) async {
+    if (counter?.isSoundOn ?? true) {
       await pool.play(soundId);
     }
   }
