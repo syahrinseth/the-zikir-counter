@@ -253,6 +253,14 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: GestureDetector(
+                        onVerticalDragStart: (DragStartDetails drag) {
+                          final counter = state.counter ?? Counter.fromJson({});
+                          counterBloc.add(CounterIncrement(counter: counter));
+                        },
+                        onHorizontalDragStart: (DragStartDetails drag) {
+                          final counter = state.counter ?? Counter.fromJson({});
+                          counterBloc.add(CounterIncrement(counter: counter));
+                        },
                         onTap: () {
                           final counter = state.counter ?? Counter.fromJson({});
                           counterBloc.add(CounterIncrement(counter: counter));

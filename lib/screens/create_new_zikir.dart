@@ -25,7 +25,7 @@ class CreateNewZikirCounter extends StatefulWidget {
 }
 
 class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
-  CounterBloc counterBloc = CounterBloc();
+  CounterBloc counterBloc = CounterBloc()..add(CounterInit());
   ProfileBloc profileBloc = ProfileBloc();
   List<GlobalKey> buttonKeys = [GlobalKey(), GlobalKey()];
   List<String> tutorialTexts = [
@@ -297,6 +297,18 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                           padding: const EdgeInsets.all(10.0),
                           child: GestureDetector(
                             key: buttonKeys[0],
+                            onVerticalDragStart: (DragStartDetails drag) {
+                              final counter =
+                                  state.counter ?? Counter.fromJson({});
+                              counterBloc
+                                  .add(CounterIncrement(counter: counter));
+                            },
+                            onHorizontalDragStart: (DragStartDetails drag) {
+                              final counter =
+                                  state.counter ?? Counter.fromJson({});
+                              counterBloc
+                                  .add(CounterIncrement(counter: counter));
+                            },
                             onTap: () {
                               counterBloc.add(CounterIncrement(
                                   counter:
