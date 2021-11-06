@@ -31,6 +31,7 @@ class CounterLoaded extends CounterState {
   final int? totalDhikrs; // for report use
   final List props = [];
   final DateTime? targetDateTime;
+  final int? soundId;
   CounterLoaded(
       {this.counter,
       this.counters,
@@ -39,7 +40,8 @@ class CounterLoaded extends CounterState {
       this.weekBarChartData,
       this.monthBarChartData,
       this.yearBarChartData,
-      this.totalDhikrs});
+      this.totalDhikrs,
+      this.soundId});
 }
 
 class CounterError extends CounterState {

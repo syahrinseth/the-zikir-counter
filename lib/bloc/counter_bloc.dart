@@ -9,11 +9,22 @@ import 'package:soundpool/soundpool.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 
 class CounterBloc extends Bloc<CounterEvent, CounterState> {
+  Soundpool pool = Soundpool.fromOptions(
+      options: SoundpoolOptions(streamType: StreamType.notification));
+  late int soundId;
+  late bool canVibrate;
   CounterBloc() : super(CounterInitialize());
 
   @override
   Stream<CounterState> mapEventToState(CounterEvent event) async* {
-    if (event is CounterInit) {}
+    if (event is CounterInit) {
+      try {
+        soundId = await loadSound();
+        canVibrate = await Vibrate.canVibrate;
+      } catch (e) {
+        yield CounterError(message: e.toString());
+      }
+    }
     if (event is CounterCreate) {
       try {
         yield CounterLoading();
@@ -320,21 +331,12 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
 
   void playSound(Counter counter) async {
     if (counter.isSoundOn) {
-      Soundpool pool = Soundpool.fromOptions(
-          options: SoundpoolOptions(streamType: StreamType.notification));
-      int soundId = await rootBundle
-          .load(
-              "assets/sounds/zapsplat_technology_studio_speaker_active_power_switch_click_005_68877.mp3")
-          .then((ByteData soundData) {
-        return pool.load(soundData);
-      });
       await pool.play(soundId);
     }
   }
 
   void lightVibrate(Counter counter) async {
     // Choose from any of these available methods
-    bool canVibrate = await Vibrate.canVibrate;
     if (canVibrate && counter.isVibrationOn) {
       var _type = FeedbackType.heavy;
       Vibrate.feedback(_type);
@@ -347,4 +349,14 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
     required String content,
     required Function onOk,
   }) {}
+
+  Future<int> loadSound() async {
+    int soundId = await rootBundle
+        .load(
+            "assets/sounds/zapsplat_technology_studio_speaker_active_power_switch_click_005_68877.mp3")
+        .then((ByteData soundData) {
+      return pool.load(soundData);
+    });
+    return soundId;
+  }
 }

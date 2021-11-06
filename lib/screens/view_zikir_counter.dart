@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:soundpool/soundpool.dart';
 import 'package:the_zikir_app/bloc/counter_bloc.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
 import 'package:the_zikir_app/event/counter_event.dart';
@@ -252,8 +254,8 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
                       padding: const EdgeInsets.all(10.0),
                       child: GestureDetector(
                         onTap: () {
-                          counterBloc.add(CounterIncrement(
-                              counter: state.counter ?? Counter.fromJson({})));
+                          final counter = state.counter ?? Counter.fromJson({});
+                          counterBloc.add(CounterIncrement(counter: counter));
                         },
                         child: Container(
                           margin: EdgeInsets.symmetric(vertical: 10.0),
