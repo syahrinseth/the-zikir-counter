@@ -146,8 +146,8 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                                 colorName: widget.counter.counterTheme,
                                 contrast: 'dark'),
                           ),
-                          GestureDetector(
-                            onTap: () => showDialog<String>(
+                          CupertinoButton(
+                            onPressed: () => showDialog<String>(
                               context: context,
                               builder: (BuildContext context) => AlertDialog(
                                 title: const Text('Delete Alert'),

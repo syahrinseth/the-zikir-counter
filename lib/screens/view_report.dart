@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quiver/time.dart';
@@ -75,8 +76,8 @@ class _ViewReport extends State<ViewReport>
                     children: [
                       Hero(
                         tag: 'backButton',
-                        child: GestureDetector(
-                          onTap: () {
+                        child: CupertinoButton(
+                          onPressed: () {
                             Navigator.pop(context);
                           },
                           child: Align(
@@ -92,8 +93,8 @@ class _ViewReport extends State<ViewReport>
                       Text('Dhikr History'),
                       Hero(
                         tag: 'More',
-                        child: GestureDetector(
-                          onTap: () {
+                        child: CupertinoButton(
+                          onPressed: () {
                             // Navigator.pop(context);
                           },
                           child: Align(

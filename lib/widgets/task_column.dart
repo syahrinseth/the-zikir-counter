@@ -38,7 +38,7 @@ class TaskColumn extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 ConstrainedBox(
-                  constraints: BoxConstraints(minWidth: 180, maxWidth: 230),
+                  constraints: BoxConstraints(minWidth: 150, maxWidth: 150),
                   child: Text(
                     title,
                     overflow: TextOverflow.ellipsis,
@@ -51,7 +51,7 @@ class TaskColumn extends StatelessWidget {
                   ),
                 ),
                 ConstrainedBox(
-                  constraints: BoxConstraints(minWidth: 180, maxWidth: 230),
+                  constraints: BoxConstraints(minWidth: 150, maxWidth: 150),
                   child: Text(
                     subtitle,
                     overflow: TextOverflow.ellipsis,
@@ -67,24 +67,29 @@ class TaskColumn extends StatelessWidget {
             ),
           ],
         ),
-        Text(
-          dateTime == null
-              ? ''
-              : (timeago.format(dateTime ?? DateTime.now())[0].toUpperCase() +
-                  timeago.format(dateTime ?? DateTime.now()).substring(1)),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          softWrap: true,
-          style: TextStyle(
-            fontSize: 10.0,
-            color: Colors.black45,
-            fontWeight: FontWeight.w400,
+        ConstrainedBox(
+          constraints: BoxConstraints(minWidth: 10, maxWidth: 80),
+          child: Text(
+            dateTime == null
+                ? ''
+                : (timeago.format(dateTime ?? DateTime.now())[0].toUpperCase() +
+                    timeago.format(dateTime ?? DateTime.now()).substring(1)),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            softWrap: true,
+            style: TextStyle(
+              fontSize: 10.0,
+              color: Colors.black45,
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ),
-        Icon(
-          tailingIcon,
-          color: LightColors.kGreen,
-        )
+        tailingIcon == null
+            ? SizedBox()
+            : Icon(
+                tailingIcon,
+                color: LightColors.kGreen,
+              )
       ],
     );
   }

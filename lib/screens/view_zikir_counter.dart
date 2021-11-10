@@ -179,30 +179,38 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
                                                   ),
                                                 ),
                                               ),
-                                              ConstrainedBox(
-                                                constraints: BoxConstraints(
-                                                    minWidth: 180,
-                                                    maxWidth: 200),
-                                                child: Text(
-                                                  state.counter!
-                                                      .displayDhikrNameTranslate(),
-                                                  textAlign: TextAlign.end,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  softWrap: true,
-                                                  style: TextStyle(
-                                                    fontSize: 14.0,
-                                                    color: LightColors
-                                                        .getThemeColor(
-                                                            colorName: state
-                                                                .counter
-                                                                ?.counterTheme,
-                                                            contrast: 'dark'),
-                                                    fontWeight: FontWeight.w800,
-                                                  ),
-                                                ),
-                                              ),
+                                              state.counter!
+                                                          .displayDhikrNameTranslate() ==
+                                                      ''
+                                                  ? SizedBox()
+                                                  : ConstrainedBox(
+                                                      constraints:
+                                                          BoxConstraints(
+                                                              minWidth: 180,
+                                                              maxWidth: 200),
+                                                      child: Text(
+                                                        state.counter!
+                                                            .displayDhikrNameTranslate(),
+                                                        textAlign:
+                                                            TextAlign.end,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
+                                                        softWrap: true,
+                                                        style: TextStyle(
+                                                          fontSize: 14.0,
+                                                          color: LightColors
+                                                              .getThemeColor(
+                                                                  colorName: state
+                                                                      .counter
+                                                                      ?.counterTheme,
+                                                                  contrast:
+                                                                      'dark'),
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                        ),
+                                                      ),
+                                                    ),
                                               ConstrainedBox(
                                                 constraints: BoxConstraints(
                                                     minWidth: 180,
@@ -231,12 +239,6 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
                                           SizedBox(
                                             width: 2.0,
                                           ),
-                                          Icon(Icons.edit,
-                                              color: LightColors.getThemeColor(
-                                                  colorName: state
-                                                      .counter?.counterTheme,
-                                                  contrast: 'dark'),
-                                              size: 16.0)
                                         ],
                                       ),
                                     ),

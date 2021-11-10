@@ -61,22 +61,24 @@ class ActiveProjectsCard extends StatelessWidget {
                     maxLines: 1,
                     softWrap: true,
                     style: TextStyle(
-                      fontSize: 16.0,
+                      fontSize: 14.0,
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  Text(
-                    subtitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    softWrap: true,
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      color: Colors.white54,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
+                  subtitle == ""
+                      ? SizedBox()
+                      : Text(
+                          subtitle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.white54,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                   Text(
                     timeago
                             .format(dateTime ?? DateTime.now())[0]

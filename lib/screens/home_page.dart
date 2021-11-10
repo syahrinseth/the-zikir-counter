@@ -73,11 +73,11 @@ class _HomePage extends State<HomePage> {
   static CircleAvatar plusIcon() {
     return CircleAvatar(
       radius: 25.0,
-      backgroundColor: Color(0xff43c59e),
+      backgroundColor: Color(0xff43c59e).withOpacity(0),
       child: Icon(
-        Icons.add,
-        size: 20.0,
-        color: Colors.white,
+        CupertinoIcons.add_circled,
+        size: 32.0,
+        color: Color(0xff3d7068),
       ),
     );
   }
@@ -141,8 +141,9 @@ class _HomePage extends State<HomePage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
-                                GestureDetector(
-                                  onTap: () {
+                                CupertinoButton(
+                                  // padding: EdgeInsets.all(0),
+                                  onPressed: () {
                                     // Scaffold.of(context).openDrawer();
                                     Navigator.push(
                                       context,
@@ -156,9 +157,10 @@ class _HomePage extends State<HomePage> {
                                   child: Icon(CupertinoIcons.settings,
                                       color: Color(0xff3d7068), size: 30.0),
                                 ),
-                                GestureDetector(
+                                CupertinoButton(
+                                  // padding: EdgeInsets.all(0),
                                   key: buttonKeys[2],
-                                  onTap: () {
+                                  onPressed: () {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -260,12 +262,6 @@ class _HomePage extends State<HomePage> {
                                                   ),
                                                 ),
                                               ),
-                                              SizedBox(
-                                                width: 10.0,
-                                              ),
-                                              Icon(Icons.edit,
-                                                  color: Color(0xff3d7068),
-                                                  size: 16.0)
                                             ],
                                           ),
                                         ),
@@ -318,9 +314,10 @@ class _HomePage extends State<HomePage> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     subheading('Active Dhikr'),
-                                    GestureDetector(
+                                    CupertinoButton(
+                                      padding: EdgeInsets.all(0),
                                       key: buttonKeys[0],
-                                      onTap: () {
+                                      onPressed: () {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -353,8 +350,9 @@ class _HomePage extends State<HomePage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   subheading('Completed Dhikr'),
-                                  GestureDetector(
-                                    onTap: () {
+                                  CupertinoButton(
+                                    padding: EdgeInsets.all(0),
+                                    onPressed: () {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -543,13 +541,14 @@ class _HomePage extends State<HomePage> {
                   //   subtitle: counter.counter.toString() + ' Total Dhikr Count',
                   // ),
                   child: DhikrListTile(
-                    icon: LineIcons.check,
-                    iconColor: LightColors.getThemeColor(
-                        colorName: counter.counterTheme, contrast: 'dark'),
-                    title: counter.name ?? 'Counter',
-                    subtitle: counter.counter.toString() + ' Total Dhikr Count',
-                    dateTime: counter.updatedAt,
-                  ),
+                      icon: LineIcons.check,
+                      iconColor: LightColors.getThemeColor(
+                          colorName: counter.counterTheme, contrast: 'dark'),
+                      title: counter.name ?? 'Counter',
+                      subtitle:
+                          counter.counter.toString() + ' Total Dhikr Count',
+                      dateTime: counter.updatedAt,
+                      tailingIcon: CupertinoIcons.forward),
                 ),
               ]);
             })

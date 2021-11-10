@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -109,9 +110,10 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                                     color: LightColors.getThemeColor(
                                         colorName: state.counter?.counterTheme,
                                         contrast: 'dark')),
-                                GestureDetector(
+                                CupertinoButton(
+                                  // padding: EdgeInsets.all(0),
                                   key: buttonKeys[1],
-                                  onTap: () {
+                                  onPressed: () {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -216,32 +218,41 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                                                       ),
                                                     ),
                                                   ),
-                                                  ConstrainedBox(
-                                                    constraints: BoxConstraints(
-                                                        minWidth: 180,
-                                                        maxWidth: 200),
-                                                    child: Text(
-                                                      state.counter!
-                                                          .displayDhikrNameTranslate(),
-                                                      textAlign: TextAlign.end,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      maxLines: 1,
-                                                      softWrap: true,
-                                                      style: TextStyle(
-                                                        fontSize: 14.0,
-                                                        color: LightColors
-                                                            .getThemeColor(
-                                                                colorName: state
-                                                                    .counter
-                                                                    ?.counterTheme,
-                                                                contrast:
-                                                                    'dark'),
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                      ),
-                                                    ),
-                                                  ),
+                                                  state.counter!
+                                                              .displayDhikrNameTranslate() ==
+                                                          ''
+                                                      ? SizedBox()
+                                                      : ConstrainedBox(
+                                                          constraints:
+                                                              BoxConstraints(
+                                                                  minWidth: 180,
+                                                                  maxWidth:
+                                                                      200),
+                                                          child: Text(
+                                                            state.counter!
+                                                                .displayDhikrNameTranslate(),
+                                                            textAlign:
+                                                                TextAlign.end,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            maxLines: 1,
+                                                            softWrap: true,
+                                                            style: TextStyle(
+                                                              fontSize: 14.0,
+                                                              color: LightColors
+                                                                  .getThemeColor(
+                                                                      colorName: state
+                                                                          .counter
+                                                                          ?.counterTheme,
+                                                                      contrast:
+                                                                          'dark'),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w800,
+                                                            ),
+                                                          ),
+                                                        ),
                                                   ConstrainedBox(
                                                     constraints: BoxConstraints(
                                                         minWidth: 180,
@@ -272,14 +283,6 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
                                               SizedBox(
                                                 width: 2.0,
                                               ),
-                                              Icon(Icons.edit,
-                                                  color:
-                                                      LightColors.getThemeColor(
-                                                          colorName: state
-                                                              .counter
-                                                              ?.counterTheme,
-                                                          contrast: 'dark'),
-                                                  size: 16.0)
                                             ],
                                           ),
                                         ),

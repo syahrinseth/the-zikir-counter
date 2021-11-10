@@ -111,8 +111,9 @@ class _ProfileEdit extends State<SettingPage> {
                           'Settings',
                           style: TextStyle(color: Color(0xff3d7068)),
                         ),
-                        GestureDetector(
-                            onTap: () {
+                        CupertinoButton(
+                            padding: EdgeInsets.all(0),
+                            onPressed: () {
                               if (Theme.of(context).platform ==
                                   TargetPlatform.iOS) {
                                 Share.share(
@@ -159,6 +160,7 @@ class _ProfileEdit extends State<SettingPage> {
                                     title: 'Edit Profile',
                                     subtitle:
                                         'Manage your profile informations.',
+                                    tailingIcon: CupertinoIcons.forward,
                                     onTap: () {
                                       Navigator.push(
                                         context,
@@ -280,6 +282,7 @@ class _ProfileEdit extends State<SettingPage> {
                                 children: [
                                   DhikrListTile(
                                     icon: CupertinoIcons.mail,
+                                    tailingIcon: CupertinoIcons.forward,
                                     title: 'Contact Developer',
                                     subtitle:
                                         'Request a feature or ask us anything.',
@@ -289,6 +292,7 @@ class _ProfileEdit extends State<SettingPage> {
                                   DhikrListTile(
                                     icon: CupertinoIcons.paintbrush,
                                     subtitle: 'Attribution to the artist.',
+                                    tailingIcon: CupertinoIcons.forward,
                                     title: 'App Avatar Attribution',
                                     onTap: () => launch(
                                         'https://www.flaticon.com/authors/ddara'),
