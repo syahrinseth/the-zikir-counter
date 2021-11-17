@@ -86,12 +86,12 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       try {
         yield CounterLoading();
         event.counter.counter = (event.counter.counter ?? 0) + 1;
+        event.counter.histories
+            ?.add(CounterHistory(counter: 1, dateTime: DateTime.now()));
         if ((event.counter.counter ?? 0) > (event.counter.limiter ?? 1)) {
           event.counter.limiter = event.counter.counter;
         }
         event.counter.updatedAt = DateTime.now();
-        event.counter.histories
-            ?.add(CounterHistory(counter: 1, dateTime: DateTime.now()));
         playSound(counter: event.counter);
         lightVibrate(event.counter);
         Counter.saveCounter(counter: event.counter);
@@ -166,17 +166,29 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
           if (counterValidateState is CounterError) {
             yield counterValidateState;
           } else {
+            // counter.histories?.clear();
+            if (counter.counter != event.counter) {
+              int tempCount = event.counter - (counter.counter ?? 0);
+              if (tempCount >= 0) {
+                for (var i = 0; i < tempCount; i++) {
+                  counter.histories?.add(
+                      CounterHistory(counter: 1, dateTime: DateTime.now()));
+                }
+              } else {
+                tempCount = 0 - tempCount;
+                for (var i = 0; i < tempCount; i++) {
+                  if (counter.histories!.isNotEmpty) {
+                    counter.histories?.removeLast();
+                  }
+                }
+              }
+            }
             counter.name = event.title;
             counter.description = event.description;
             counter.counter = event.counter;
             counter.limiter =
                 (event.counter > event.limiter ? event.counter : event.limiter);
             counter.counterTheme = event.counterTheme;
-            counter.histories?.clear();
-            for (var i = 0; i < (counter.counter ?? 0); i++) {
-              counter.histories
-                  ?.add(CounterHistory(counter: 1, dateTime: DateTime.now()));
-            }
             Counter.saveCounter(counter: counter);
             yield CounterSaved(counter: counter);
           }
@@ -200,25 +212,25 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       }
     }
     if (event is CounterGetWeekReport) {
-      // try {
-      yield CounterLoading();
-      Box<Counter> countersBox = Hive.box<Counter>('myZikirCountersBox');
-      List<Counter> counters = [];
-      for (var i = 0; i < countersBox.length; i++) {
-        Counter? tempCounter = countersBox.getAt(i);
-        if (tempCounter != null) {
-          counters.add(tempCounter);
+      try {
+        yield CounterLoading();
+        Box<Counter> countersBox = Hive.box<Counter>('myZikirCountersBox');
+        List<Counter> counters = [];
+        for (var i = 0; i < countersBox.length; i++) {
+          Counter? tempCounter = countersBox.getAt(i);
+          if (tempCounter != null) {
+            counters.add(tempCounter);
+          }
         }
+        yield CounterLoaded(
+            targetDateTime: event.dateTime,
+            weekBarChartData: Counter.getWeekReport(
+                counters: counters, dateTime: event.dateTime),
+            totalDhikrs: Counter.getWeekReportTotal(
+                counters: counters, dateTime: event.dateTime));
+      } catch (e) {
+        yield CounterError(message: e.toString());
       }
-      yield CounterLoaded(
-          targetDateTime: event.dateTime,
-          weekBarChartData: Counter.getWeekReport(
-              counters: counters, dateTime: event.dateTime),
-          totalDhikrs: Counter.getWeekReportTotal(
-              counters: counters, dateTime: event.dateTime));
-      // } catch (e) {
-      //   yield CounterError(message: e.toString());
-      // }
     }
     if (event is CounterGetMonthReport) {
       try {
