@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,13 +24,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         String isDoneWelcomeScreen =
             profileBox.get('is_done_welcome_screen') ?? 'no';
         String counterGoal = profileBox.get('counter_goal') ?? '100';
+        String themeMode = profileBox.get('theme_mode') ?? 'light';
         yield ProfileLoaded(
             name: name,
             avatar: avatar,
             isDoneTutorial1: isDoneTutorial1,
             isDoneTutorial2: isDoneTutorial2,
             isDoneWelcomeScreen: isDoneWelcomeScreen,
-            counterGoal: counterGoal);
+            counterGoal: counterGoal,
+            themeMode: themeMode);
       } catch (e) {
         yield ProfileError(message: e.toString());
       }
@@ -45,13 +49,27 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       try {
         yield ProfileLoading();
         Box<String> profileBox = Hive.box<String>('myProfileBox');
-        profileBox.put('name', event.name);
-        profileBox.put('avatar', event.avatar);
-        profileBox.put('counter_goal', event.counterGoal);
+        if (event.name != null) {
+          profileBox.put('name', event.name ?? '');
+        }
+        if (event.avatar != null) {
+          profileBox.put('avatar', event.avatar ?? '');
+        }
+        if (event.counterGoal != null) {
+          profileBox.put('counter_goal', event.counterGoal ?? '');
+        }
+        if (event.themeMode != null) {
+          profileBox.put('theme_mode', event.themeMode ?? 'light');
+        }
+        String? name = profileBox.get('name');
+        String? avatar = profileBox.get('avatar');
+        String? counterGoal = profileBox.get('counter_goal');
+        String? themeMode = profileBox.get('theme_mode');
         yield ProfileSaved(
-            name: event.name,
-            avatar: event.avatar,
-            counterGoal: event.counterGoal);
+            name: name,
+            avatar: avatar,
+            counterGoal: counterGoal,
+            themeMode: themeMode);
         // yield ProfileLoaded(name: event.name, avatar: event.avatar);
       } catch (e) {
         yield ProfileError(message: e.toString());

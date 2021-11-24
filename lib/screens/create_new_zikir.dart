@@ -37,12 +37,6 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
     ContentAlign.top,
     ContentAlign.bottom,
   ];
-  // final BannerAd myBanner = BannerAd(
-  //   adUnitId: GlobalVar.counterBannerAdId,
-  //   size: AdSize.banner,
-  //   request: AdRequest(),
-  //   listener: BannerAdListener(),
-  // );
 
   @override
   void initState() {
@@ -54,6 +48,8 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
 
   @override
   void dispose() async {
+    counterBloc.close();
+    profileBloc.close();
     super.dispose();
   }
 
@@ -75,9 +71,6 @@ class _CreateNewZikirCounter extends State<CreateNewZikirCounter> {
             }
           },
           builder: (context, state) {
-            if (state is CounterInit) {
-              return Text('Loading');
-            }
             if (state is CounterLoaded) {
               return BlocBuilder<ProfileBloc, ProfileState>(
                 bloc: profileBloc,

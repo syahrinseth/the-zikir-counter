@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:the_zikir_app/bloc/profile_bloc.dart';
+import 'package:the_zikir_app/state/profile_state.dart';
+import 'package:the_zikir_app/theme/colors/light_colors.dart';
 
 class MyTextField extends StatelessWidget {
   final String label;
@@ -23,11 +27,18 @@ class MyTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ProfileState parentState = BlocProvider.of<ProfileBloc>(context).state;
     return TextField(
       onTap: onTap,
       enabled: enabled,
       keyboardType: keyboardType,
-      style: TextStyle(color: Colors.black87),
+      style: TextStyle(
+        color: LightColors.getThemeColor(
+          state: parentState,
+          colorName: 'black',
+          contrast: 'dark',
+        ),
+      ),
       minLines: minLines,
       maxLines: maxLines,
       controller: controller,
@@ -36,7 +47,13 @@ class MyTextField extends StatelessWidget {
           floatingLabelBehavior: FloatingLabelBehavior.always,
           suffixIcon: icon == null ? null : icon,
           labelText: label,
-          labelStyle: TextStyle(color: Colors.black45),
+          labelStyle: TextStyle(
+            color: LightColors.getThemeColor(
+              state: parentState,
+              colorName: 'black',
+              contrast: 'dark',
+            ),
+          ),
           focusedBorder:
               UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
           border:

@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:the_zikir_app/state/profile_state.dart';
+
 class GlobalVar {
   final String avatarFemaleAttr =
       '<div>Icons made by <a href="https://www.flaticon.com/authors/ddara" title="dDara">dDara</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>';
@@ -13,6 +16,7 @@ class GlobalVar {
       'translate': 'There is no god except Allah'
     },
   ];
+
   // static String homeBannerAdId =
   //     "ca-app-pub-3940256099942544/6300978111"; // test
   // static String menuBannerAdId =

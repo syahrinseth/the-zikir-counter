@@ -5,14 +5,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:soundpool/soundpool.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:the_zikir_app/bloc/counter_bloc.dart';
+import 'package:the_zikir_app/bloc/profile_bloc.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
 import 'package:the_zikir_app/event/counter_event.dart';
 import 'package:the_zikir_app/global_var.dart';
 // import 'package:the_zikir_app/global_var.dart';
 import 'package:the_zikir_app/screens/home_page.dart';
 import 'package:the_zikir_app/state/counter_state.dart';
+import 'package:the_zikir_app/state/profile_state.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/back_button.dart';
+import 'package:the_zikir_app/widgets/dhikr_snack_bar.dart';
 import 'package:the_zikir_app/widgets/my_text_field.dart';
 import 'package:the_zikir_app/widgets/top_container.dart';
 
@@ -70,6 +73,7 @@ class _EditZikirCounter extends State<EditZikirCounter> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    ProfileState parentState = BlocProvider.of<ProfileBloc>(context).state;
     return Scaffold(
       // bottomNavigationBar: Container(
       //   child: AdWidget(ad: myBanner),
@@ -82,33 +86,16 @@ class _EditZikirCounter extends State<EditZikirCounter> {
           listener: (context, state) {
             if (state is CounterError) {
               print('Counter Error...');
-              final snackBar = SnackBar(
-                backgroundColor: Colors.red,
-                content: Text(state.message ?? 'Counter Error.'),
-                // action: SnackBarAction(
-                //   label: 'Undo',
-                //   onPressed: () {
-                //     // Some code to undo the change.
-                //   },
-                // ),
-              );
-
+              final snackBar = DhikrSnackBar.setSnackBar(context,
+                  message: state.message ?? 'Counter Error.', colorName: 'red');
               // Find the ScaffoldMessenger in the widget tree
               // and use it to show a SnackBar.
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
             if (state is CounterSaved) {
               print('Counter Saved...');
-              final snackBar = SnackBar(
-                backgroundColor: LightColors.kGreen,
-                content: Text('Counter Saved.'),
-                // action: SnackBarAction(
-                //   label: 'Undo',
-                //   onPressed: () {
-                //     // Some code to undo the change.
-                //   },
-                // ),
-              );
+              final snackBar =
+                  DhikrSnackBar.setSnackBar(context, message: 'Counter Saved.');
 
               // Find the ScaffoldMessenger in the widget tree
               // and use it to show a SnackBar.
@@ -132,6 +119,8 @@ class _EditZikirCounter extends State<EditZikirCounter> {
               children: <Widget>[
                 TopContainer(
                   color: LightColors.getThemeColor(
+                      state: parentState,
+                      isBackgroundColor: true,
                       colorName: widget.counter.counterTheme,
                       contrast: 'light'),
                   padding: EdgeInsets.fromLTRB(20, 20, 20, 40),
@@ -143,6 +132,7 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                         children: [
                           MyBackButton(
                             color: LightColors.getThemeColor(
+                                state: parentState,
                                 colorName: widget.counter.counterTheme,
                                 contrast: 'dark'),
                           ),
@@ -176,7 +166,11 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                               ),
                             ),
                             child: Icon(CupertinoIcons.trash_fill,
-                                color: LightColors.kRed, size: 25.0),
+                                color: LightColors.getThemeColor(
+                                    state: parentState,
+                                    colorName: 'red',
+                                    contrast: 'dark'),
+                                size: 25.0),
                           ),
                         ],
                       ),
@@ -197,6 +191,7 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: LightColors.getThemeColor(
+                                      state: parentState,
                                       colorName: state is CounterLoaded
                                           ? state.counter?.counterTheme
                                           : null,
@@ -321,7 +316,12 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                         ],
                       ),
                       DropdownButton<String>(
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(
+                            color: LightColors.getThemeColor(
+                          state: parentState,
+                          colorName: 'black',
+                          contrast: 'dark',
+                        )),
                         hint: Text('Theme'),
                         isExpanded: true,
                         value: _themeController.text,
@@ -406,7 +406,10 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                           child: Text(
                             'Save',
                             style: TextStyle(
-                                color: Colors.white,
+                                color: LightColors.getThemeColor(
+                                    state: parentState,
+                                    colorName: 'white',
+                                    contrast: 'light'),
                                 fontWeight: FontWeight.w700,
                                 fontSize: 18),
                           ),
@@ -415,8 +418,10 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                           width: width - 40,
                           decoration: BoxDecoration(
                             color: LightColors.getThemeColor(
+                                state: parentState,
                                 colorName: widget.counter.counterTheme,
-                                contrast: 'dark'),
+                                contrast: 'dark',
+                                isBackgroundColor: true),
                             borderRadius: BorderRadius.circular(30),
                           ),
                         ),

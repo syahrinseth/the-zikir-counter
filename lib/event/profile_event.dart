@@ -22,11 +22,11 @@ class ProfileInitiate extends ProfileEvent {
 }
 
 class ProfileUpdate extends ProfileEvent {
-  ProfileUpdate(
-      {required this.name, required this.avatar, required this.counterGoal});
-  final String name;
-  final String avatar;
-  final String counterGoal;
+  ProfileUpdate({this.name, this.avatar, this.counterGoal, this.themeMode});
+  final String? name;
+  final String? avatar;
+  final String? counterGoal;
+  final String? themeMode;
   @override
   List<Object> get props => [];
 }

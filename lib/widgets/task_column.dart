@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:the_zikir_app/state/profile_state.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -9,13 +10,15 @@ class TaskColumn extends StatelessWidget {
   final String subtitle;
   final IconData? tailingIcon;
   final DateTime? dateTime;
+  final ProfileState? profileState;
   TaskColumn(
       {required this.icon,
       required this.iconBackgroundColor,
       required this.title,
       required this.subtitle,
       this.dateTime,
-      this.tailingIcon});
+      this.tailingIcon,
+      this.profileState});
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -60,7 +63,11 @@ class TaskColumn extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 12.0,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black45),
+                        color: LightColors.getThemeColor(
+                            state: profileState,
+                            colorName: 'black',
+                            contrast: 'light',
+                            isBackgroundColor: false)),
                   ),
                 ),
               ],
@@ -79,7 +86,11 @@ class TaskColumn extends StatelessWidget {
             softWrap: true,
             style: TextStyle(
               fontSize: 10.0,
-              color: Colors.black45,
+              color: LightColors.getThemeColor(
+                  state: profileState,
+                  colorName: 'black',
+                  contrast: 'light',
+                  isBackgroundColor: false),
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -88,7 +99,8 @@ class TaskColumn extends StatelessWidget {
             ? SizedBox()
             : Icon(
                 tailingIcon,
-                color: LightColors.kGreen,
+                color: LightColors.getThemeColor(
+                    colorName: 'green', contrast: 'dark', state: profileState),
               )
       ],
     );

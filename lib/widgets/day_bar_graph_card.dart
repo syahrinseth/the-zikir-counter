@@ -1,6 +1,10 @@
 // EXCLUDE_FROM_GALLERY_DOCS_END
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:the_zikir_app/bloc/profile_bloc.dart';
+import 'package:the_zikir_app/state/profile_state.dart';
+import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/month_bar_graph_card.dart';
 
 class DayBarGraphCard extends StatefulWidget {
@@ -61,6 +65,7 @@ class _DayBarGraphCardState extends State<DayBarGraphCard> {
   int graphLabel = 0;
   @override
   Widget build(BuildContext context) {
+    ProfileState parentState = BlocProvider.of<ProfileBloc>(context).state;
     charts.ChartBehavior<DateTime> labelDraw = new charts.LinePointHighlighter(
         symbolRenderer: CustomCircleSymbolRenderer(labelAmount: graphLabel));
     // This is just a simple bar chart with optional property
@@ -74,7 +79,11 @@ class _DayBarGraphCardState extends State<DayBarGraphCard> {
     // interactions.
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: LightColors.getThemeColor(
+            state: parentState,
+            colorName: 'white',
+            contrast: 'dark',
+            isBackgroundColor: true),
         borderRadius: BorderRadius.all(
           Radius.circular(10.0),
         ),
@@ -88,8 +97,14 @@ class _DayBarGraphCardState extends State<DayBarGraphCard> {
                 Expanded(
                   child: Text(
                     widget.title,
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: LightColors.getThemeColor(
+                            state: parentState,
+                            colorName: 'green',
+                            contrast: 'dark',
+                            isBackgroundColor: true)),
                     textAlign: TextAlign.left,
                   ),
                 ),
@@ -100,7 +115,13 @@ class _DayBarGraphCardState extends State<DayBarGraphCard> {
                 Expanded(
                   child: Text(
                     widget.desc,
-                    style: TextStyle(fontSize: 16.0),
+                    style: TextStyle(
+                        fontSize: 16.0,
+                        color: LightColors.getThemeColor(
+                            state: parentState,
+                            colorName: 'green',
+                            contrast: 'dark',
+                            isBackgroundColor: true)),
                     textAlign: TextAlign.left,
                   ),
                 ),

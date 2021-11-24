@@ -10,6 +10,7 @@ import 'package:the_zikir_app/bloc/profile_bloc.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
 import 'package:the_zikir_app/event/counter_event.dart';
 import 'package:the_zikir_app/event/profile_event.dart';
+import 'package:the_zikir_app/global_var.dart';
 import 'package:the_zikir_app/screens/create_new_zikir.dart';
 import 'package:the_zikir_app/screens/profile_edit.dart';
 import 'package:the_zikir_app/screens/setting_page.dart';
@@ -59,25 +60,33 @@ class _HomePage extends State<HomePage> {
   //   listener: BannerAdListener(),
   // );
 
-  Text subheading(String title) {
+  Text subheading(String title, {required ProfileState state}) {
     return Text(
       title,
       style: TextStyle(
-          color: Color(0xff3d7068),
+          color: LightColors.getThemeColor(
+            state: state,
+            colorName: 'green',
+            contrast: 'dark',
+          ),
           fontSize: 20.0,
           fontWeight: FontWeight.w700,
           letterSpacing: 1.2),
     );
   }
 
-  static CircleAvatar plusIcon() {
+  static CircleAvatar plusIcon(ProfileState state) {
     return CircleAvatar(
       radius: 25.0,
       backgroundColor: Color(0xff43c59e).withOpacity(0),
       child: Icon(
         CupertinoIcons.add_circled,
         size: 32.0,
-        color: Color(0xff3d7068),
+        color: LightColors.getThemeColor(
+            state: state,
+            colorName: 'green',
+            contrast: 'dark',
+            isBackgroundColor: false),
       ),
     );
   }
@@ -101,13 +110,15 @@ class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    ProfileState parentState = BlocProvider.of<ProfileBloc>(context).state;
     return Scaffold(
       // bottomNavigationBar: Container(
       //   child: AdWidget(ad: myBanner),
       //   width: myBanner.size.width.toDouble(),
       //   height: myBanner.size.height.toDouble(),
       // ),
-      backgroundColor: LightColors.kLightYellow,
+      // backgroundColor: LightColors.getThemeColor(
+      //     state: parentState, colorName: 'yellow', isBackgroundColor: true),
       body: SafeArea(
         child: BlocConsumer<CounterBloc, CounterState>(
           bloc: counterBloc,
@@ -135,6 +146,11 @@ class _HomePage extends State<HomePage> {
                       padding: EdgeInsets.symmetric(horizontal: 20.0),
                       height: 200,
                       width: width,
+                      color: LightColors.getThemeColor(
+                          state: parentState,
+                          colorName: 'green',
+                          contrast: 'light',
+                          isBackgroundColor: true),
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
@@ -155,7 +171,11 @@ class _HomePage extends State<HomePage> {
                                     });
                                   },
                                   child: Icon(CupertinoIcons.settings,
-                                      color: Color(0xff3d7068), size: 30.0),
+                                      color: LightColors.getThemeColor(
+                                          state: parentState,
+                                          colorName: 'green',
+                                          contrast: 'dark'),
+                                      size: 30.0),
                                 ),
                                 CupertinoButton(
                                   // padding: EdgeInsets.all(0),
@@ -171,7 +191,11 @@ class _HomePage extends State<HomePage> {
                                     });
                                   },
                                   child: Icon(CupertinoIcons.chart_bar_fill,
-                                      color: Color(0xff3d7068), size: 25.0),
+                                      color: LightColors.getThemeColor(
+                                          state: parentState,
+                                          colorName: 'green',
+                                          contrast: 'dark'),
+                                      size: 25.0),
                                 ),
                               ],
                             ),
@@ -206,15 +230,30 @@ class _HomePage extends State<HomePage> {
                                                   : [])),
                                       circularStrokeCap:
                                           CircularStrokeCap.round,
-                                      progressColor: Color(0xff3d7068),
-                                      backgroundColor: Color(0xff43c59e),
+                                      progressColor: LightColors.getThemeColor(
+                                          state: parentState,
+                                          colorName: 'green',
+                                          contrast: 'dark',
+                                          isBackgroundColor: false),
+                                      backgroundColor:
+                                          LightColors.getThemeColor(
+                                              state: parentState,
+                                              colorName: 'green',
+                                              contrast: 'light',
+                                              isBackgroundColor: true),
                                       center: CircleAvatar(
-                                          backgroundColor: Color(0xff43c59e),
+                                          backgroundColor:
+                                              LightColors.getThemeColor(
+                                                  state: parentState,
+                                                  colorName: 'green',
+                                                  contrast: 'light',
+                                                  isBackgroundColor: true),
                                           radius: 35.0,
                                           child: profileState is ProfileLoaded
                                               ? (profileState.avatar == 'male'
                                                   ? SvgPicture.asset(
-                                                      'assets/svgs/man.svg')
+                                                      'assets/svgs/man.svg',
+                                                    )
                                                   : SvgPicture.asset(
                                                       'assets/svgs/woman.svg'))
                                               : SizedBox()),
@@ -257,7 +296,13 @@ class _HomePage extends State<HomePage> {
                                                   softWrap: true,
                                                   style: TextStyle(
                                                     fontSize: 22.0,
-                                                    color: Color(0xff3d7068),
+                                                    color: LightColors
+                                                        .getThemeColor(
+                                                            state: parentState,
+                                                            colorName: 'green',
+                                                            contrast: 'dark',
+                                                            isBackgroundColor:
+                                                                false),
                                                     fontWeight: FontWeight.w800,
                                                   ),
                                                 ),
@@ -279,7 +324,11 @@ class _HomePage extends State<HomePage> {
                                           textAlign: TextAlign.end,
                                           style: TextStyle(
                                             fontSize: 16.0,
-                                            color: Color(0xff3d7068),
+                                            color: LightColors.getThemeColor(
+                                                state: parentState,
+                                                colorName: 'green',
+                                                contrast: 'dark',
+                                                isBackgroundColor: false),
                                             fontWeight: FontWeight.w400,
                                           ),
                                         ),
@@ -299,7 +348,7 @@ class _HomePage extends State<HomePage> {
                     child: Column(
                       children: <Widget>[
                         Container(
-                          color: Colors.transparent,
+                          // color: Colors.transparent,
                           padding: EdgeInsets.symmetric(
                               horizontal: 0.0, vertical: 10.0),
                           child: Column(
@@ -313,7 +362,8 @@ class _HomePage extends State<HomePage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    subheading('Active Dhikr'),
+                                    subheading('Active Dhikr',
+                                        state: parentState),
                                     CupertinoButton(
                                       padding: EdgeInsets.all(0),
                                       key: buttonKeys[0],
@@ -322,24 +372,25 @@ class _HomePage extends State<HomePage> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  CreateNewZikirCounter()),
+                                                  ViewZikirCounter()),
                                         ).then((value) {
                                           counterBloc.add(CounterGetAll());
                                           profileBloc.add(ProfileGet());
                                         });
                                       },
-                                      child: plusIcon(),
+                                      child: plusIcon(parentState),
                                     ),
                                   ],
                                 ),
                               ),
                               SizedBox(height: 5.0),
-                              generateActiveZikirWidget(state),
+                              generateActiveZikirWidget(state,
+                                  profileState: parentState),
                             ],
                           ),
                         ),
                         Container(
-                          color: Colors.transparent,
+                          // color: Colors.transparent,
                           padding: EdgeInsets.symmetric(
                               horizontal: 20.0, vertical: 10.0),
                           child: Column(
@@ -349,7 +400,8 @@ class _HomePage extends State<HomePage> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  subheading('Completed Dhikr'),
+                                  subheading('Completed Dhikr',
+                                      state: parentState),
                                   CupertinoButton(
                                     padding: EdgeInsets.all(0),
                                     onPressed: () {
@@ -357,17 +409,18 @@ class _HomePage extends State<HomePage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                CreateNewZikirCounter()),
+                                                ViewZikirCounter()),
                                       ).then((value) {
                                         counterBloc.add(CounterGetAll());
                                         profileBloc.add(ProfileGet());
                                       });
                                     },
-                                    child: plusIcon(),
+                                    child: plusIcon(parentState),
                                   ),
                                 ],
                               ),
-                              generateCompletedZikirWidget(state),
+                              generateCompletedZikirWidget(state,
+                                  profileState: parentState),
                             ],
                           ),
                         ),
@@ -383,7 +436,8 @@ class _HomePage extends State<HomePage> {
     );
   }
 
-  Widget generateActiveZikirWidget(CounterState state) {
+  Widget generateActiveZikirWidget(CounterState state,
+      {required ProfileState profileState}) {
     List<Widget> tempCountersWidget = state is CounterLoaded
         ? state.counters!
             .where((counter) {
@@ -402,7 +456,10 @@ class _HomePage extends State<HomePage> {
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: ActiveProjectsCard(
                   cardColor: LightColors.getThemeColor(
-                      colorName: counter.counterTheme, contrast: 'dark'),
+                      colorName: counter.counterTheme,
+                      contrast: 'dark',
+                      isBackgroundColor: true,
+                      state: profileState),
                   loadingPercent:
                       ((counter.counter ?? 0) / (counter.limiter ?? 1)),
                   title: counter.name ?? ('Counter ' + index.toString()),
@@ -505,7 +562,8 @@ class _HomePage extends State<HomePage> {
     // );
   }
 
-  Widget generateCompletedZikirWidget(CounterState state) {
+  Widget generateCompletedZikirWidget(CounterState state,
+      {required ProfileState profileState}) {
     List<Widget> tempCountersWidget = state is CounterLoaded
         ? state.counters!
             .where((counter) {
@@ -541,9 +599,18 @@ class _HomePage extends State<HomePage> {
                   //   subtitle: counter.counter.toString() + ' Total Dhikr Count',
                   // ),
                   child: DhikrListTile(
+                      profileState: profileState,
                       icon: LineIcons.check,
+                      backgroundColor: LightColors.getThemeColor(
+                          isBackgroundColor: true,
+                          colorName: 'green',
+                          contrast: 'super-light',
+                          state: profileState),
                       iconColor: LightColors.getThemeColor(
-                          colorName: counter.counterTheme, contrast: 'dark'),
+                          isBackgroundColor: false,
+                          colorName: counter.counterTheme,
+                          contrast: 'dark',
+                          state: profileState),
                       title: counter.name ?? 'Counter',
                       subtitle:
                           counter.counter.toString() + ' Total Dhikr Count',

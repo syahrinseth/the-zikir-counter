@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_zikir_app/bloc/profile_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:the_zikir_app/state/profile_state.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/avatar_picker.dart';
 import 'package:the_zikir_app/widgets/back_button.dart';
+import 'package:the_zikir_app/widgets/dhikr_snack_bar.dart';
 import 'package:the_zikir_app/widgets/my_text_field.dart';
 import 'package:the_zikir_app/widgets/top_container.dart';
 
@@ -20,6 +22,8 @@ class _ProfileEdit extends State<ProfileEdit> {
   TextEditingController _avatarController = TextEditingController(text: 'male');
   TextEditingController _counterGoalController =
       TextEditingController(text: '100');
+  TextEditingController _themeModeController =
+      TextEditingController(text: 'light');
   bool initMark = true;
   // final BannerAd myBanner = BannerAd(
   //   adUnitId: GlobalVar.profileEditBannerAdId,
@@ -43,7 +47,13 @@ class _ProfileEdit extends State<ProfileEdit> {
 
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    ProfileBloc parentProfileBloc = BlocProvider.of<ProfileBloc>(context);
     return Scaffold(
+      // backgroundColor: LightColors.getThemeColor(
+      //     state: parentProfileBloc.state,
+      //     colorName: 'yellow',
+      //     contrast: 'light',
+      //     isBackgroundColor: true),
       // bottomNavigationBar: Container(
       //   child: AdWidget(ad: myBanner),
       //   width: myBanner.size.width.toDouble(),
@@ -55,33 +65,15 @@ class _ProfileEdit extends State<ProfileEdit> {
           listener: (context, state) {
             if (state is ProfileError) {
               print('Counter Error...');
-              SnackBar(
-                backgroundColor: Colors.red,
-                content: Text(state.message ?? 'Counter Error.'),
-                // action: SnackBarAction(
-                //   label: 'Undo',
-                //   onPressed: () {
-                //     // Some code to undo the change.
-                //   },
-                // ),
-              );
+              SnackBar snackBar = DhikrSnackBar.setSnackBar(context,
+                  message: state.message ?? 'Error', colorName: 'red');
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
 
             if (state is ProfileSaved) {
               print('Saved...');
-              final snackBar = SnackBar(
-                backgroundColor: LightColors.kGreen,
-                content: Text('Profile Saved.'),
-                // action: SnackBarAction(
-                //   label: 'Undo',
-                //   onPressed: () {
-                //     // Some code to undo the change.
-                //   },
-                // ),
-              );
-
-              // Find the ScaffoldMessenger in the widget tree
-              // and use it to show a SnackBar.
+              SnackBar snackBar =
+                  DhikrSnackBar.setSnackBar(context, message: "Saved");
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
           },
@@ -94,22 +86,45 @@ class _ProfileEdit extends State<ProfileEdit> {
                   TextEditingValue(text: state.avatar ?? 'male');
               _counterGoalController.value =
                   TextEditingValue(text: state.counterGoal ?? '100');
+              _themeModeController.value =
+                  TextEditingValue(text: state.themeMode ?? 'light');
             }
             return Column(
               children: [
                 TopContainer(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    color: Color(0xff43c59e),
-                    width: width,
-                    height: 100,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        MyBackButton(),
-                        Text('Profile'),
-                        Icon(Icons.apps, color: Color(0xff43c59e))
-                      ],
-                    )),
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  color: LightColors.getThemeColor(
+                      state: parentProfileBloc.state,
+                      colorName: 'green',
+                      contrast: 'light',
+                      isBackgroundColor: true),
+                  width: width,
+                  height: 100,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      MyBackButton(
+                        color: LightColors.getThemeColor(
+                            state: parentProfileBloc.state,
+                            colorName: 'green',
+                            contrast: 'dark'),
+                      ),
+                      Text('Profile'),
+                      CupertinoButton(
+                        onPressed: () {},
+                        child: Icon(
+                          Icons.apps,
+                          color: LightColors.getThemeColor(
+                              state: parentProfileBloc.state,
+                              colorName: 'green',
+                              contrast: 'light',
+                              isBackgroundColor: true),
+                        ),
+                      )
+                      // SizedBox()
+                    ],
+                  ),
+                ),
                 Expanded(
                   child: SingleChildScrollView(
                     physics: BouncingScrollPhysics(),
@@ -121,8 +136,8 @@ class _ProfileEdit extends State<ProfileEdit> {
                             children: [
                               SizedBox(height: 10.0),
                               AvatarPicker(
-                                controller: _avatarController,
-                              ),
+                                  controller: _avatarController,
+                                  profileState: parentProfileBloc.state),
                               SizedBox(height: 10.0),
                               MyTextField(
                                   label: 'Name', controller: _nameController),
@@ -130,13 +145,67 @@ class _ProfileEdit extends State<ProfileEdit> {
                           ),
                         ),
                         SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'Theme Mode',
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              DropdownButton<String>(
+                                style: TextStyle(
+                                  color: LightColors.getThemeColor(
+                                    state: parentProfileBloc.state,
+                                    colorName: 'black',
+                                    contrast: 'dark',
+                                  ),
+                                ),
+                                hint: Text('Theme Mode'),
+                                isExpanded: true,
+                                value:
+                                    _themeModeController.text[0].toUpperCase() +
+                                        _themeModeController.text
+                                            .substring(1)
+                                            .toLowerCase(),
+                                items: <String>['Light', 'Dark']
+                                    .map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: new Text(value),
+                                  );
+                                }).toList(),
+                                onChanged: (_) {
+                                  setState(() {
+                                    _themeModeController.value =
+                                        TextEditingValue(
+                                            text:
+                                                (_?.toLowerCase()) ?? 'light');
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
                         GestureDetector(
                           onTap: () {
                             setState(() {
                               _profileBloc.add(ProfileUpdate(
                                   name: _nameController.text,
                                   avatar: _avatarController.text,
-                                  counterGoal: _counterGoalController.text));
+                                  counterGoal: _counterGoalController.text,
+                                  themeMode: _themeModeController.text));
+                              parentProfileBloc.add(ProfileGet());
                             });
                           },
                           child: Container(
@@ -150,7 +219,11 @@ class _ProfileEdit extends State<ProfileEdit> {
                                     child: Text(
                                       'Save',
                                       style: TextStyle(
-                                          color: Colors.white,
+                                          color: LightColors.getThemeColor(
+                                            state: parentProfileBloc.state,
+                                            colorName: 'white',
+                                            contrast: 'dark',
+                                          ),
                                           fontWeight: FontWeight.w700,
                                           fontSize: 18),
                                     ),
@@ -158,7 +231,10 @@ class _ProfileEdit extends State<ProfileEdit> {
                                     margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
                                     decoration: BoxDecoration(
                                       color: LightColors.getThemeColor(
-                                          colorName: 'green', contrast: 'dark'),
+                                          state: parentProfileBloc.state,
+                                          colorName: 'green',
+                                          contrast: 'dark',
+                                          isBackgroundColor: true),
                                       borderRadius: BorderRadius.circular(30),
                                     ),
                                   ),

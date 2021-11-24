@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:the_zikir_app/state/profile_state.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/task_column.dart';
 
@@ -12,7 +13,9 @@ class DhikrListTile extends StatelessWidget {
       required this.subtitle,
       required this.title,
       this.tailingIcon,
-      this.dateTime});
+      this.dateTime,
+      this.backgroundColor,
+      this.profileState});
 
   final Function()? onTap;
   final IconData? icon;
@@ -21,6 +24,8 @@ class DhikrListTile extends StatelessWidget {
   final String subtitle;
   final DateTime? dateTime;
   final IconData? tailingIcon;
+  final Color? backgroundColor;
+  final ProfileState? profileState;
 
   Widget build(BuildContext context) {
     return Column(children: [
@@ -30,14 +35,24 @@ class DhikrListTile extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
-              color: LightColors.kLightGreen),
+              color: backgroundColor ??
+                  LightColors.getThemeColor(
+                    state: profileState,
+                    colorName: 'green',
+                    contrast: 'super-light',
+                    isBackgroundColor: true,
+                  )),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TaskColumn(
+              profileState: profileState,
               icon: icon ?? LineIcons.user,
               iconBackgroundColor: iconColor ??
                   LightColors.getThemeColor(
-                      colorName: 'green', contrast: 'dark'),
+                    state: profileState,
+                    colorName: 'green',
+                    contrast: 'dark',
+                  ),
               title: title,
               subtitle: subtitle,
               tailingIcon: tailingIcon,

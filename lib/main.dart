@@ -18,10 +18,6 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // MobileAds.instance.initialize();
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    systemNavigationBarColor: LightColors.kLightYellow, // navigation bar color
-    statusBarColor: Color(0xff43c59e), // status bar color
-  ));
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -72,26 +68,60 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileBloc, ProfileState>(
-      bloc: profileBloc,
-      builder: (context, state) {
-        return MaterialApp(
-          title: 'Smart Dhikr',
-          theme: ThemeData(
-            primarySwatch: Colors.green,
-            textTheme: Theme.of(context).textTheme.apply(
-                bodyColor: Color(0xff3d7068),
-                displayColor: Color(0xff3d7068),
-                fontFamily: 'Poppins'),
-          ),
-          home: state is ProfileLoaded
-              ? (state.isDoneWelcomeScreen == 'yes'
-                  ? HomePage()
-                  : WelcomeScreen())
-              : HomePage(),
-          debugShowCheckedModeBanner: false,
-        );
-      },
+    return BlocProvider(
+      create: (context) => profileBloc,
+      child: BlocBuilder<ProfileBloc, ProfileState>(
+        bloc: profileBloc,
+        builder: (context, state) {
+          SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+            systemNavigationBarColor: LightColors.getThemeColor(
+                state: profileBloc.state,
+                contrast: 'dark',
+                isBackgroundColor: true,
+                colorName: 'green'), // navigation bar color
+            statusBarColor: LightColors.getThemeColor(
+                state: profileBloc.state,
+                contrast: 'light',
+                isBackgroundColor: true,
+                colorName: 'green'), // status bar color
+          ));
+          return MaterialApp(
+            title: 'Smart Dhikr',
+            theme: ThemeData(
+              backgroundColor: LightColors.kLightYellow2,
+              brightness: Brightness.light,
+              primarySwatch: Colors.green,
+              textTheme: Theme.of(context).textTheme.apply(
+                  bodyColor: Color(0xff3d7068),
+                  displayColor: Color(0xff3d7068),
+                  fontFamily: 'Poppins'),
+            ),
+            darkTheme: ThemeData(
+              backgroundColor: Colors.black,
+              primaryColor: Colors.white,
+              brightness: Brightness.dark,
+              primarySwatch: Colors.green,
+              textTheme: Theme.of(context).textTheme.apply(
+                  bodyColor: Colors.white70,
+                  displayColor: Colors.white70,
+                  fontFamily: 'Poppins'),
+            ),
+            themeMode: state is ProfileLoaded
+                ? (state.themeMode == 'system'
+                    ? ThemeMode.system
+                    : (state.themeMode == 'dark'
+                        ? ThemeMode.dark
+                        : ThemeMode.light))
+                : ThemeMode.system,
+            home: state is ProfileLoaded
+                ? (state.isDoneWelcomeScreen == 'yes'
+                    ? HomePage()
+                    : WelcomeScreen())
+                : HomePage(),
+            debugShowCheckedModeBanner: false,
+          );
+        },
+      ),
     );
   }
 }

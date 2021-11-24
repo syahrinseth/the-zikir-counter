@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quiver/time.dart';
 import 'package:the_zikir_app/bloc/counter_bloc.dart';
+import 'package:the_zikir_app/bloc/profile_bloc.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
 import 'package:the_zikir_app/event/counter_event.dart';
 import 'package:the_zikir_app/state/counter_state.dart';
+import 'package:the_zikir_app/state/profile_state.dart';
+import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/day_bar_graph_card.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:the_zikir_app/widgets/month_bar_graph_card.dart';
@@ -56,13 +59,13 @@ class _ViewReport extends State<ViewReport>
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    ProfileState parentState = BlocProvider.of<ProfileBloc>(context).state;
     return Scaffold(
-      // bottomNavigationBar: Container(
-      //   child: AdWidget(ad: myBanner),
-      //   width: myBanner.size.width.toDouble(),
-      //   height: myBanner.size.height.toDouble(),
-      // ),
-      backgroundColor: Color(0xff43c59e),
+      backgroundColor: LightColors.getThemeColor(
+          state: parentState,
+          colorName: 'green',
+          contrast: 'light',
+          isBackgroundColor: true),
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -85,7 +88,11 @@ class _ViewReport extends State<ViewReport>
                             child: Icon(
                               Icons.arrow_back_ios,
                               size: 25,
-                              color: Color(0xff3d7068),
+                              color: LightColors.getThemeColor(
+                                  state: parentState,
+                                  colorName: 'green',
+                                  contrast: 'dark',
+                                  isBackgroundColor: false),
                             ),
                           ),
                         ),
@@ -102,7 +109,11 @@ class _ViewReport extends State<ViewReport>
                             child: Icon(
                               Icons.info,
                               size: 25,
-                              color: Color(0xff43c59e),
+                              color: LightColors.getThemeColor(
+                                  state: parentState,
+                                  colorName: 'green',
+                                  contrast: 'light',
+                                  isBackgroundColor: true),
                             ),
                           ),
                         ),
@@ -119,7 +130,11 @@ class _ViewReport extends State<ViewReport>
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Container(
                 decoration: BoxDecoration(
-                    color: Color(0xff3d7068),
+                    color: LightColors.getThemeColor(
+                        state: parentState,
+                        colorName: 'green',
+                        contrast: 'dark',
+                        isBackgroundColor: true),
                     borderRadius: BorderRadius.all(Radius.circular(10.0))),
                 child: Padding(
                   padding: const EdgeInsets.all(3.0),
@@ -132,9 +147,17 @@ class _ViewReport extends State<ViewReport>
                       borderRadius: BorderRadius.circular(
                         10.0,
                       ),
-                      color: Colors.white,
+                      color: LightColors.getThemeColor(
+                          state: parentState,
+                          colorName: 'white',
+                          contrast: 'dark',
+                          isBackgroundColor: true),
                     ),
-                    labelColor: Color(0xff3d7068),
+                    labelColor: LightColors.getThemeColor(
+                        state: parentState,
+                        colorName: 'green',
+                        contrast: 'dark',
+                        isBackgroundColor: false),
                     unselectedLabelColor: Colors.white,
                     tabs: [
                       Tab(
@@ -158,6 +181,7 @@ class _ViewReport extends State<ViewReport>
               child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: TabBarView(
+                    physics: BouncingScrollPhysics(),
                     controller: _tabController,
                     children: [
                       BlocBuilder<CounterBloc, CounterState>(
@@ -175,8 +199,8 @@ class _ViewReport extends State<ViewReport>
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       state is CounterLoaded
-                                          ? GestureDetector(
-                                              onTap: () {
+                                          ? CupertinoButton(
+                                              onPressed: () {
                                                 _dayReportCounterBloc.add(
                                                     CounterDayReportPrev(
                                                         currentDateTime: state
@@ -186,7 +210,13 @@ class _ViewReport extends State<ViewReport>
                                               child: Icon(
                                                 Icons.arrow_back_ios,
                                                 size: 25,
-                                                color: Colors.white,
+                                                color:
+                                                    LightColors.getThemeColor(
+                                                        state: parentState,
+                                                        colorName: 'white',
+                                                        contrast: 'light',
+                                                        isBackgroundColor:
+                                                            false),
                                               ),
                                             )
                                           : SizedBox(),
@@ -202,12 +232,16 @@ class _ViewReport extends State<ViewReport>
                                                     .toString())
                                             : '',
                                         style: TextStyle(
-                                            color: Colors.white,
+                                            color: LightColors.getThemeColor(
+                                                state: parentState,
+                                                colorName: 'white',
+                                                contrast: 'light',
+                                                isBackgroundColor: false),
                                             letterSpacing: 2),
                                       ),
                                       state is CounterLoaded
-                                          ? GestureDetector(
-                                              onTap: () {
+                                          ? CupertinoButton(
+                                              onPressed: () {
                                                 if (!_isDateAMSameAsDateB(
                                                     dateA:
                                                         state.targetDateTime ??
@@ -228,8 +262,18 @@ class _ViewReport extends State<ViewReport>
                                                                 .targetDateTime ??
                                                             DateTime.now(),
                                                         dateB: DateTime.now())
-                                                    ? Color(0xff3d7068)
-                                                    : Colors.white,
+                                                    ? LightColors.getThemeColor(
+                                                        state: parentState,
+                                                        colorName: 'green',
+                                                        contrast: 'dark',
+                                                        isBackgroundColor:
+                                                            false)
+                                                    : LightColors.getThemeColor(
+                                                        state: parentState,
+                                                        colorName: 'white',
+                                                        contrast: 'light',
+                                                        isBackgroundColor:
+                                                            false),
                                               ),
                                             )
                                           : SizedBox()
@@ -278,8 +322,8 @@ class _ViewReport extends State<ViewReport>
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       state is CounterLoaded
-                                          ? GestureDetector(
-                                              onTap: () {
+                                          ? CupertinoButton(
+                                              onPressed: () {
                                                 _weekReportCounterBloc.add(
                                                     CounterGetWeekReport(
                                                         dateTime: state
@@ -293,7 +337,13 @@ class _ViewReport extends State<ViewReport>
                                               child: Icon(
                                                 Icons.arrow_back_ios,
                                                 size: 25,
-                                                color: Colors.white,
+                                                color:
+                                                    LightColors.getThemeColor(
+                                                        state: parentState,
+                                                        colorName: 'white',
+                                                        contrast: 'light',
+                                                        isBackgroundColor:
+                                                            false),
                                               ),
                                             )
                                           : SizedBox(),
@@ -304,12 +354,16 @@ class _ViewReport extends State<ViewReport>
                                                     DateTime.now()))
                                             : '',
                                         style: TextStyle(
-                                            color: Colors.white,
+                                            color: LightColors.getThemeColor(
+                                                state: parentState,
+                                                colorName: 'white',
+                                                contrast: 'light',
+                                                isBackgroundColor: false),
                                             letterSpacing: 2),
                                       ),
                                       state is CounterLoaded
-                                          ? GestureDetector(
-                                              onTap: () {
+                                          ? CupertinoButton(
+                                              onPressed: () {
                                                 if (!_isDateAMSameAsDateB(
                                                     dateA:
                                                         state.targetDateTime ??
@@ -333,8 +387,18 @@ class _ViewReport extends State<ViewReport>
                                                                 .targetDateTime ??
                                                             DateTime.now(),
                                                         dateB: DateTime.now())
-                                                    ? Color(0xff3d7068)
-                                                    : Colors.white,
+                                                    ? LightColors.getThemeColor(
+                                                        state: parentState,
+                                                        colorName: 'green',
+                                                        contrast: 'dark',
+                                                        isBackgroundColor:
+                                                            false)
+                                                    : LightColors.getThemeColor(
+                                                        state: parentState,
+                                                        colorName: 'white',
+                                                        contrast: 'light',
+                                                        isBackgroundColor:
+                                                            false),
                                               ),
                                             )
                                           : SizedBox()
@@ -383,8 +447,8 @@ class _ViewReport extends State<ViewReport>
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       state is CounterLoaded
-                                          ? GestureDetector(
-                                              onTap: () {
+                                          ? CupertinoButton(
+                                              onPressed: () {
                                                 _monthReportCounterBloc.add(CounterGetMonthReport(
                                                     dateTime: state.targetDateTime?.subtract(Duration(
                                                             days: daysInMonth(
@@ -401,7 +465,13 @@ class _ViewReport extends State<ViewReport>
                                               child: Icon(
                                                 Icons.arrow_back_ios,
                                                 size: 25,
-                                                color: Colors.white,
+                                                color:
+                                                    LightColors.getThemeColor(
+                                                        state: parentState,
+                                                        colorName: 'white',
+                                                        contrast: 'light',
+                                                        isBackgroundColor:
+                                                            false),
                                               ),
                                             )
                                           : SizedBox(),
@@ -414,12 +484,16 @@ class _ViewReport extends State<ViewReport>
                                                     .toString())
                                             : '',
                                         style: TextStyle(
-                                            color: Colors.white,
+                                            color: LightColors.getThemeColor(
+                                                state: parentState,
+                                                colorName: 'white',
+                                                contrast: 'light',
+                                                isBackgroundColor: false),
                                             letterSpacing: 2),
                                       ),
                                       state is CounterLoaded
-                                          ? GestureDetector(
-                                              onTap: () {
+                                          ? CupertinoButton(
+                                              onPressed: () {
                                                 _monthReportCounterBloc.add(CounterGetMonthReport(
                                                     dateTime: state.targetDateTime?.add(Duration(
                                                             days: daysInMonth(
@@ -441,8 +515,18 @@ class _ViewReport extends State<ViewReport>
                                                                 .targetDateTime ??
                                                             DateTime.now(),
                                                         dateB: DateTime.now())
-                                                    ? Color(0xff3d7068)
-                                                    : Colors.white,
+                                                    ? LightColors.getThemeColor(
+                                                        state: parentState,
+                                                        colorName: 'green',
+                                                        contrast: 'dark',
+                                                        isBackgroundColor:
+                                                            false)
+                                                    : LightColors.getThemeColor(
+                                                        state: parentState,
+                                                        colorName: 'white',
+                                                        contrast: 'light',
+                                                        isBackgroundColor:
+                                                            false),
                                               ),
                                             )
                                           : SizedBox()
@@ -492,8 +576,8 @@ class _ViewReport extends State<ViewReport>
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       state is CounterLoaded
-                                          ? GestureDetector(
-                                              onTap: () {
+                                          ? CupertinoButton(
+                                              onPressed: () {
                                                 _yearReportCounterBloc.add(CounterGetYearReport(
                                                     dateTime: DateTime.parse(((state
                                                                         .targetDateTime
@@ -508,7 +592,13 @@ class _ViewReport extends State<ViewReport>
                                               child: Icon(
                                                 Icons.arrow_back_ios,
                                                 size: 25,
-                                                color: Colors.white,
+                                                color:
+                                                    LightColors.getThemeColor(
+                                                        state: parentState,
+                                                        colorName: 'white',
+                                                        contrast: 'light',
+                                                        isBackgroundColor:
+                                                            false),
                                               ),
                                             )
                                           : SizedBox(),
@@ -518,12 +608,16 @@ class _ViewReport extends State<ViewReport>
                                                 .toString())
                                             : '',
                                         style: TextStyle(
-                                            color: Colors.white,
+                                            color: LightColors.getThemeColor(
+                                                state: parentState,
+                                                colorName: 'white',
+                                                contrast: 'light',
+                                                isBackgroundColor: false),
                                             letterSpacing: 2),
                                       ),
                                       state is CounterLoaded
-                                          ? GestureDetector(
-                                              onTap: () {
+                                          ? CupertinoButton(
+                                              onPressed: () {
                                                 if (!_isDateAMSameAsDateB(
                                                     dateA:
                                                         state.targetDateTime ??
@@ -548,8 +642,18 @@ class _ViewReport extends State<ViewReport>
                                                                 .targetDateTime ??
                                                             DateTime.now(),
                                                         dateB: DateTime.now())
-                                                    ? Color(0xff3d7068)
-                                                    : Colors.white,
+                                                    ? LightColors.getThemeColor(
+                                                        state: parentState,
+                                                        colorName: 'green',
+                                                        contrast: 'dark',
+                                                        isBackgroundColor:
+                                                            false)
+                                                    : LightColors.getThemeColor(
+                                                        state: parentState,
+                                                        colorName: 'white',
+                                                        contrast: 'light',
+                                                        isBackgroundColor:
+                                                            false),
                                               ),
                                             )
                                           : SizedBox()

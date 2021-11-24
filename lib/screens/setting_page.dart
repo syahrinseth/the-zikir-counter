@@ -12,6 +12,7 @@ import 'package:the_zikir_app/state/profile_state.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/back_button.dart';
 import 'package:the_zikir_app/widgets/dhikr_list_tile.dart';
+import 'package:the_zikir_app/widgets/dhikr_snack_bar.dart';
 import 'package:the_zikir_app/widgets/my_text_field.dart';
 import 'package:the_zikir_app/widgets/task_column.dart';
 import 'package:the_zikir_app/widgets/top_container.dart';
@@ -23,7 +24,6 @@ class SettingPage extends StatefulWidget {
 }
 
 class _ProfileEdit extends State<SettingPage> {
-  ProfileBloc _profileBloc = ProfileBloc();
   String? appName;
   String? packageName;
   String? version;
@@ -33,10 +33,12 @@ class _ProfileEdit extends State<SettingPage> {
   TextEditingController _counterAvatarController = TextEditingController();
   TextEditingController _counterGoalController = TextEditingController();
   final InAppReview inAppReview = InAppReview.instance;
+  ProfileBloc _profileBloc = ProfileBloc();
 
   @override
   void initState() {
     super.initState();
+    _profileBloc.add(ProfileGet());
     // myBanner.load();
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
       setState(() {
@@ -46,18 +48,16 @@ class _ProfileEdit extends State<SettingPage> {
         buildNumber = packageInfo.buildNumber;
       });
     });
-    _profileBloc.add(ProfileGet());
   }
 
   @override
   void dispose() {
-    super.dispose();
     _profileBloc.close();
+    super.dispose();
   }
 
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       body: SafeArea(
         child: BlocConsumer<ProfileBloc, ProfileState>(
@@ -65,24 +65,15 @@ class _ProfileEdit extends State<SettingPage> {
           listener: (context, state) {
             if (state is ProfileError) {
               print('Counter Error...');
-              SnackBar(
-                backgroundColor: Colors.red,
-                content: Text(state.message ?? 'Counter Error.'),
-              );
+              SnackBar snackBar = DhikrSnackBar.setSnackBar(context,
+                  message: 'Error', colorName: 'red');
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
 
             if (state is ProfileSaved) {
               print('Saved...');
-              final snackBar = SnackBar(
-                backgroundColor: LightColors.kGreen,
-                content: Text('Saved.'),
-                // action: SnackBarAction(
-                //   label: 'Undo',
-                //   onPressed: () {
-                //     // Some code to undo the change.
-                //   },
-                // ),
-              );
+              SnackBar snackBar =
+                  DhikrSnackBar.setSnackBar(context, message: 'Saved');
 
               // Find the ScaffoldMessenger in the widget tree
               // and use it to show a SnackBar.
@@ -96,20 +87,40 @@ class _ProfileEdit extends State<SettingPage> {
             //   _avatarController.value =
             //       TextEditingValue(text: state.avatar ?? 'male');
             // }
+            // if (state is ProfileLoaded) {
+            if (state is ProfileLoaded && isInit == true) {
+              _counterGoalController.value = TextEditingValue(
+                  text: state.counterGoal?.toString() ?? '100');
+              isInit = false;
+            }
             return Column(
               children: [
                 TopContainer(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    color: Color(0xff43c59e),
+                    color: LightColors.getThemeColor(
+                        state: state,
+                        colorName: 'green',
+                        contrast: 'light',
+                        isBackgroundColor: true),
                     width: width,
                     height: 100,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        MyBackButton(),
+                        MyBackButton(
+                            color: LightColors.getThemeColor(
+                                state: state,
+                                colorName: 'green',
+                                contrast: 'dark',
+                                isBackgroundColor: false)),
                         Text(
                           'Settings',
-                          style: TextStyle(color: Color(0xff3d7068)),
+                          style: TextStyle(
+                              color: LightColors.getThemeColor(
+                                  state: state,
+                                  colorName: 'green',
+                                  contrast: 'dark',
+                                  isBackgroundColor: false)),
                         ),
                         CupertinoButton(
                             padding: EdgeInsets.all(0),
@@ -125,7 +136,11 @@ class _ProfileEdit extends State<SettingPage> {
                               }
                             },
                             child: Icon(CupertinoIcons.share,
-                                color: Color(0xff3d7068)))
+                                color: LightColors.getThemeColor(
+                                    state: state,
+                                    colorName: 'green',
+                                    contrast: 'dark',
+                                    isBackgroundColor: false)))
                       ],
                     )),
                 Expanded(
@@ -134,7 +149,7 @@ class _ProfileEdit extends State<SettingPage> {
                     child: Column(
                       children: <Widget>[
                         Container(
-                          color: Colors.transparent,
+                          // color: Colors.transparent,
                           padding: EdgeInsets.symmetric(
                               horizontal: 20.0, vertical: 10.0),
                           child: Column(
@@ -147,7 +162,11 @@ class _ProfileEdit extends State<SettingPage> {
                                   Text(
                                     'General',
                                     style: TextStyle(
-                                        color: Color(0xff3d7068),
+                                        color: LightColors.getThemeColor(
+                                            state: state,
+                                            colorName: 'green',
+                                            contrast: 'dark',
+                                            isBackgroundColor: false),
                                         fontSize: 20.0,
                                         fontWeight: FontWeight.w700,
                                         letterSpacing: 1.2),
@@ -158,6 +177,7 @@ class _ProfileEdit extends State<SettingPage> {
                                 children: [
                                   DhikrListTile(
                                     title: 'Edit Profile',
+                                    profileState: state,
                                     subtitle:
                                         'Manage your profile informations.',
                                     tailingIcon: CupertinoIcons.forward,
@@ -170,89 +190,67 @@ class _ProfileEdit extends State<SettingPage> {
                                       );
                                     },
                                   ),
-                                  BlocBuilder<ProfileBloc, ProfileState>(
-                                    bloc: _profileBloc,
-                                    builder: (context, state) {
-                                      if (state is ProfileLoaded &&
-                                          isInit == true) {
-                                        _counterGoalController.value =
-                                            TextEditingValue(
-                                                text: state.counterGoal
-                                                        ?.toString() ??
-                                                    '100');
-                                        _counterNameController.value =
-                                            TextEditingValue(
-                                                text: state.name ?? '');
-                                        _counterAvatarController.value =
-                                            TextEditingValue(
-                                                text: state.avatar ?? 'male');
-                                        isInit = false;
-                                      }
-                                      return DhikrListTile(
-                                        title: 'Dhikr Goal',
-                                        subtitle:
-                                            'Manage your counter default dhikr goal.',
-                                        icon: CupertinoIcons
-                                            .gamecontroller_alt_fill,
-                                        onTap: () {
-                                          showDialog<bool>(
-                                            context: context,
-                                            builder: (context) {
-                                              return CupertinoAlertDialog(
-                                                title: Text('Dhikr Goal'),
-                                                content: Card(
-                                                  color: Colors.transparent,
-                                                  elevation: 0.0,
-                                                  child: Column(
-                                                    children: <Widget>[
-                                                      TextField(
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
-                                                        controller:
-                                                            _counterGoalController,
-                                                        decoration:
-                                                            InputDecoration(
-                                                                filled: true,
-                                                                fillColor: Colors
-                                                                    .grey
-                                                                    .shade50),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                actions: [
-                                                  TextButton(
-                                                    child: Text(
-                                                      'Cancel',
-                                                      style: TextStyle(
-                                                          color: Colors.red),
-                                                    ),
-                                                    onPressed: () =>
-                                                        Navigator.of(context)
-                                                            .pop(true),
-                                                  ),
-                                                  TextButton(
-                                                    child: Text('Save'),
-                                                    onPressed: () {
-                                                      _profileBloc.add(ProfileUpdate(
-                                                          name:
-                                                              _counterNameController
-                                                                  .text,
-                                                          avatar:
-                                                              _counterAvatarController
-                                                                  .text,
-                                                          counterGoal:
-                                                              _counterGoalController
-                                                                  .text));
-                                                      return Navigator.of(
-                                                              context)
-                                                          .pop(true);
-                                                    },
+                                  DhikrListTile(
+                                    title: 'Dhikr Goal',
+                                    profileState: state,
+                                    subtitle:
+                                        'Manage your counter default dhikr goal.',
+                                    icon:
+                                        CupertinoIcons.gamecontroller_alt_fill,
+                                    onTap: () {
+                                      showDialog<bool>(
+                                        context: context,
+                                        builder: (context) {
+                                          return CupertinoAlertDialog(
+                                            title: Text('Dhikr Goal'),
+                                            content: Card(
+                                              color: Colors.transparent,
+                                              elevation: 0.0,
+                                              child: Column(
+                                                children: <Widget>[
+                                                  TextField(
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    controller:
+                                                        _counterGoalController,
+                                                    decoration: InputDecoration(
+                                                        filled: true,
+                                                        fillColor: LightColors
+                                                            .getThemeColor(
+                                                                state: state,
+                                                                colorName:
+                                                                    'white',
+                                                                contrast:
+                                                                    'light',
+                                                                isBackgroundColor:
+                                                                    true)),
                                                   ),
                                                 ],
-                                              );
-                                            },
+                                              ),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                child: Text(
+                                                  'Cancel',
+                                                  style: TextStyle(
+                                                      color: Colors.red),
+                                                ),
+                                                onPressed: () =>
+                                                    Navigator.of(context)
+                                                        .pop(true),
+                                              ),
+                                              TextButton(
+                                                child: Text('Save'),
+                                                onPressed: () {
+                                                  _profileBloc.add(ProfileUpdate(
+                                                      counterGoal:
+                                                          _counterGoalController
+                                                              .text));
+                                                  return Navigator.of(context)
+                                                      .pop(true);
+                                                },
+                                              ),
+                                            ],
                                           );
                                         },
                                       );
@@ -271,7 +269,11 @@ class _ProfileEdit extends State<SettingPage> {
                                   Text(
                                     'Reach Us',
                                     style: TextStyle(
-                                        color: Color(0xff3d7068),
+                                        color: LightColors.getThemeColor(
+                                            state: state,
+                                            colorName: 'green',
+                                            contrast: 'dark',
+                                            isBackgroundColor: false),
                                         fontSize: 20.0,
                                         fontWeight: FontWeight.w700,
                                         letterSpacing: 1.2),
@@ -281,6 +283,7 @@ class _ProfileEdit extends State<SettingPage> {
                               Column(
                                 children: [
                                   DhikrListTile(
+                                    profileState: state,
                                     icon: CupertinoIcons.mail,
                                     tailingIcon: CupertinoIcons.forward,
                                     title: 'Contact Developer',
@@ -290,6 +293,7 @@ class _ProfileEdit extends State<SettingPage> {
                                         launch('https://syahrinseth.com'),
                                   ),
                                   DhikrListTile(
+                                    profileState: state,
                                     icon: CupertinoIcons.paintbrush,
                                     subtitle: 'Attribution to the artist.',
                                     tailingIcon: CupertinoIcons.forward,
@@ -298,6 +302,7 @@ class _ProfileEdit extends State<SettingPage> {
                                         'https://www.flaticon.com/authors/ddara'),
                                   ),
                                   DhikrListTile(
+                                    profileState: state,
                                     icon: CupertinoIcons.heart,
                                     subtitle:
                                         'Tell us what we are doing correct or wrong.',
@@ -317,14 +322,23 @@ class _ProfileEdit extends State<SettingPage> {
                     ),
                   ),
                 ),
-                Text(
-                  'Smart Dhikr - Version ${version ?? ''} (${buildNumber ?? ''})',
-                  style: TextStyle(
-                    color: Color(0xff3d7068),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Smart Dhikr - Version ${version ?? ''} (${buildNumber ?? ''})',
+                    style: TextStyle(
+                      color: LightColors.getThemeColor(
+                          state: state,
+                          colorName: 'green',
+                          contrast: 'dark',
+                          isBackgroundColor: false),
+                    ),
                   ),
                 )
               ],
             );
+            // }
+            // return SizedBox();
           },
         ),
       ),
