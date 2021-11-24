@@ -265,11 +265,28 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                                                         MainAxisAlignment
                                                             .spaceBetween,
                                                     children: [
-                                                      Text('${e['name']}'),
+                                                      Text('${e['name']}',
+                                                          style: TextStyle(
+                                                              color: LightColors
+                                                                  .getThemeColor(
+                                                                      state:
+                                                                          parentState,
+                                                                      colorName:
+                                                                          'black',
+                                                                      contrast:
+                                                                          'dark'))),
                                                       Text(
                                                         '${e['translate']}',
                                                         style: TextStyle(
-                                                            fontSize: 12),
+                                                            fontSize: 12,
+                                                            color: LightColors
+                                                                .getThemeColor(
+                                                                    state:
+                                                                        parentState,
+                                                                    colorName:
+                                                                        'black',
+                                                                    contrast:
+                                                                        'dark')),
                                                       )
                                                     ],
                                                   ),
@@ -309,7 +326,11 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontSize: 14,
-                                color: Colors.grey,
+                                color: LightColors.getThemeColor(
+                                  state: parentState,
+                                  colorName: 'black',
+                                  contrast: 'dark',
+                                ),
                               ),
                             ),
                           ),

@@ -157,7 +157,11 @@ class _ProfileEdit extends State<ProfileEdit> {
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                         fontSize: 14,
-                                        color: Colors.grey,
+                                        color: LightColors.getThemeColor(
+                                          state: parentProfileBloc.state,
+                                          colorName: 'black',
+                                          contrast: 'dark',
+                                        ),
                                       ),
                                     ),
                                   ),
