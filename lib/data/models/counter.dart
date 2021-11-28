@@ -220,37 +220,37 @@ class Counter {
       case 1:
         // Mon
         startWeek = dateTime;
-        endWeek = dateTime.add(Duration(days: 6));
+        endWeek = dateTime.add(Duration(days: 6, hours: 23, minutes: 59));
         break;
       case 2:
         // Tue
         startWeek = dateTime.subtract(Duration(days: 1));
-        endWeek = dateTime.add(Duration(days: 5));
+        endWeek = dateTime.add(Duration(days: 5, hours: 23, minutes: 59));
         break;
       case 3:
         // Wed
         startWeek = dateTime.subtract(Duration(days: 2));
-        endWeek = dateTime.add(Duration(days: 4));
+        endWeek = dateTime.add(Duration(days: 4, hours: 23, minutes: 59));
         break;
       case 4:
         // Thu
         startWeek = dateTime.subtract(Duration(days: 3));
-        endWeek = dateTime.add(Duration(days: 3));
+        endWeek = dateTime.add(Duration(days: 3, hours: 23, minutes: 59));
         break;
       case 5:
         // Fri
         startWeek = dateTime.subtract(Duration(days: 4));
-        endWeek = dateTime.add(Duration(days: 2));
+        endWeek = dateTime.add(Duration(days: 2, hours: 23, minutes: 59));
         break;
       case 6:
         // Sat
         startWeek = dateTime.subtract(Duration(days: 5));
-        endWeek = dateTime.add(Duration(days: 1));
+        endWeek = dateTime.add(Duration(days: 1, hours: 23, minutes: 59));
         break;
       case 7:
         // Sun
         startWeek = dateTime.subtract(Duration(days: 6));
-        endWeek = dateTime;
+        endWeek = dateTime.add(Duration(hours: 23, minutes: 59));
         break;
       default:
     }
@@ -332,37 +332,37 @@ class Counter {
       case 1:
         // Mon
         startWeek = dateTime;
-        endWeek = dateTime.add(Duration(days: 6));
+        endWeek = dateTime.add(Duration(days: 6, hours: 23, minutes: 59));
         break;
       case 2:
         // Tue
         startWeek = dateTime.subtract(Duration(days: 1));
-        endWeek = dateTime.add(Duration(days: 5));
+        endWeek = dateTime.add(Duration(days: 5, hours: 23, minutes: 59));
         break;
       case 3:
         // Wed
         startWeek = dateTime.subtract(Duration(days: 2));
-        endWeek = dateTime.add(Duration(days: 4));
+        endWeek = dateTime.add(Duration(days: 4, hours: 23, minutes: 59));
         break;
       case 4:
         // Thu
         startWeek = dateTime.subtract(Duration(days: 3));
-        endWeek = dateTime.add(Duration(days: 3));
+        endWeek = dateTime.add(Duration(days: 3, hours: 23, minutes: 59));
         break;
       case 5:
         // Fri
         startWeek = dateTime.subtract(Duration(days: 4));
-        endWeek = dateTime.add(Duration(days: 2));
+        endWeek = dateTime.add(Duration(days: 2, hours: 23, minutes: 59));
         break;
       case 6:
         // Sat
         startWeek = dateTime.subtract(Duration(days: 5));
-        endWeek = dateTime.add(Duration(days: 1));
+        endWeek = dateTime.add(Duration(days: 1, hours: 23, minutes: 59));
         break;
       case 7:
         // Sun
         startWeek = dateTime.subtract(Duration(days: 6));
-        endWeek = dateTime;
+        endWeek = dateTime.add(Duration(hours: 23, minutes: 59));
         break;
       default:
     }
