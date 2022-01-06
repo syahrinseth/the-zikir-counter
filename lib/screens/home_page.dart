@@ -625,7 +625,7 @@ class _HomePage extends State<HomePage> {
       return EmptyWidget(
         hideBackgroundAnimation: true,
         image: null,
-        packageImage: PackageImage.Image_3,
+        packageImage: PackageImage.Image_2,
         title: 'No Completed Dhikr',
         subTitle:
             'You have no completed dhikr yet. Do complete your current active dhikr to update this list.',
