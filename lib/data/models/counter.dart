@@ -120,7 +120,10 @@ class Counter {
       totalPercentage += (e.limiter ?? 0).toDouble();
       percentageCount += (e.counter ?? 0).toDouble();
     });
-    return percentageCount / totalPercentage;
+    if (percentageCount < totalPercentage) {
+      return percentageCount / totalPercentage;
+    }
+    return 1.0;
   }
 
   static void saveCounter({required Counter counter}) {
@@ -704,6 +707,14 @@ class Counter {
         endWeekDate.month.toString() +
         '/' +
         endWeekDate.year.toString();
+  }
+
+  double getPercent() {
+    if ((this.limiter ?? 1) < (this.counter ?? 0)) {
+      return 1.0;
+    } else {
+      return (this.counter ?? 0) / (this.limiter ?? 1);
+    }
   }
 }
 

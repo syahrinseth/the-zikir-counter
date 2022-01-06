@@ -88,9 +88,6 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         event.counter.counter = (event.counter.counter ?? 0) + 1;
         event.counter.histories
             ?.add(CounterHistory(counter: 1, dateTime: DateTime.now()));
-        if ((event.counter.counter ?? 0) > (event.counter.limiter ?? 1)) {
-          event.counter.limiter = event.counter.counter;
-        }
         event.counter.updatedAt = DateTime.now();
         playSound(counter: event.counter);
         lightVibrate(event.counter);
@@ -186,8 +183,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
             counter.name = event.title;
             counter.description = event.description;
             counter.counter = event.counter;
-            counter.limiter =
-                (event.counter > event.limiter ? event.counter : event.limiter);
+            counter.limiter = event.limiter;
             counter.counterTheme = event.counterTheme;
             Counter.saveCounter(counter: counter);
             yield CounterSaved(counter: counter);

@@ -153,8 +153,7 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
                                   CircularPercentIndicator(
                                     animation: false,
                                     radius: 90.0,
-                                    percent: ((state.counter!.counter ?? 0) /
-                                        (state.counter!.limiter ?? 1)),
+                                    percent: state.counter!.getPercent(),
                                     lineWidth: 5.0,
                                     circularStrokeCap: CircularStrokeCap.round,
                                     backgroundColor: LightColors.getThemeColor(
