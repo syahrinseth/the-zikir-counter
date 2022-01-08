@@ -28,13 +28,14 @@ class CounterAdapter extends TypeAdapter<Counter> {
       isVibrationOn: fields[8] as bool,
       isSoundOn: fields[9] as bool,
       counterTheme: fields[10] as String?,
+      goalAchieved: fields[11] as bool?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Counter obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -56,7 +57,9 @@ class CounterAdapter extends TypeAdapter<Counter> {
       ..writeByte(9)
       ..write(obj.isSoundOn)
       ..writeByte(10)
-      ..write(obj.counterTheme);
+      ..write(obj.counterTheme)
+      ..writeByte(11)
+      ..write(obj.goalAchieved);
   }
 
   @override

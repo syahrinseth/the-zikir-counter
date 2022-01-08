@@ -172,3 +172,18 @@ class CounterUpdate extends CounterEvent {
   List<Object> get props =>
       [id, title ?? '', description ?? '', limiter, counterTheme, counter];
 }
+
+class CounterGoalAchieved extends CounterEvent {
+  final Counter counter;
+
+  CounterGoalAchieved({required this.counter});
+
+  @override
+  List<Object> get props => [counter];
+}
+
+class CounterPlayGoalAchievementSound extends CounterEvent {
+  final Counter counter;
+
+  CounterPlayGoalAchievementSound({required this.counter});
+}

@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:confetti/confetti.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -39,6 +42,7 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
     ContentAlign.bottom,
   ];
   late String _id;
+  late ConfettiController _controllerCenter;
 
   @override
   void initState() {
@@ -49,11 +53,14 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
       counterBloc.add(CounterGetById(_id));
     }
     profileBloc.add(ProfileGet());
+    _controllerCenter =
+        ConfettiController(duration: const Duration(seconds: 3));
     super.initState();
   }
 
   @override
   void dispose() async {
+    _controllerCenter.dispose();
     counterBloc.close();
     profileBloc.close();
     super.dispose();
@@ -70,399 +77,478 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
       //   height: myBanner.size.height.toDouble(),
       // ),
       body: SafeArea(
-        child: BlocConsumer<CounterBloc, CounterState>(
-          bloc: counterBloc,
-          listener: (context, state) {
-            if (state is CounterError) {
-              print(state.message);
-            }
-          },
-          builder: (context, state) {
-            if (state is CounterLoaded) {
-              _id = state.counter!.id;
-              return BlocBuilder<ProfileBloc, ProfileState>(
-                bloc: profileBloc,
-                builder: (context, profileState) {
-                  if (profileState is ProfileLoaded) {
-                    if (profileState.isDoneTutorial2 == 'no') {
-                      Future.delayed(Duration(seconds: 1), () {
-                        profileBloc.add(ProfileShowTutorialMark(context,
-                            buttonKeys: buttonKeys,
-                            tutorialTexts: tutorialTexts,
-                            contentAligns: tutorialTextAligns,
-                            markFinishTutorial2: true));
-                      });
-                    }
+        child: Stack(
+          children: [
+            BlocConsumer<CounterBloc, CounterState>(
+              bloc: counterBloc,
+              listener: (context, state) {
+                if (state is CounterError) {
+                  print(state.message);
+                }
+
+                if (state is CounterLoaded) {
+                  if (state.counter!.counter == state.counter!.limiter &&
+                      state.counter!.goalAchieved == false) {
+                    _controllerCenter.play();
+                    counterBloc.add(CounterPlayGoalAchievementSound(
+                        counter: state.counter ?? Counter.createFromJson({})));
+                    _showTargetAchievedDialog(
+                        context, state.counter ?? Counter.createFromJson({}));
                   }
-                  return Column(
-                    children: <Widget>[
-                      TopContainer(
-                        color: LightColors.getThemeColor(
-                            colorName: state.counter?.counterTheme,
-                            contrast: 'light',
-                            isBackgroundColor: true,
-                            state: parentState),
-                        padding: EdgeInsets.fromLTRB(20, 20, 20, 40),
-                        width: width,
-                        child: Column(
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                MyBackButton(
-                                    color: LightColors.getThemeColor(
-                                  colorName: state.counter?.counterTheme,
-                                  contrast: 'dark',
-                                  state: parentState,
-                                )),
-                                CupertinoButton(
-                                  key: buttonKeys[1],
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              EditZikirCounter(
-                                                  counter: state.counter ??
-                                                      Counter.fromJson({}))),
-                                    ).then((value) {
-                                      counterBloc.add(CounterGetById(_id));
-                                    });
-                                  },
-                                  child: Icon(Icons.edit,
-                                      color: LightColors.getThemeColor(
-                                          state: parentState,
-                                          colorName:
-                                              state.counter?.counterTheme,
-                                          contrast: 'dark'),
-                                      size: 25.0),
+                }
+                // if (state is CounterLoaded) {
+                //   if (state.target) {
+                //     _controllerCenter.play();
+                //     _showTargetAchievedDialog(context);
+                //   }
+                // }
+              },
+              builder: (context, state) {
+                if (state is CounterLoaded) {
+                  _id = state.counter!.id;
+                  return BlocBuilder<ProfileBloc, ProfileState>(
+                    bloc: profileBloc,
+                    builder: (context, profileState) {
+                      if (profileState is ProfileLoaded) {
+                        if (profileState.isDoneTutorial2 == 'no') {
+                          Future.delayed(Duration(seconds: 1), () {
+                            profileBloc.add(ProfileShowTutorialMark(context,
+                                buttonKeys: buttonKeys,
+                                tutorialTexts: tutorialTexts,
+                                contentAligns: tutorialTextAligns,
+                                markFinishTutorial2: true));
+                          });
+                        }
+                      }
+                      return Column(
+                        children: <Widget>[
+                          TopContainer(
+                            color: LightColors.getThemeColor(
+                                colorName: state.counter?.counterTheme,
+                                contrast: 'light',
+                                isBackgroundColor: true,
+                                state: parentState),
+                            padding: EdgeInsets.fromLTRB(20, 20, 20, 40),
+                            width: width,
+                            child: Column(
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    MyBackButton(
+                                        color: LightColors.getThemeColor(
+                                      colorName: state.counter?.counterTheme,
+                                      contrast: 'dark',
+                                      state: parentState,
+                                    )),
+                                    CupertinoButton(
+                                      key: buttonKeys[1],
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  EditZikirCounter(
+                                                      counter: state.counter ??
+                                                          Counter.fromJson(
+                                                              {}))),
+                                        ).then((value) {
+                                          counterBloc.add(CounterGetById(_id));
+                                        });
+                                      },
+                                      child: Icon(Icons.edit,
+                                          color: LightColors.getThemeColor(
+                                              state: parentState,
+                                              colorName:
+                                                  state.counter?.counterTheme,
+                                              contrast: 'dark'),
+                                          size: 25.0),
+                                    ),
+                                  ],
                                 ),
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 0, vertical: 0.0),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      CircularPercentIndicator(
+                                        animation: false,
+                                        radius: 90.0,
+                                        percent: state.counter!.getPercent(),
+                                        lineWidth: 5.0,
+                                        circularStrokeCap:
+                                            CircularStrokeCap.round,
+                                        backgroundColor:
+                                            LightColors.getThemeColor(
+                                                state: parentState,
+                                                isBackgroundColor: true,
+                                                colorName:
+                                                    state.counter?.counterTheme,
+                                                contrast: 'dark'),
+                                        progressColor: Color(0xffffffff),
+                                        center: Text(
+                                          '${(((state.counter!.counter ?? 0) / (state.counter!.limiter ?? 1)) * 100).round()}%',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        EditZikirCounter(
+                                                            counter: state
+                                                                    .counter ??
+                                                                Counter
+                                                                    .fromJson(
+                                                                        {}))),
+                                              ).then((value) {
+                                                counterBloc
+                                                    .add(CounterGetById(_id));
+                                              });
+                                            },
+                                            child: Container(
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      ConstrainedBox(
+                                                        constraints:
+                                                            BoxConstraints(
+                                                                minWidth: 180,
+                                                                maxWidth: 200),
+                                                        child: Text(
+                                                          state.counter!.name ??
+                                                              '',
+                                                          textAlign:
+                                                              TextAlign.end,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          maxLines: 2,
+                                                          softWrap: true,
+                                                          style: TextStyle(
+                                                            fontSize: 22.0,
+                                                            color: LightColors
+                                                                .getThemeColor(
+                                                                    state:
+                                                                        parentState,
+                                                                    colorName: state
+                                                                        .counter
+                                                                        ?.counterTheme,
+                                                                    contrast:
+                                                                        'dark'),
+                                                            fontWeight:
+                                                                FontWeight.w800,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      state.counter!
+                                                                  .displayDhikrNameTranslate() ==
+                                                              ''
+                                                          ? SizedBox()
+                                                          : ConstrainedBox(
+                                                              constraints:
+                                                                  BoxConstraints(
+                                                                      minWidth:
+                                                                          180,
+                                                                      maxWidth:
+                                                                          200),
+                                                              child: Text(
+                                                                state.counter!
+                                                                    .displayDhikrNameTranslate(),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .end,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                maxLines: 1,
+                                                                softWrap: true,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize:
+                                                                      14.0,
+                                                                  color: LightColors.getThemeColor(
+                                                                      state:
+                                                                          parentState,
+                                                                      colorName: state
+                                                                          .counter
+                                                                          ?.counterTheme,
+                                                                      contrast:
+                                                                          'dark'),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                      ConstrainedBox(
+                                                        constraints:
+                                                            BoxConstraints(
+                                                                minWidth: 180,
+                                                                maxWidth: 200),
+                                                        child: Text(
+                                                          'Dhikr Goal ${state.counter!.counter} / ${state.counter!.limiter}',
+                                                          textAlign:
+                                                              TextAlign.end,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          maxLines: 1,
+                                                          softWrap: true,
+                                                          style: TextStyle(
+                                                            fontSize: 16.0,
+                                                            color: LightColors
+                                                                .getThemeColor(
+                                                                    state:
+                                                                        parentState,
+                                                                    colorName: state
+                                                                        .counter
+                                                                        ?.counterTheme,
+                                                                    contrast:
+                                                                        'dark'),
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    width: 2.0,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 0, vertical: 0.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  CircularPercentIndicator(
-                                    animation: false,
-                                    radius: 90.0,
-                                    percent: state.counter!.getPercent(),
-                                    lineWidth: 5.0,
-                                    circularStrokeCap: CircularStrokeCap.round,
-                                    backgroundColor: LightColors.getThemeColor(
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: GestureDetector(
+                                key: buttonKeys[0],
+                                onVerticalDragStart: (DragStartDetails drag) {
+                                  final counter =
+                                      state.counter ?? Counter.fromJson({});
+                                  counterBloc
+                                      .add(CounterIncrement(counter: counter));
+                                },
+                                onHorizontalDragStart: (DragStartDetails drag) {
+                                  final counter =
+                                      state.counter ?? Counter.fromJson({});
+                                  counterBloc
+                                      .add(CounterIncrement(counter: counter));
+                                },
+                                onTap: () {
+                                  final counter =
+                                      state.counter ?? Counter.fromJson({});
+                                  counterBloc
+                                      .add(CounterIncrement(counter: counter));
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(vertical: 10.0),
+                                  padding: EdgeInsets.all(15.0),
+                                  decoration: BoxDecoration(
+                                    color: LightColors.getThemeColor(
                                         state: parentState,
                                         isBackgroundColor: true,
                                         colorName: state.counter?.counterTheme,
                                         contrast: 'dark'),
-                                    progressColor: Color(0xffffffff),
-                                    center: Text(
-                                      '${(((state.counter!.counter ?? 0) / (state.counter!.limiter ?? 1)) * 100).round()}%',
+                                    borderRadius: BorderRadius.circular(40.0),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      (state.counter!.counter ?? 0).toString(),
                                       style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white),
+                                          color: Color(0xffffffff),
+                                          fontSize: 80.0),
                                     ),
                                   ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    EditZikirCounter(
-                                                        counter: state
-                                                                .counter ??
-                                                            Counter.fromJson(
-                                                                {}))),
-                                          ).then((value) {
-                                            counterBloc
-                                                .add(CounterGetById(_id));
-                                          });
-                                        },
-                                        child: Container(
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  ConstrainedBox(
-                                                    constraints: BoxConstraints(
-                                                        minWidth: 180,
-                                                        maxWidth: 200),
-                                                    child: Text(
-                                                      state.counter!.name ?? '',
-                                                      textAlign: TextAlign.end,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      maxLines: 2,
-                                                      softWrap: true,
-                                                      style: TextStyle(
-                                                        fontSize: 22.0,
-                                                        color: LightColors
-                                                            .getThemeColor(
-                                                                state:
-                                                                    parentState,
-                                                                colorName: state
-                                                                    .counter
-                                                                    ?.counterTheme,
-                                                                contrast:
-                                                                    'dark'),
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  state.counter!
-                                                              .displayDhikrNameTranslate() ==
-                                                          ''
-                                                      ? SizedBox()
-                                                      : ConstrainedBox(
-                                                          constraints:
-                                                              BoxConstraints(
-                                                                  minWidth: 180,
-                                                                  maxWidth:
-                                                                      200),
-                                                          child: Text(
-                                                            state.counter!
-                                                                .displayDhikrNameTranslate(),
-                                                            textAlign:
-                                                                TextAlign.end,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            maxLines: 1,
-                                                            softWrap: true,
-                                                            style: TextStyle(
-                                                              fontSize: 14.0,
-                                                              color: LightColors.getThemeColor(
-                                                                  state:
-                                                                      parentState,
-                                                                  colorName: state
-                                                                      .counter
-                                                                      ?.counterTheme,
-                                                                  contrast:
-                                                                      'dark'),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                  ConstrainedBox(
-                                                    constraints: BoxConstraints(
-                                                        minWidth: 180,
-                                                        maxWidth: 200),
-                                                    child: Text(
-                                                      'Dhikr Goal ${state.counter!.counter} / ${state.counter!.limiter}',
-                                                      textAlign: TextAlign.end,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      maxLines: 1,
-                                                      softWrap: true,
-                                                      style: TextStyle(
-                                                        fontSize: 16.0,
-                                                        color: LightColors
-                                                            .getThemeColor(
-                                                                state:
-                                                                    parentState,
-                                                                colorName: state
-                                                                    .counter
-                                                                    ?.counterTheme,
-                                                                contrast:
-                                                                    'dark'),
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      ),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                width: 2.0,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: GestureDetector(
-                            key: buttonKeys[0],
-                            onVerticalDragStart: (DragStartDetails drag) {
-                              final counter =
-                                  state.counter ?? Counter.fromJson({});
-                              counterBloc
-                                  .add(CounterIncrement(counter: counter));
-                            },
-                            onHorizontalDragStart: (DragStartDetails drag) {
-                              final counter =
-                                  state.counter ?? Counter.fromJson({});
-                              counterBloc
-                                  .add(CounterIncrement(counter: counter));
-                            },
-                            onTap: () {
-                              final counter =
-                                  state.counter ?? Counter.fromJson({});
-                              counterBloc
-                                  .add(CounterIncrement(counter: counter));
-                            },
-                            child: Container(
-                              margin: EdgeInsets.symmetric(vertical: 10.0),
-                              padding: EdgeInsets.all(15.0),
-                              decoration: BoxDecoration(
-                                color: LightColors.getThemeColor(
-                                    state: parentState,
-                                    isBackgroundColor: true,
-                                    colorName: state.counter?.counterTheme,
-                                    contrast: 'dark'),
-                                borderRadius: BorderRadius.circular(40.0),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  (state.counter!.counter ?? 0).toString(),
-                                  style: TextStyle(
-                                      color: Color(0xffffffff), fontSize: 80.0),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                      Container(
-                        height: 70,
-                        width: width,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              GestureDetector(
-                                onTap: () {
-                                  counterBloc.add(CounterToggleSound(
-                                      counter: state.counter ??
-                                          Counter.fromJson({})));
-                                },
-                                child: Container(
-                                  child: Icon(
-                                    state.counter!.isSoundOn
-                                        ? LineIcons.volumeUp
-                                        : LineIcons.volumeMute,
-                                    size: 40.0,
-                                    color: LightColors.getThemeColor(
-                                        state: parentState,
-                                        colorName: state.counter?.counterTheme,
-                                        contrast: 'dark'),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  counterBloc.add(CounterToggleVibration(
-                                      counter: state.counter ??
-                                          Counter.fromJson({})));
-                                },
-                                child: Container(
-                                  child: Icon(
-                                    state.counter!.isVibrationOn
-                                        ? Icons.vibration
-                                        : LineIcons.mobilePhone,
-                                    size: 40.0,
-                                    color: LightColors.getThemeColor(
-                                        state: parentState,
-                                        colorName: state.counter?.counterTheme,
-                                        contrast: 'dark'),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  counterBloc.add(CounterDecrement(
-                                      counter: state.counter ??
-                                          Counter.fromJson({})));
-                                },
-                                child: Container(
-                                  child: Icon(
-                                    LineIcons.minus,
-                                    size: 40.0,
-                                    color: LightColors.getThemeColor(
-                                        state: parentState,
-                                        colorName: state.counter?.counterTheme,
-                                        contrast: 'dark'),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () => showDialog<String>(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    title: const Text('Reset Alert'),
-                                    content: const Text(
-                                        'Are you sure to reset this counter?'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, 'Cancel'),
-                                        child: const Text('Cancel'),
+                          Container(
+                            height: 70,
+                            width: width,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  GestureDetector(
+                                    onTap: () {
+                                      counterBloc.add(CounterToggleSound(
+                                          counter: state.counter ??
+                                              Counter.fromJson({})));
+                                    },
+                                    child: Container(
+                                      child: Icon(
+                                        state.counter!.isSoundOn
+                                            ? LineIcons.volumeUp
+                                            : LineIcons.volumeMute,
+                                        size: 40.0,
+                                        color: LightColors.getThemeColor(
+                                            state: parentState,
+                                            colorName:
+                                                state.counter?.counterTheme,
+                                            contrast: 'dark'),
                                       ),
-                                      TextButton(
-                                        onPressed: () {
-                                          counterBloc.add(CounterReset(context,
-                                              counter: state.counter ??
-                                                  Counter.fromJson({})));
-                                          Navigator.pop(context, 'OK');
-                                        },
-                                        child: const Text('OK'),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      counterBloc.add(CounterToggleVibration(
+                                          counter: state.counter ??
+                                              Counter.fromJson({})));
+                                    },
+                                    child: Container(
+                                      child: Icon(
+                                        state.counter!.isVibrationOn
+                                            ? Icons.vibration
+                                            : LineIcons.mobilePhone,
+                                        size: 40.0,
+                                        color: LightColors.getThemeColor(
+                                            state: parentState,
+                                            colorName:
+                                                state.counter?.counterTheme,
+                                            contrast: 'dark'),
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                                child: Container(
-                                  child: Icon(
-                                    Icons.restore,
-                                    size: 40.0,
-                                    color: LightColors.getThemeColor(
-                                        state: parentState,
-                                        colorName: state.counter?.counterTheme,
-                                        contrast: 'dark'),
+                                  GestureDetector(
+                                    onTap: () {
+                                      counterBloc.add(CounterDecrement(
+                                          counter: state.counter ??
+                                              Counter.fromJson({})));
+                                    },
+                                    child: Container(
+                                      child: Icon(
+                                        LineIcons.minus,
+                                        size: 40.0,
+                                        color: LightColors.getThemeColor(
+                                            state: parentState,
+                                            colorName:
+                                                state.counter?.counterTheme,
+                                            contrast: 'dark'),
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  GestureDetector(
+                                    onTap: () => showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                        title: const Text('Reset Alert'),
+                                        content: const Text(
+                                            'Are you sure to reset this counter?'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(
+                                                context, 'Cancel'),
+                                            child: const Text('Cancel'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              counterBloc.add(CounterReset(
+                                                  context,
+                                                  counter: state.counter ??
+                                                      Counter.fromJson({})));
+                                              Navigator.pop(context, 'OK');
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    child: Container(
+                                      child: Icon(
+                                        Icons.restore,
+                                        size: 40.0,
+                                        color: LightColors.getThemeColor(
+                                            state: parentState,
+                                            colorName:
+                                                state.counter?.counterTheme,
+                                            contrast: 'dark'),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
+                        ],
+                      );
+                    },
                   );
-                },
-              );
-            }
-            return Text('');
-          },
+                }
+                return Text('');
+              },
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: ConfettiWidget(
+                  confettiController: _controllerCenter,
+                  blastDirection: pi / 2,
+                  maxBlastForce: 20, // set a lower max blast force
+                  minBlastForce: 5, // set a lower min blast force
+                  emissionFrequency: 0.05,
+                  numberOfParticles: 30, // a lot of particles at once
+                  gravity: 0.2,
+                  blastDirectionality: BlastDirectionality.explosive),
+            ),
+          ],
         ),
+      ),
+    );
+  }
+
+  _showTargetAchievedDialog(BuildContext context, Counter counter) {
+    showCupertinoDialog<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('Goal Achieved'),
+        content: const Text(
+            'Alhamdulillah, you\'ve achieved your dhikr goal for this counter.'),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            child: const Text('Okey'),
+            isDestructiveAction: false,
+            onPressed: () {
+              // Do something destructive.
+              Navigator.pop(context);
+              counterBloc.add(CounterGoalAchieved(counter: counter));
+            },
+          )
+        ],
       ),
     );
   }

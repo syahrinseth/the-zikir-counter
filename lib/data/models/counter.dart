@@ -37,6 +37,8 @@ class Counter {
   bool isSoundOn;
   @HiveField(10)
   String? counterTheme;
+  @HiveField(11)
+  bool? goalAchieved;
 
   Counter(
       {required this.id,
@@ -49,7 +51,8 @@ class Counter {
       this.limiter = 100,
       this.isVibrationOn = true,
       this.isSoundOn = true,
-      this.counterTheme = 'green'});
+      this.counterTheme = 'green',
+      this.goalAchieved = false});
 
   static Counter fromJson(Map json) {
     var uuid = Uuid().v1();
@@ -66,7 +69,8 @@ class Counter {
         limiter: json['limiter'] ?? int.parse(limiter),
         isVibrationOn: json['isVibrationOn'] ?? true,
         isSoundOn: json['isSoundOn'] ?? true,
-        counterTheme: json['counterTheme'] ?? 'green');
+        counterTheme: json['counterTheme'] ?? 'green',
+        goalAchieved: json['goalAchieved'] ?? false);
     return counter;
   }
 
@@ -86,7 +90,8 @@ class Counter {
         limiter: json['limiter'] ?? int.parse(limiter),
         isVibrationOn: json['isVibrationOn'] ?? true,
         isSoundOn: json['isSoundOn'] ?? true,
-        counterTheme: json['counterTheme'] ?? 'green');
+        counterTheme: json['counterTheme'] ?? 'green',
+        goalAchieved: json['goalAchieved'] ?? false);
     box.put(counter.id, counter);
     return counter;
   }
