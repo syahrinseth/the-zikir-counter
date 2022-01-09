@@ -406,24 +406,26 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                     ],
                   ),
                 )),
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      _counterBloc.add(CounterUpdate(widget.counter.id,
-                          title: _titleController.text,
-                          description: _descriptionController.text,
-                          limiter: int.parse(_counterLimitController.text),
-                          counterTheme: _themeController.text,
-                          counter: int.parse(_zikirCountController.text)));
-                    });
-                  },
-                  child: Container(
-                    height: 80,
-                    width: width,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Container(
+                Container(
+                  height: 80,
+                  width: width,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _counterBloc.add(CounterUpdate(widget.counter.id,
+                                title: _titleController.text,
+                                description: _descriptionController.text,
+                                limiter:
+                                    int.parse(_counterLimitController.text),
+                                counterTheme: _themeController.text,
+                                counter:
+                                    int.parse(_zikirCountController.text)));
+                          });
+                        },
+                        child: Container(
                           child: Text(
                             'Save',
                             style: TextStyle(
@@ -446,8 +448,8 @@ class _EditZikirCounter extends State<EditZikirCounter> {
                             borderRadius: BorderRadius.circular(30),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],
