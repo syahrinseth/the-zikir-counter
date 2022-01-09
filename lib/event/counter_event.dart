@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:the_zikir_app/data/models/counter.dart';
+import 'package:the_zikir_app/state/profile_state.dart';
 
 class CounterEvent extends Equatable {
   const CounterEvent();
@@ -91,66 +92,78 @@ class CounterDelete extends CounterEvent {
 
 class CounterGetDayReport extends CounterEvent {
   final DateTime dateTime;
-  CounterGetDayReport({required this.dateTime});
+  final ProfileState profileState;
+  CounterGetDayReport({required this.dateTime, required this.profileState});
 
   @override
-  List<Object> get props => [dateTime];
+  List<Object> get props => [dateTime, profileState];
 }
 
 class CounterGetWeekReport extends CounterEvent {
   final DateTime dateTime;
-  CounterGetWeekReport({required this.dateTime});
+  final ProfileState profileState;
+  CounterGetWeekReport({required this.dateTime, required this.profileState});
 
   @override
-  List<Object> get props => [dateTime];
+  List<Object> get props => [dateTime, profileState];
 }
 
 class CounterGetMonthReport extends CounterEvent {
   final DateTime dateTime;
-  CounterGetMonthReport({required this.dateTime});
+  final ProfileState profileState;
+  CounterGetMonthReport({required this.dateTime, required this.profileState});
 
   @override
-  List<Object> get props => [dateTime];
+  List<Object> get props => [dateTime, profileState];
 }
 
 class CounterGetYearReport extends CounterEvent {
   final DateTime dateTime;
-  CounterGetYearReport({required this.dateTime});
+  final ProfileState profileState;
+  CounterGetYearReport({required this.dateTime, required this.profileState});
 
   @override
-  List<Object> get props => [dateTime];
+  List<Object> get props => [dateTime, profileState];
 }
 
 class CounterDayReportPrev extends CounterEvent {
   final DateTime currentDateTime;
-  CounterDayReportPrev({required this.currentDateTime});
+  final ProfileState profileState;
+  CounterDayReportPrev(
+      {required this.currentDateTime, required this.profileState});
 
   @override
-  List<Object> get props => [currentDateTime];
+  List<Object> get props => [currentDateTime, profileState];
 }
 
 class CounterDayReportNext extends CounterEvent {
   final DateTime currentDateTime;
-  CounterDayReportNext({required this.currentDateTime});
+  final ProfileState profileState;
+  CounterDayReportNext(
+      {required this.currentDateTime, required this.profileState});
 
   @override
-  List<Object> get props => [currentDateTime];
+  List<Object> get props => [currentDateTime, profileState];
 }
 
 class CounterWeekReportNext extends CounterEvent {
   final DateTime currentDateTime;
-  CounterWeekReportNext({required this.currentDateTime});
+  final ProfileState profileState;
+  CounterWeekReportNext(
+      {required this.currentDateTime, required this.profileState});
 
   @override
-  List<Object> get props => [currentDateTime];
+  List<Object> get props => [currentDateTime, profileState];
 }
 
 class CounterWeekReportPrev extends CounterEvent {
   final DateTime currentDateTime;
-  CounterWeekReportPrev({required this.currentDateTime});
+  final ProfileState profileState;
+  CounterWeekReportPrev(
+      {required this.currentDateTime, required this.profileState});
 
   @override
-  List<Object> get props => [currentDateTime];
+  List<Object> get props => [currentDateTime, profileState];
 }
 
 class CounterUpdate extends CounterEvent {

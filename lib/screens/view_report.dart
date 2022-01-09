@@ -16,6 +16,8 @@ import 'package:the_zikir_app/widgets/week_bar_graph_card.dart';
 import 'package:the_zikir_app/widgets/year_bar_graph_card.dart';
 
 class ViewReport extends StatefulWidget {
+  ViewReport({required this.profileState});
+  ProfileState profileState;
   @override
   _ViewReport createState() => _ViewReport();
 }
@@ -39,11 +41,18 @@ class _ViewReport extends State<ViewReport>
     super.initState();
     // myBanner.load();
     _tabController = TabController(length: 4, vsync: this);
-    _dayReportCounterBloc.add(CounterGetDayReport(dateTime: DateTime.now()));
-    _weekReportCounterBloc.add(CounterGetWeekReport(dateTime: DateTime.now()));
-    _monthReportCounterBloc
-        .add(CounterGetMonthReport(dateTime: DateTime.now()));
-    _yearReportCounterBloc.add(CounterGetYearReport(dateTime: DateTime.now()));
+    _dayReportCounterBloc.add(CounterGetDayReport(
+        dateTime: DateTime.now(), profileState: widget.profileState));
+    _weekReportCounterBloc.add(
+      CounterGetWeekReport(
+          dateTime: DateTime.now(), profileState: widget.profileState),
+    );
+    _monthReportCounterBloc.add(
+      CounterGetMonthReport(
+          dateTime: DateTime.now(), profileState: widget.profileState),
+    );
+    _yearReportCounterBloc.add(CounterGetYearReport(
+        dateTime: DateTime.now(), profileState: widget.profileState));
   }
 
   @override
@@ -59,10 +68,9 @@ class _ViewReport extends State<ViewReport>
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    ProfileState parentState = BlocProvider.of<ProfileBloc>(context).state;
     return Scaffold(
       backgroundColor: LightColors.getThemeColor(
-          state: parentState,
+          state: widget.profileState,
           colorName: 'green',
           contrast: 'light',
           isBackgroundColor: true),
@@ -89,7 +97,7 @@ class _ViewReport extends State<ViewReport>
                               Icons.arrow_back_ios,
                               size: 25,
                               color: LightColors.getThemeColor(
-                                  state: parentState,
+                                  state: widget.profileState,
                                   colorName: 'green',
                                   contrast: 'dark',
                                   isBackgroundColor: false),
@@ -110,7 +118,7 @@ class _ViewReport extends State<ViewReport>
                               Icons.info,
                               size: 25,
                               color: LightColors.getThemeColor(
-                                  state: parentState,
+                                  state: widget.profileState,
                                   colorName: 'green',
                                   contrast: 'light',
                                   isBackgroundColor: true),
@@ -131,7 +139,7 @@ class _ViewReport extends State<ViewReport>
               child: Container(
                 decoration: BoxDecoration(
                     color: LightColors.getThemeColor(
-                        state: parentState,
+                        state: widget.profileState,
                         colorName: 'green',
                         contrast: 'dark',
                         isBackgroundColor: true),
@@ -148,13 +156,13 @@ class _ViewReport extends State<ViewReport>
                         10.0,
                       ),
                       color: LightColors.getThemeColor(
-                          state: parentState,
+                          state: widget.profileState,
                           colorName: 'white',
                           contrast: 'dark',
                           isBackgroundColor: true),
                     ),
                     labelColor: LightColors.getThemeColor(
-                        state: parentState,
+                        state: widget.profileState,
                         colorName: 'green',
                         contrast: 'dark',
                         isBackgroundColor: false),
@@ -205,14 +213,17 @@ class _ViewReport extends State<ViewReport>
                                                     CounterDayReportPrev(
                                                         currentDateTime: state
                                                                 .targetDateTime ??
-                                                            DateTime.now()));
+                                                            DateTime.now(),
+                                                        profileState: widget
+                                                            .profileState));
                                               },
                                               child: Icon(
                                                 Icons.arrow_back_ios,
                                                 size: 25,
                                                 color:
                                                     LightColors.getThemeColor(
-                                                        state: parentState,
+                                                        state:
+                                                            widget.profileState,
                                                         colorName: 'white',
                                                         contrast: 'light',
                                                         isBackgroundColor:
@@ -233,7 +244,7 @@ class _ViewReport extends State<ViewReport>
                                             : '',
                                         style: TextStyle(
                                             color: LightColors.getThemeColor(
-                                                state: parentState,
+                                                state: widget.profileState,
                                                 colorName: 'white',
                                                 contrast: 'light',
                                                 isBackgroundColor: false),
@@ -251,7 +262,9 @@ class _ViewReport extends State<ViewReport>
                                                       CounterDayReportNext(
                                                           currentDateTime: state
                                                                   .targetDateTime ??
-                                                              DateTime.now()));
+                                                              DateTime.now(),
+                                                          profileState: widget
+                                                              .profileState));
                                                 }
                                               },
                                               child: Icon(
@@ -263,13 +276,15 @@ class _ViewReport extends State<ViewReport>
                                                             DateTime.now(),
                                                         dateB: DateTime.now())
                                                     ? LightColors.getThemeColor(
-                                                        state: parentState,
+                                                        state:
+                                                            widget.profileState,
                                                         colorName: 'green',
                                                         contrast: 'dark',
                                                         isBackgroundColor:
                                                             false)
                                                     : LightColors.getThemeColor(
-                                                        state: parentState,
+                                                        state:
+                                                            widget.profileState,
                                                         colorName: 'white',
                                                         contrast: 'light',
                                                         isBackgroundColor:
@@ -326,6 +341,8 @@ class _ViewReport extends State<ViewReport>
                                               onPressed: () {
                                                 _weekReportCounterBloc.add(
                                                     CounterGetWeekReport(
+                                                        profileState: widget
+                                                            .profileState,
                                                         dateTime: state
                                                                 .targetDateTime
                                                                 ?.subtract(
@@ -339,7 +356,8 @@ class _ViewReport extends State<ViewReport>
                                                 size: 25,
                                                 color:
                                                     LightColors.getThemeColor(
-                                                        state: parentState,
+                                                        state:
+                                                            widget.profileState,
                                                         colorName: 'white',
                                                         contrast: 'light',
                                                         isBackgroundColor:
@@ -355,7 +373,7 @@ class _ViewReport extends State<ViewReport>
                                             : '',
                                         style: TextStyle(
                                             color: LightColors.getThemeColor(
-                                                state: parentState,
+                                                state: widget.profileState,
                                                 colorName: 'white',
                                                 contrast: 'light',
                                                 isBackgroundColor: false),
@@ -371,6 +389,8 @@ class _ViewReport extends State<ViewReport>
                                                     dateB: DateTime.now())) {
                                                   _weekReportCounterBloc.add(
                                                       CounterGetWeekReport(
+                                                          profileState: widget
+                                                              .profileState,
                                                           dateTime: state
                                                                   .targetDateTime
                                                                   ?.add(Duration(
@@ -388,13 +408,15 @@ class _ViewReport extends State<ViewReport>
                                                             DateTime.now(),
                                                         dateB: DateTime.now())
                                                     ? LightColors.getThemeColor(
-                                                        state: parentState,
+                                                        state:
+                                                            widget.profileState,
                                                         colorName: 'green',
                                                         contrast: 'dark',
                                                         isBackgroundColor:
                                                             false)
                                                     : LightColors.getThemeColor(
-                                                        state: parentState,
+                                                        state:
+                                                            widget.profileState,
                                                         colorName: 'white',
                                                         contrast: 'light',
                                                         isBackgroundColor:
@@ -450,6 +472,8 @@ class _ViewReport extends State<ViewReport>
                                           ? CupertinoButton(
                                               onPressed: () {
                                                 _monthReportCounterBloc.add(CounterGetMonthReport(
+                                                    profileState:
+                                                        widget.profileState,
                                                     dateTime: state.targetDateTime?.subtract(Duration(
                                                             days: daysInMonth(
                                                                 state.targetDateTime
@@ -467,7 +491,8 @@ class _ViewReport extends State<ViewReport>
                                                 size: 25,
                                                 color:
                                                     LightColors.getThemeColor(
-                                                        state: parentState,
+                                                        state:
+                                                            widget.profileState,
                                                         colorName: 'white',
                                                         contrast: 'light',
                                                         isBackgroundColor:
@@ -485,7 +510,7 @@ class _ViewReport extends State<ViewReport>
                                             : '',
                                         style: TextStyle(
                                             color: LightColors.getThemeColor(
-                                                state: parentState,
+                                                state: widget.profileState,
                                                 colorName: 'white',
                                                 contrast: 'light',
                                                 isBackgroundColor: false),
@@ -495,6 +520,8 @@ class _ViewReport extends State<ViewReport>
                                           ? CupertinoButton(
                                               onPressed: () {
                                                 _monthReportCounterBloc.add(CounterGetMonthReport(
+                                                    profileState:
+                                                        widget.profileState,
                                                     dateTime: state.targetDateTime?.add(Duration(
                                                             days: daysInMonth(
                                                                 state.targetDateTime
@@ -516,13 +543,15 @@ class _ViewReport extends State<ViewReport>
                                                             DateTime.now(),
                                                         dateB: DateTime.now())
                                                     ? LightColors.getThemeColor(
-                                                        state: parentState,
+                                                        state:
+                                                            widget.profileState,
                                                         colorName: 'green',
                                                         contrast: 'dark',
                                                         isBackgroundColor:
                                                             false)
                                                     : LightColors.getThemeColor(
-                                                        state: parentState,
+                                                        state:
+                                                            widget.profileState,
                                                         colorName: 'white',
                                                         contrast: 'light',
                                                         isBackgroundColor:
@@ -579,6 +608,8 @@ class _ViewReport extends State<ViewReport>
                                           ? CupertinoButton(
                                               onPressed: () {
                                                 _yearReportCounterBloc.add(CounterGetYearReport(
+                                                    profileState:
+                                                        widget.profileState,
                                                     dateTime: DateTime.parse(((state
                                                                         .targetDateTime
                                                                         ?.year ??
@@ -594,7 +625,8 @@ class _ViewReport extends State<ViewReport>
                                                 size: 25,
                                                 color:
                                                     LightColors.getThemeColor(
-                                                        state: parentState,
+                                                        state:
+                                                            widget.profileState,
                                                         colorName: 'white',
                                                         contrast: 'light',
                                                         isBackgroundColor:
@@ -609,7 +641,7 @@ class _ViewReport extends State<ViewReport>
                                             : '',
                                         style: TextStyle(
                                             color: LightColors.getThemeColor(
-                                                state: parentState,
+                                                state: widget.profileState,
                                                 colorName: 'white',
                                                 contrast: 'light',
                                                 isBackgroundColor: false),
@@ -625,6 +657,8 @@ class _ViewReport extends State<ViewReport>
                                                     dateB: DateTime.now())) {
                                                   _yearReportCounterBloc.add(
                                                       CounterGetYearReport(
+                                                          profileState: widget
+                                                              .profileState,
                                                           dateTime: DateTime.parse(
                                                               ((state.targetDateTime?.year ??
                                                                               DateTime.now().year) +
@@ -643,13 +677,15 @@ class _ViewReport extends State<ViewReport>
                                                             DateTime.now(),
                                                         dateB: DateTime.now())
                                                     ? LightColors.getThemeColor(
-                                                        state: parentState,
+                                                        state:
+                                                            widget.profileState,
                                                         colorName: 'green',
                                                         contrast: 'dark',
                                                         isBackgroundColor:
                                                             false)
                                                     : LightColors.getThemeColor(
-                                                        state: parentState,
+                                                        state:
+                                                            widget.profileState,
                                                         colorName: 'white',
                                                         contrast: 'light',
                                                         isBackgroundColor:

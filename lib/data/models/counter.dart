@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:quiver/time.dart';
 import 'package:the_zikir_app/global_var.dart';
+import 'package:the_zikir_app/state/profile_state.dart';
+import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/day_bar_graph_card.dart';
 import 'package:the_zikir_app/widgets/month_bar_graph_card.dart';
 import 'package:the_zikir_app/widgets/week_bar_graph_card.dart';
@@ -165,7 +167,9 @@ class Counter {
   }
 
   static List<charts.Series<CounterDayBarChartData, DateTime>> getDayReport(
-      {required DateTime dateTime, required List<Counter> counters}) {
+      {required DateTime dateTime,
+      required List<Counter> counters,
+      required ProfileState profileState}) {
     // get counter histories from counters
     List<CounterHistory> targetCounterHistories = [];
     counters.forEach((element) {
@@ -194,9 +198,16 @@ class Counter {
       int index = e.key;
       int counter = e.value;
       return CounterDayBarChartData(
-          DateTime(dateTime.year, dateTime.month, dateTime.day, index),
-          counter,
-          charts.ColorUtil.fromDartColor(Color(0xff43c59e)));
+        DateTime(dateTime.year, dateTime.month, dateTime.day, index),
+        counter,
+        charts.ColorUtil.fromDartColor(
+          LightColors.getThemeColor(
+              state: profileState,
+              colorName: 'green',
+              contrast: 'dark',
+              isBackgroundColor: true),
+        ),
+      );
     }).toList();
     // return
     return [
@@ -327,7 +338,9 @@ class Counter {
   }
 
   static List<charts.Series<CounterWeekBarChartData, String>> getWeekReport(
-      {required DateTime dateTime, required List<Counter> counters}) {
+      {required DateTime dateTime,
+      required List<Counter> counters,
+      required ProfileState profileState}) {
     // get counter histories from counters
     List<CounterHistory> targetCounterHistories = [];
     int weekday = dateTime.weekday;
@@ -472,8 +485,17 @@ class Counter {
     List<CounterWeekBarChartData> data = days.asMap().entries.map((e) {
       // int index = e.key;
       Map<String, dynamic> day = e.value;
-      return CounterWeekBarChartData(day['day'], day['count'],
-          charts.ColorUtil.fromDartColor(Color(0xff43c59e)));
+      return CounterWeekBarChartData(
+        day['day'],
+        day['count'],
+        charts.ColorUtil.fromDartColor(
+          LightColors.getThemeColor(
+              state: profileState,
+              colorName: 'green',
+              contrast: 'dark',
+              isBackgroundColor: true),
+        ),
+      );
     }).toList();
     // return
     return [
@@ -490,7 +512,9 @@ class Counter {
   }
 
   static List<charts.Series<CounterMonthBarChartData, DateTime>> getMonthReport(
-      {required DateTime dateTime, required List<Counter> counters}) {
+      {required DateTime dateTime,
+      required List<Counter> counters,
+      required ProfileState profileState}) {
     // try {
     List<CounterHistory> targetCounterHistories = [];
     // filter counters for this year
@@ -529,8 +553,17 @@ class Counter {
     List<CounterMonthBarChartData> data = days.asMap().entries.map((e) {
       // int key = e.key;
       Map day = e.value;
-      return CounterMonthBarChartData(day['day'] ?? DateTime.now(),
-          day['total'] ?? 0, charts.ColorUtil.fromDartColor(Color(0xff43c59e)));
+      return CounterMonthBarChartData(
+        day['day'] ?? DateTime.now(),
+        day['total'] ?? 0,
+        charts.ColorUtil.fromDartColor(
+          LightColors.getThemeColor(
+              state: profileState,
+              colorName: 'green',
+              contrast: 'dark',
+              isBackgroundColor: true),
+        ),
+      );
     }).toList();
     // return
     return [
@@ -607,7 +640,9 @@ class Counter {
   }
 
   static List<charts.Series<CounterYearBarChartData, DateTime>> getYearReport(
-      {required DateTime dateTime, required List<Counter> counters}) {
+      {required DateTime dateTime,
+      required List<Counter> counters,
+      required ProfileState profileState}) {
     // try {
     List<CounterHistory> targetCounterHistories = [];
     // filter counters for this year
@@ -643,8 +678,17 @@ class Counter {
     List<CounterYearBarChartData> data = months.asMap().entries.map((e) {
       // int key = e.key;
       Map day = e.value;
-      return CounterYearBarChartData(day['month'] ?? DateTime.now(),
-          day['total'] ?? 0, charts.ColorUtil.fromDartColor(Color(0xff43c59e)));
+      return CounterYearBarChartData(
+        day['month'] ?? DateTime.now(),
+        day['total'] ?? 0,
+        charts.ColorUtil.fromDartColor(
+          LightColors.getThemeColor(
+              state: profileState,
+              colorName: 'green',
+              contrast: 'dark',
+              isBackgroundColor: true),
+        ),
+      );
     }).toList();
     // return
     return [

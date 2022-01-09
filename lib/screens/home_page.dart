@@ -184,7 +184,8 @@ class _HomePage extends State<HomePage> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => ViewReport()),
+                                          builder: (context) => ViewReport(
+                                              profileState: parentState)),
                                     ).then((value) {
                                       counterBloc.add(CounterGetAll());
                                       profileBloc.add(ProfileGet());

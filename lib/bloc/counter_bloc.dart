@@ -274,7 +274,9 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       emit(CounterLoaded(
           targetDateTime: event.dateTime,
           weekBarChartData: Counter.getWeekReport(
-              counters: counters, dateTime: event.dateTime),
+              counters: counters,
+              dateTime: event.dateTime,
+              profileState: event.profileState),
           totalDhikrs: Counter.getWeekReportTotal(
               counters: counters, dateTime: event.dateTime)));
     } catch (e) {
@@ -297,7 +299,9 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       emit(CounterLoaded(
           targetDateTime: event.dateTime,
           monthBarChartData: Counter.getMonthReport(
-              counters: counters, dateTime: event.dateTime),
+              counters: counters,
+              dateTime: event.dateTime,
+              profileState: event.profileState),
           totalDhikrs: Counter.getMonthReportTotal(
               counters: counters, dateTime: event.dateTime)));
     } catch (e) {
@@ -320,7 +324,9 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       emit(CounterLoaded(
           targetDateTime: event.dateTime,
           yearBarChartData: Counter.getYearReport(
-              counters: counters, dateTime: event.dateTime),
+              counters: counters,
+              dateTime: event.dateTime,
+              profileState: event.profileState),
           totalDhikrs: Counter.getYearReportTotal(
               counters: counters, dateTime: event.dateTime)));
     } catch (e) {
@@ -343,7 +349,9 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       emit(CounterLoaded(
           targetDateTime: event.dateTime,
           dayBarChartData: Counter.getDayReport(
-              counters: counters, dateTime: event.dateTime),
+              counters: counters,
+              dateTime: event.dateTime,
+              profileState: event.profileState),
           totalDhikrs: Counter.getDayReportTotal(
               counters: counters, dateTime: event.dateTime)));
     } catch (e) {
@@ -365,8 +373,10 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         }
       }
       emit(CounterLoaded(
-          dayBarChartData:
-              Counter.getDayReport(counters: counters, dateTime: prevDateTime),
+          dayBarChartData: Counter.getDayReport(
+              counters: counters,
+              dateTime: prevDateTime,
+              profileState: event.profileState),
           targetDateTime: prevDateTime,
           totalDhikrs: Counter.getDayReportTotal(
               counters: counters, dateTime: prevDateTime)));
@@ -389,8 +399,10 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         }
       }
       emit(CounterLoaded(
-          dayBarChartData:
-              Counter.getDayReport(counters: counters, dateTime: nextDateTime),
+          dayBarChartData: Counter.getDayReport(
+              counters: counters,
+              dateTime: nextDateTime,
+              profileState: event.profileState),
           targetDateTime: nextDateTime,
           totalDhikrs: Counter.getDayReportTotal(
               counters: counters, dateTime: nextDateTime)));

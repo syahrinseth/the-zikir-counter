@@ -116,12 +116,13 @@ class _DayBarGraphCardState extends State<DayBarGraphCard> {
                   child: Text(
                     widget.desc,
                     style: TextStyle(
-                        fontSize: 16.0,
-                        color: LightColors.getThemeColor(
-                            state: parentState,
-                            colorName: 'green',
-                            contrast: 'dark',
-                            isBackgroundColor: true)),
+                      fontSize: 16.0,
+                      color: LightColors.getThemeColor(
+                          state: parentState,
+                          colorName: 'green',
+                          contrast: 'dark',
+                          isBackgroundColor: true),
+                    ),
                     textAlign: TextAlign.left,
                   ),
                 ),
