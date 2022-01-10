@@ -88,7 +88,9 @@ class _ViewZikirCounter extends State<ViewZikirCounter> {
 
                 if (state is CounterLoaded) {
                   if (state.counter!.counter == state.counter!.limiter &&
-                      state.counter!.goalAchieved == false) {
+                      state.counter!.goalAchieved == false &&
+                      state.counter!.updatedAt!.isAfter(
+                          DateTime.now().subtract(Duration(days: 1)))) {
                     _controllerCenter.play();
                     counterBloc.add(CounterPlayGoalAchievementSound(
                         counter: state.counter ?? Counter.createFromJson({})));

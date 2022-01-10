@@ -235,6 +235,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
           counter.goalAchieved =
               (counter.counter ?? 0) >= (counter.limiter ?? 1) ? true : false;
           counter.counterTheme = event.counterTheme;
+          counter.updatedAt = DateTime.now();
           Counter.saveCounter(counter: counter);
           emit(CounterSaved(counter: counter));
         }

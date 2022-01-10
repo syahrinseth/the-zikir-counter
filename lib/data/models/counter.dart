@@ -56,7 +56,7 @@ class Counter {
       this.isVibrationOn = true,
       this.isSoundOn = true,
       this.counterTheme = 'green',
-      this.goalAchieved = false});
+      this.goalAchieved});
 
   static Counter fromJson(Map json) {
     var uuid = Uuid().v1();
