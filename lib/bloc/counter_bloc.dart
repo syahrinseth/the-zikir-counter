@@ -273,6 +273,10 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       }
       emit(CounterLoaded(
           targetDateTime: event.dateTime,
+          weekDetailChartData: Counter.getWeekDetailReport(
+              counters: counters,
+              dateTime: event.dateTime,
+              profileState: event.profileState),
           weekBarChartData: Counter.getWeekReport(
               counters: counters,
               dateTime: event.dateTime,
@@ -298,6 +302,10 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       }
       emit(CounterLoaded(
           targetDateTime: event.dateTime,
+          monthDetailChartData: Counter.getMonthDetailReport(
+              counters: counters,
+              dateTime: event.dateTime,
+              profileState: event.profileState),
           monthBarChartData: Counter.getMonthReport(
               counters: counters,
               dateTime: event.dateTime,
@@ -323,6 +331,10 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       }
       emit(CounterLoaded(
           targetDateTime: event.dateTime,
+          yearDetailChartData: Counter.getYearDetailReport(
+              counters: counters,
+              dateTime: event.dateTime,
+              profileState: event.profileState),
           yearBarChartData: Counter.getYearReport(
               counters: counters,
               dateTime: event.dateTime,
@@ -348,6 +360,10 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       }
       emit(CounterLoaded(
           targetDateTime: event.dateTime,
+          dayDetailChartData: Counter.getDayDetailReport(
+              counters: counters,
+              dateTime: event.dateTime,
+              profileState: event.profileState),
           dayBarChartData: Counter.getDayReport(
               counters: counters,
               dateTime: event.dateTime,
@@ -373,6 +389,10 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         }
       }
       emit(CounterLoaded(
+          dayDetailChartData: Counter.getDayDetailReport(
+              counters: counters,
+              dateTime: prevDateTime,
+              profileState: event.profileState),
           dayBarChartData: Counter.getDayReport(
               counters: counters,
               dateTime: prevDateTime,
@@ -400,6 +420,10 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       }
       emit(CounterLoaded(
           dayBarChartData: Counter.getDayReport(
+              counters: counters,
+              dateTime: nextDateTime,
+              profileState: event.profileState),
+          dayDetailChartData: Counter.getDayDetailReport(
               counters: counters,
               dateTime: nextDateTime,
               profileState: event.profileState),

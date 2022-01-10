@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:quiver/time.dart';
@@ -7,6 +8,7 @@ import 'package:the_zikir_app/global_var.dart';
 import 'package:the_zikir_app/state/profile_state.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/day_bar_graph_card.dart';
+import 'package:the_zikir_app/widgets/dhikr_detail_chart.dart';
 import 'package:the_zikir_app/widgets/month_bar_graph_card.dart';
 import 'package:the_zikir_app/widgets/week_bar_graph_card.dart';
 import 'package:the_zikir_app/widgets/year_bar_graph_card.dart';
@@ -764,6 +766,287 @@ class Counter {
     } else {
       return (this.counter ?? 0) / (this.limiter ?? 1);
     }
+  }
+
+  static List<charts.Series<CounterDetailChartData, String>> getDayDetailReport(
+      {required List<Counter> counters,
+      required DateTime dateTime,
+      required ProfileState profileState}) {
+    List<Map> targetCounterHistories = [];
+    counters.forEach((counter) {
+      int total = 0;
+      counter.histories?.forEach((history) {
+        // filter counter history for target date
+        if (history.dateTime?.day == dateTime.day &&
+            history.dateTime?.month == dateTime.month &&
+            history.dateTime?.year == dateTime.year) {
+          total += history.counter ?? 0;
+        }
+      });
+      if (total > 0) {
+        targetCounterHistories
+            .add({'counter': total, 'counterName': counter.name});
+      }
+    });
+
+    Map groupedData =
+        groupBy(targetCounterHistories, (Map obj) => obj['counterName']);
+
+    List<Map> temp = [];
+    groupedData.forEach((key, value) {
+      var total = 0;
+      value.forEach((v) {
+        total += int.parse(v['counter'].toString());
+      });
+      temp.add({'counterName': key, 'counter': total});
+    });
+
+    // convert days to list of chart series
+    List<CounterDetailChartData> data = temp.asMap().entries.map((e) {
+      Map dataMap = e.value;
+      return CounterDetailChartData(
+          dataMap['counterName'],
+          dataMap['counter'],
+          charts.ColorUtil.fromDartColor(LightColors.getThemeColor(
+              state: profileState,
+              colorName: 'green',
+              contrast: 'dark',
+              isBackgroundColor: true)));
+    }).toList();
+    // return
+    return [
+      new charts.Series<CounterDetailChartData, String>(
+        id: 'Dhikr Detail',
+        domainFn: (CounterDetailChartData dhikr, _) => dhikr.name,
+        measureFn: (CounterDetailChartData dhikr, _) => dhikr.total,
+        data: data,
+        colorFn: (CounterDetailChartData data, _) => data.color,
+        // Set a label accessor to control the text of the bar label.
+        labelAccessorFn: (CounterDetailChartData dhikr, _) =>
+            '${dhikr.name}: ${dhikr.total.toString()}',
+      ),
+    ];
+  }
+
+  static List<charts.Series<CounterDetailChartData, String>>
+      getWeekDetailReport(
+          {required List<Counter> counters,
+          required DateTime dateTime,
+          required ProfileState profileState}) {
+    List<Map> targetCounterHistories = [];
+    int weekday = dateTime.weekday;
+    DateTime? startWeek;
+    DateTime? endWeek;
+    dateTime = DateTime.parse(dateTime.year.toString() +
+        dateTime.month.toString().padLeft(2, "0") +
+        dateTime.day.toString().padLeft(2, "0"));
+    switch (weekday) {
+      case 1:
+        // Mon
+        startWeek = dateTime;
+        endWeek = dateTime.add(Duration(days: 6, hours: 23, minutes: 59));
+        break;
+      case 2:
+        // Tue
+        startWeek = dateTime.subtract(Duration(days: 1));
+        endWeek = dateTime.add(Duration(days: 5, hours: 23, minutes: 59));
+        break;
+      case 3:
+        // Wed
+        startWeek = dateTime.subtract(Duration(days: 2));
+        endWeek = dateTime.add(Duration(days: 4, hours: 23, minutes: 59));
+        break;
+      case 4:
+        // Thu
+        startWeek = dateTime.subtract(Duration(days: 3));
+        endWeek = dateTime.add(Duration(days: 3, hours: 23, minutes: 59));
+        break;
+      case 5:
+        // Fri
+        startWeek = dateTime.subtract(Duration(days: 4));
+        endWeek = dateTime.add(Duration(days: 2, hours: 23, minutes: 59));
+        break;
+      case 6:
+        // Sat
+        startWeek = dateTime.subtract(Duration(days: 5));
+        endWeek = dateTime.add(Duration(days: 1, hours: 23, minutes: 59));
+        break;
+      case 7:
+        // Sun
+        startWeek = dateTime.subtract(Duration(days: 6));
+        endWeek = dateTime.add(Duration(hours: 23, minutes: 59));
+        break;
+      default:
+    }
+    counters.forEach((counter) {
+      counter.histories?.forEach((history) {
+        int total = 0;
+        // filter counter history for target date week
+        if (startWeek!.isBefore(history.dateTime ?? DateTime.now()) &&
+            endWeek!.isAfter(history.dateTime ?? DateTime.now())) {
+          total += history.counter ?? 0;
+        }
+        if (total > 0) {
+          targetCounterHistories
+              .add({'counter': total, 'counterName': counter.name});
+        }
+      });
+    });
+
+    Map groupedData =
+        groupBy(targetCounterHistories, (Map obj) => obj['counterName']);
+
+    List<Map> temp = [];
+    groupedData.forEach((key, value) {
+      var total = 0;
+      value.forEach((v) {
+        total += int.parse(v['counter'].toString());
+      });
+      temp.add({'counterName': key, 'counter': total});
+    });
+
+    // convert days to list of chart series
+    List<CounterDetailChartData> data = temp.asMap().entries.map((e) {
+      Map dataMap = e.value;
+      return CounterDetailChartData(
+          dataMap['counterName'],
+          dataMap['counter'],
+          charts.ColorUtil.fromDartColor(LightColors.getThemeColor(
+              state: profileState,
+              colorName: 'green',
+              contrast: 'dark',
+              isBackgroundColor: true)));
+    }).toList();
+    // return
+    return [
+      new charts.Series<CounterDetailChartData, String>(
+        id: 'Dhikr Detail',
+        domainFn: (CounterDetailChartData dhikr, _) => dhikr.name,
+        measureFn: (CounterDetailChartData dhikr, _) => dhikr.total,
+        data: data,
+        colorFn: (CounterDetailChartData data, _) => data.color,
+        // Set a label accessor to control the text of the bar label.
+        labelAccessorFn: (CounterDetailChartData dhikr, _) =>
+            '${dhikr.name}: ${dhikr.total.toString()}',
+      ),
+    ];
+  }
+
+  static List<charts.Series<CounterDetailChartData, String>>
+      getMonthDetailReport(
+          {required List<Counter> counters,
+          required DateTime dateTime,
+          required ProfileState profileState}) {
+    List<Map> targetCounterHistories = [];
+    counters.forEach((counter) {
+      counter.histories?.forEach((history) {
+        int total = 0;
+        if (history.dateTime?.year == dateTime.year &&
+            history.dateTime?.month == dateTime.month) {
+          total += history.counter ?? 0;
+        }
+        if (total > 0) {
+          targetCounterHistories
+              .add({'counter': total, 'counterName': counter.name});
+        }
+      });
+    });
+
+    Map groupedData =
+        groupBy(targetCounterHistories, (Map obj) => obj['counterName']);
+
+    List<Map> temp = [];
+    groupedData.forEach((key, value) {
+      var total = 0;
+      value.forEach((v) {
+        total += int.parse(v['counter'].toString());
+      });
+      temp.add({'counterName': key, 'counter': total});
+    });
+
+    // convert days to list of chart series
+    List<CounterDetailChartData> data = temp.asMap().entries.map((e) {
+      Map dataMap = e.value;
+      return CounterDetailChartData(
+          dataMap['counterName'],
+          dataMap['counter'],
+          charts.ColorUtil.fromDartColor(LightColors.getThemeColor(
+              state: profileState,
+              colorName: 'green',
+              contrast: 'dark',
+              isBackgroundColor: true)));
+    }).toList();
+    // return
+    return [
+      new charts.Series<CounterDetailChartData, String>(
+        id: 'Dhikr Detail',
+        domainFn: (CounterDetailChartData dhikr, _) => dhikr.name,
+        measureFn: (CounterDetailChartData dhikr, _) => dhikr.total,
+        data: data,
+        colorFn: (CounterDetailChartData data, _) => data.color,
+        // Set a label accessor to control the text of the bar label.
+        labelAccessorFn: (CounterDetailChartData dhikr, _) =>
+            '${dhikr.name}: ${dhikr.total.toString()}',
+      ),
+    ];
+  }
+
+  static List<charts.Series<CounterDetailChartData, String>>
+      getYearDetailReport(
+          {required List<Counter> counters,
+          required DateTime dateTime,
+          required ProfileState profileState}) {
+    List<Map> targetCounterHistories = [];
+    counters.forEach((counter) {
+      counter.histories?.forEach((history) {
+        int total = 0;
+        if (history.dateTime?.year == dateTime.year) {
+          total += history.counter ?? 0;
+        }
+        if (total > 0) {
+          targetCounterHistories
+              .add({'counter': total, 'counterName': counter.name});
+        }
+      });
+    });
+
+    Map groupedData =
+        groupBy(targetCounterHistories, (Map obj) => obj['counterName']);
+
+    List<Map> temp = [];
+    groupedData.forEach((key, value) {
+      var total = 0;
+      value.forEach((v) {
+        total += int.parse(v['counter'].toString());
+      });
+      temp.add({'counterName': key, 'counter': total});
+    });
+
+    // convert days to list of chart series
+    List<CounterDetailChartData> data = temp.asMap().entries.map((e) {
+      Map dataMap = e.value;
+      return CounterDetailChartData(
+          dataMap['counterName'],
+          dataMap['counter'],
+          charts.ColorUtil.fromDartColor(LightColors.getThemeColor(
+              state: profileState,
+              colorName: 'green',
+              contrast: 'dark',
+              isBackgroundColor: true)));
+    }).toList();
+    // return
+    return [
+      new charts.Series<CounterDetailChartData, String>(
+        id: 'Dhikr Detail',
+        domainFn: (CounterDetailChartData dhikr, _) => dhikr.name,
+        measureFn: (CounterDetailChartData dhikr, _) => dhikr.total,
+        data: data,
+        colorFn: (CounterDetailChartData data, _) => data.color,
+        // Set a label accessor to control the text of the bar label.
+        labelAccessorFn: (CounterDetailChartData dhikr, _) =>
+            '${dhikr.name}: ${dhikr.total.toString()}',
+      ),
+    ];
   }
 }
 

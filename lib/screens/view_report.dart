@@ -11,6 +11,7 @@ import 'package:the_zikir_app/state/profile_state.dart';
 import 'package:the_zikir_app/theme/colors/light_colors.dart';
 import 'package:the_zikir_app/widgets/day_bar_graph_card.dart';
 import 'package:loading_animations/loading_animations.dart';
+import 'package:the_zikir_app/widgets/dhikr_detail_chart.dart';
 import 'package:the_zikir_app/widgets/month_bar_graph_card.dart';
 import 'package:the_zikir_app/widgets/week_bar_graph_card.dart';
 import 'package:the_zikir_app/widgets/year_bar_graph_card.dart';
@@ -303,9 +304,30 @@ class _ViewReport extends State<ViewReport>
                                           padding: const EdgeInsets.all(8.0),
                                           child: DayBarGraphCard(
                                               state.dayBarChartData ?? [],
-                                              title: 'Dhikred',
+                                              title: 'Dhikr Summary',
                                               desc:
                                                   'Total dhikred ${state.totalDhikrs ?? '0'}.'),
+                                        ),
+                                      )
+                                    : Container(
+                                        width: width,
+                                        height: 350,
+                                        child: Center(
+                                          child: LoadingBouncingGrid.circle(
+                                            backgroundColor: Colors.black54,
+                                          ),
+                                        ),
+                                      ),
+                                state is CounterLoaded
+                                    ? Container(
+                                        width: width,
+                                        height: 350,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: DhikrDetailChart(
+                                              state.dayDetailChartData ?? [],
+                                              animate: true,
+                                              title: "Dhikr by Name"),
                                         ),
                                       )
                                     : Container(
@@ -423,7 +445,7 @@ class _ViewReport extends State<ViewReport>
                                                             false),
                                               ),
                                             )
-                                          : SizedBox()
+                                          : SizedBox(),
                                     ],
                                   ),
                                 ),
@@ -435,9 +457,31 @@ class _ViewReport extends State<ViewReport>
                                           padding: const EdgeInsets.all(8.0),
                                           child: WeekBarGraphCard(
                                               state.weekBarChartData ?? [],
-                                              title: 'Dhikred',
+                                              animate: true,
+                                              title: 'Dhikr Summary',
                                               desc:
                                                   'Total dhikred ${state.totalDhikrs ?? '0'}.'),
+                                        ),
+                                      )
+                                    : Container(
+                                        width: width,
+                                        height: 350,
+                                        child: Center(
+                                          child: LoadingBouncingGrid.circle(
+                                            backgroundColor: Colors.black54,
+                                          ),
+                                        ),
+                                      ),
+                                state is CounterLoaded
+                                    ? Container(
+                                        width: width,
+                                        height: 350,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: DhikrDetailChart(
+                                              state.weekDetailChartData ?? [],
+                                              animate: true,
+                                              title: "Dhikr by Name"),
                                         ),
                                       )
                                     : Container(
@@ -585,6 +629,27 @@ class _ViewReport extends State<ViewReport>
                                           ),
                                         ),
                                       ),
+                                state is CounterLoaded
+                                    ? Container(
+                                        width: width,
+                                        height: 350,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: DhikrDetailChart(
+                                              state.monthDetailChartData ?? [],
+                                              animate: true,
+                                              title: "Dhikr by Name"),
+                                        ),
+                                      )
+                                    : Container(
+                                        width: width,
+                                        height: 350,
+                                        child: Center(
+                                          child: LoadingBouncingGrid.circle(
+                                            backgroundColor: Colors.black54,
+                                          ),
+                                        ),
+                                      ),
                               ],
                             ),
                           );
@@ -707,6 +772,27 @@ class _ViewReport extends State<ViewReport>
                                               title: 'Dhikred',
                                               desc:
                                                   'Total dhikred ${state.totalDhikrs ?? '0'}.'),
+                                        ),
+                                      )
+                                    : Container(
+                                        width: width,
+                                        height: 350,
+                                        child: Center(
+                                          child: LoadingBouncingGrid.circle(
+                                            backgroundColor: Colors.black54,
+                                          ),
+                                        ),
+                                      ),
+                                state is CounterLoaded
+                                    ? Container(
+                                        width: width,
+                                        height: 350,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: DhikrDetailChart(
+                                              state.yearDetailChartData ?? [],
+                                              animate: true,
+                                              title: "Dhikr by Name"),
                                         ),
                                       )
                                     : Container(
