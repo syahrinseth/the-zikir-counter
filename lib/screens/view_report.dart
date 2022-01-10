@@ -615,7 +615,7 @@ class _ViewReport extends State<ViewReport>
                                           child: MonthBarGraphCard(
                                               state.monthBarChartData ?? [],
                                               total: state.totalDhikrs ?? 0,
-                                              title: 'Dhikred'),
+                                              title: 'Dhikr Summary'),
                                           // child: MonthBarGraphCard
                                           //     .withSampleData(),
                                         ),
@@ -769,7 +769,7 @@ class _ViewReport extends State<ViewReport>
                                           padding: const EdgeInsets.all(8.0),
                                           child: YearBarGraphCard(
                                               state.yearBarChartData ?? [],
-                                              title: 'Dhikred',
+                                              title: 'Dhikr Summary',
                                               desc:
                                                   'Total dhikred ${state.totalDhikrs ?? '0'}.'),
                                         ),
