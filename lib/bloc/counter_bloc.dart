@@ -172,9 +172,8 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       CounterToggleVibration event, Emitter<CounterState> emit) {
     try {
       emit(CounterLoading());
-      event.counter.isSoundOn = event.counter.isSoundOn ? false : true;
+      event.counter.isVibrationOn = event.counter.isVibrationOn ? false : true;
       event.counter.updatedAt = DateTime.now();
-      playSound(counter: event.counter);
       Counter.saveCounter(counter: event.counter);
       emit(CounterLoaded(counter: event.counter));
     } catch (err) {
